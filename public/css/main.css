@@ -1,0 +1,49 @@
+body{
+	padding:0;
+	margin:0;
+	background-image: url(/img/globalBG.jpg);
+	background-repeat: no-repeat;
+	background-color: #fff;
+	background-attachment: fixed;
+	background-position: center top;
+}
+
+.main-container{
+	width:1212px;
+	margin:0 auto;
+}
+
+#topNavi ul.nav > li > a{
+	height: 73px;
+	line-height: 43px;
+	font-size: 18px;
+}
+#topNavi{
+	border-radius: 0px;
+	box-shadow: none;
+}
+
+#header_section{
+	background-color: #242424;
+}
+
+#header_stats{
+	background-color: whitesmoke;
+	margin:10px;
+}
+#header_stats ul{
+	list-style: none;
+	padding: 0;
+	margin:0;
+}
+
+#header_section{
+	background-image: url(/img/featured/test_feature.png);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: left top;
+}
+
+.tab-pane{
+	padding:5px;
+}
