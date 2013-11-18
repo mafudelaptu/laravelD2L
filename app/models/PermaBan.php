@@ -3,6 +3,8 @@
 class PermaBan extends Eloquent {
 	protected $guarded = array();
 	public $timestamps = false;
+	protected $table = "permabans";
+	protected $primaryKey = 'user_id';
 
 	public static $rules = array(
 		'user_id' => 'required',
@@ -19,8 +21,9 @@ class PermaBan extends Eloquent {
 	}
 
 	public static function isUserPermaBanned($user_id){
-		$user = PermaBan::where("id", $user_id)->get();
-		if(!empty($user)){
+		$user = PermaBan::where("user_id", $user_id)->count();
+		
+		if($user > 0){
 			return true;
 		}
 		else{

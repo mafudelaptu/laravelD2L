@@ -28,6 +28,8 @@
 	</div>
 	{{ HTML::script('js/jquery-1.10.2.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
+	{{ HTML::script('js/bootbox.min.js') }}
+	{{ HTML::script('js/jquery.cookie.js') }}
 	{{ HTML::script("js/main.js")}}
 	{{ HTML::script("js/findMatch/queue.js")}}
 </body>

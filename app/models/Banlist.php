@@ -17,8 +17,8 @@ class Banlist extends Eloquent {
 		$ret = array();
 		$data = Banlist::where("user_id", $user_id)
 		->where("display", 1)
-		->where("banned_till", ">", new DateTime)
-		->orderBy("banned_till", "DESC");
+		->where("banned_until", ">", new DateTime)
+		->orderBy("banned_until", "DESC");
 
 		$count = $data->count();
 

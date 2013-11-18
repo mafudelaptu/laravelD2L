@@ -1,12 +1,39 @@
+var debug = true;
+
 $( document ).ready(function() {
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
 
 });
+
+function l(stuff){
+  if(debug){
+    console.log(stuff);
+  }
+  
+}
+
+function setConfirmUnload(on) {
+
+  window.onbeforeunload = (on) ? unloadMessage : null;
+
+  function unloadMessage() {
+
+    return "Please do NOT close this Tab/the Browser or refresh this site! Always push 'Leave Queue' before you want to leave dota2-league.net, else you stay in Queue! This cause a bad experience on dota2-league.net. Thanks!";
+  }
+
+}
+
+function getRegion(){
+  ret = new Array();
+  var region = $.cookie("region");
+  ret.push(region);
+  return ret;
+}
 
 // conn = new ab.Session(
 //     'ws://d2l.dev:1111', // The host (our Latchet WebSocket server) to connect to

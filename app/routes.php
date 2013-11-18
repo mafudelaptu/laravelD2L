@@ -62,6 +62,7 @@ if(Config::get('app.debug') == true){
 }
 
 // ajax
+Route::post("find_match/checkJoinQueue", array('before' => 'csrf', 'uses' => 'GameQueuesController@checkJoinQueue'));
 Route::post("find_match/joinQueue", array('before' => 'csrf', 'uses' => 'GameQueuesController@joinQueue'));
 
 

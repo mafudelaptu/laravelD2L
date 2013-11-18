@@ -1,7 +1,8 @@
 @section('content')
 
     <h1>{{$heading}}</h1>
-
+{{-- hidden values for js --}}
+{{Form::hidden('jCM', GlobalSetting::getJustCM());}}
 <ul class="nav nav-tabs nav-justified">
 	<?php $i=1; ?>
 	@foreach($matchtypes as $mt)

@@ -76,7 +76,7 @@ class GameQueuesController extends BaseController {
 		//
 	}
 
-	public function joinQueue(){
+	public function checkJoinQueue(){
 		if(Auth::check()){
 			if (Request::ajax()){
 				$ret = array();
@@ -115,7 +115,7 @@ class GameQueuesController extends BaseController {
 					$ret['time'] = $retQL['time'];
 					$ret['status'] = "queueLock";
 				}
-				return $type;
+				return $ret;
 			}
 		}
 		else{
@@ -133,5 +133,21 @@ class GameQueuesController extends BaseController {
 		return $ret;
 	}
 
+	public static function joinQueue(){
+		if(Auth::check()){
+			if (Request::ajax()){
+				$ret = array();
+				$modes = Input::get("modes");
+				$region = input::get("region");
+
+				
+				
+				return $ret;
+			}
+		}
+		else{
+			return false;
+		}
+	}
 
 }
