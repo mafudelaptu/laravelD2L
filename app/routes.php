@@ -87,9 +87,6 @@ Route::resource('matchtypes', 'MatchtypesController');
 Route::resource('matchmodes', 'MatchmodesController');
 
 
-	
-
-
 Route::resource('matchdetails', 'MatchdetailsController');
 
 Route::resource('queuelocks', 'QueuelocksController');
@@ -99,3 +96,5 @@ Route::resource('permabans', 'PermabansController');
 Route::resource('banlistreasons', 'BanlistreasonsController');
 
 Route::resource('banlists', 'BanlistsController');
+
+Route::resource('votetypes', 'VotetypesController');

@@ -4,14 +4,16 @@ class QueueLock extends Eloquent {
 	protected $guarded = array();
 
 	public static $rules = array();
+	protected $table = "queuelocks";
 	public $timestamps = false;
 
 	public static function checkLock($user_id){
 		$ret = array("time" => 0, "sec" => 0, "status" => false );
 
-		$lock = QueueLock::where("user_id", $user_id)->get();
+		$lock = QueueLock::where("user_id", $user_id);
 
 		if(!empty($lock)){
+			$lockData = $lock->get();
 			$timeLeft = strtotime($lock->locked_until) - time();
 			if($timeLeft > 0){
 				$time = date("i:s",$timeLeft); // 63 sec puffer

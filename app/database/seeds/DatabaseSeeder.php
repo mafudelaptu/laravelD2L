@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('PermabansTableSeeder');
 		$this->call('BanlistreasonsTableSeeder');
 		$this->call('BanlistsTableSeeder');
+		$this->call('VotetypesTableSeeder');
 	}
 
 }

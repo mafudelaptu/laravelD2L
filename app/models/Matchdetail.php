@@ -7,4 +7,5 @@ class Matchdetail extends Eloquent {
 
 	protected $table = "matchdetails";
 	public $timestamps = false;
+
 }

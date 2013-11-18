@@ -92,8 +92,14 @@ class GameQueuesController extends BaseController {
 					$permabanned = PermaBan::isUserPermaBanned($user_id);
 					if(!$permabanned){
 						$retBL = Banlist::checkForBansOfUser($user_id);
-						if($retBL['status'] == true){
-
+						if($retBL['status'] == false){
+							$inMatch = Match::isUserInMatch($user_id);
+							if($inMatch['status'] == true){
+								$ret['status'] = "inMatch";
+							}
+							else{
+								$ret['status'] = true;
+							}
 						}
 						else{
 							$ret['banCount'] = $retBL['banCount'];
