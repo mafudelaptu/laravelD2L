@@ -139,10 +139,35 @@ class GameQueuesController extends BaseController {
 				$ret = array();
 				$modes = Input::get("modes");
 				$region = input::get("region");
+				$user_id = Auth::user()->id;
+				$inMatch = Match::isUserInMatch($user_id);
+				if(!$inMatch){
+					// get Points of user
+					$points = Userpoint::getPoints($user_id);
+					
+					if(is_array($modes) && is_array($region)){
+						$region_id = $region[0];
+						$tmpArray = array();
+						foreach ($modes as $k => $mode) {
+							$mode_id = (int) $mode;
 
+						}
+						
+						DB::table('queues')->insert(
+							// array(
+						 //    	array('email' => 'taylor@example.com', 'votes' => 0),
+						 //    	array('email' => 'dayle@example.com', 'votes' => 0),
+							// )
+							);
+
+
+						return $ret;	
+					}	
+				}
+				else{
+					return false;
+				}
 				
-				
-				return $ret;
 			}
 		}
 		else{

@@ -34,11 +34,17 @@ class GlobalSetting extends Eloquent {
 
 	public static function getJustCM(){
 		$ret = GlobalSetting::find(4);
-		if($ret->active == 1){
-			return 1;
+		if(!empty($ret)){
+			if($ret->active == 1){
+				return 1;
+			}
+			else{
+				return 0;
+			}
 		}
 		else{
-			return 0;
+			return 0;	
 		}
+		
 	}
 }

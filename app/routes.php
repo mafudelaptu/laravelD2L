@@ -99,3 +99,5 @@ Route::resource('banlistreasons', 'BanlistreasonsController');
 Route::resource('banlists', 'BanlistsController');
 
 Route::resource('votetypes', 'VotetypesController');
+
+Route::resource('userpoints', 'UserpointsController');
