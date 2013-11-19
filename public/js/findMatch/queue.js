@@ -7,21 +7,21 @@ $( document ).ready(function() {
 function initJoinQueueButtons(){
 	var justCM = $("#jCM").val();
 	$("#quickJoin5vs5Single").click(function(){
-		var joinMode = "single5vs5Queue";
+		var matchtype_id = 1;
 		var quickJoin = true;
 		$.ajax({
 			url : "find_match/checkJoinQueue",
 			type : "POST",
 			dataType : 'json',
 			data : {
-				type : joinMode
+				type : matchtype_id
 			},
 			success : function(result) {
 				l(result);
 
 				switch (result.status) {
 					case true:
-					joinSingleQueue(quickJoin, justCM, joinMode);
+					joinSingleQueue(quickJoin, justCM, matchtype_id);
 					break;
 
 					case "inMatch":
@@ -106,11 +106,11 @@ function initJoinQueueButtons(){
 });
 }
 
-function joinSingleQueue(quickJoin, justCM, joinMode){
+function joinSingleQueue(quickJoin, justCM, matchtype_id){
 	var modes = null;
 	var region = null;
 
-	modes = getMatchModes(joinMode, quickJoin);
+	modes = getMatchModes(matchtype_id, quickJoin);
 	region = getRegion();
 	if (modes.length > 0 && region.length > 0) {
 		// beim Verlassen der Seite eine Warnung anzeigen:
@@ -122,7 +122,8 @@ function joinSingleQueue(quickJoin, justCM, joinMode){
 			dataType : 'json',
 			data : {
 				modes : modes,
-				region : regions
+				region : regions,
+				matchtype_id : matchtype_id
 			},
 			success : function(result) {
 				l(result);
@@ -130,11 +131,11 @@ function joinSingleQueue(quickJoin, justCM, joinMode){
 	}
 }
 
-function getMatchModes(joinMode, quickJoin){
+function getMatchModes(matchtype_id, quickJoin){
 	var ret = new Array();
 	if(quickJoin == true){
-		switch(joinMode){
-			case "single5vs5Queue":
+		switch(matchtype_id){
+			case 1:
 				ret.push("9"); // CD
 			break;
 			default: ;

@@ -138,7 +138,8 @@ class GameQueuesController extends BaseController {
 			if (Request::ajax()){
 				$ret = array();
 				$modes = Input::get("modes");
-				$region = input::get("region");
+				$region = Input::get("region");
+				$matchtype_id = Input::get("matchtype_id");
 				$user_id = Auth::user()->id;
 				$inMatch = Match::isUserInMatch($user_id);
 				if(!$inMatch){
@@ -147,21 +148,24 @@ class GameQueuesController extends BaseController {
 					
 					if(is_array($modes) && is_array($region)){
 						$region_id = $region[0];
-						$tmpArray = array();
+						$insertArray = array();
 						foreach ($modes as $k => $mode) {
 							$mode_id = (int) $mode;
-
+							$tmp = array();
+							$tmp['user_id'] = $user_id;
+							$tmp['matchtype_id'] = $matchtype_id;
+							$tmp['matchmode_id'] = $mode_id;
+							$tmp['rank'] = $points;
+							$tmp['created_at'] = new DateTime;
+							$tmp['updated_at'] = new DateTime;
+							$tmp['region_id'] = $region_id;
+							$tmp['force_search'] = 0;
+							$insertArray[] = $tmp;
 						}
 						
-						DB::table('queues')->insert(
-							// array(
-						 //    	array('email' => 'taylor@example.com', 'votes' => 0),
-						 //    	array('email' => 'dayle@example.com', 'votes' => 0),
-							// )
-							);
-
-
-						return $ret;	
+						DB::table('queues')->insert($insertArray);
+						
+						return true;
 					}	
 				}
 				else{
