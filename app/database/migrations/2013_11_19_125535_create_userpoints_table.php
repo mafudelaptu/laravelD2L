@@ -22,7 +22,7 @@ class CreateUserpointsTable extends Migration {
 			$table->string('pointschange');
 			$table->timestamps();
 
-			$table->primary(array("user_id", "matchmode_id", "matchtype_id", "match_id", "pointstype_id", "event_id"));
+			$table->primary(array("user_id", "match_id", "pointstype_id", "event_id"));
 		});
 	}
 

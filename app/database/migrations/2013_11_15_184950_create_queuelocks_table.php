@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateQueueLocksTable extends Migration {
+class CreateQueuelocksTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateQueueLocksTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('queueLocks', function(Blueprint $table) {
+		Schema::create('queuelocks', function(Blueprint $table) {
 			$table->bigInteger('user_id')->primary("user_id");
 			$table->timestamp('locked_until');
 		});
@@ -26,7 +26,7 @@ class CreateQueueLocksTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('queueLocks');
+		Schema::drop('queuelocks');
 	}
 
 }
