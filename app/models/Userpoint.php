@@ -9,7 +9,7 @@ class Userpoint extends Eloquent {
 	public static function getPoints($user_id, $matchtype_id=0){
 		$ret = 0;
 
-		$points = DB::table($this->table)->where("user_id", $user_id);
+		$points = DB::table("userpoints")->where("user_id", $user_id);
 		$basePoints = Auth::user()->basePoints;
 		switch($matchtype_id){
 			case 0:
@@ -22,7 +22,7 @@ class Userpoint extends Eloquent {
 				$points = $points->where("matchtype_id", $matchtype_id);
 		}
 		$points = $points->sum("pointschange");
-		$ret = $basepoints+$points;
+		$ret = $basePoints+$points;
 		return $ret;
 	}
 

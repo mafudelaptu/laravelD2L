@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('BanlistsTableSeeder');
 		$this->call('VotetypesTableSeeder');
 		$this->call('UserpointsTableSeeder');
+		$this->call('RegionsTableSeeder');
 	}
 
 }

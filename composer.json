@@ -11,9 +11,6 @@
 		"koraktor/steam-condenser": "dev-master",
 		"cboden/Ratchet"    : "0.3.*"
 	},
-	"require-dev":{
-			"jason-morton-nz/laravel-grunt": "dev-master"
-		},
 	"autoload": {
 		"classmap": [
 			"app/commands",

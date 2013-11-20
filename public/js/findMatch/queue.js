@@ -100,7 +100,6 @@ function initJoinQueueButtons(){
 					});
 					break;
 				}
-
 			}
 		});
 });
@@ -111,8 +110,8 @@ function joinSingleQueue(quickJoin, justCM, matchtype_id){
 	var region = null;
 
 	modes = getMatchModes(matchtype_id, quickJoin);
-	region = getRegion();
-	if (modes.length > 0 && region.length > 0) {
+	l(modes);
+	if (modes.length > 0) {
 		// beim Verlassen der Seite eine Warnung anzeigen:
 		// aktivieren
 		setConfirmUnload(true);
@@ -122,25 +121,43 @@ function joinSingleQueue(quickJoin, justCM, matchtype_id){
 			dataType : 'json',
 			data : {
 				modes : modes,
-				region : regions,
 				matchtype_id : matchtype_id
 			},
 			success : function(result) {
 				l(result);
-			});
+				$.ajax({
+					url : "find_match/getMMInfo",
+					type : "GET",
+					dataType : 'json',
+					data : {
+						modes : modes
+					},
+					success : function(html_data) {
+						l(html_data);
+					
+					}
+				});		
+			}
+		});
 	}
 }
 
 function getMatchModes(matchtype_id, quickJoin){
-	var ret = new Array();
-	if(quickJoin == true){
-		switch(matchtype_id){
-			case 1:
-				ret.push("9"); // CD
-			break;
-			default: ;
-		}
-		
+	var ret = null;
+	if(quickJoin == true){ 
+				$.ajax({
+					url : "matchmodes/getQuickJoinModes",
+					type : "GET",
+					dataType : 'json',
+					data : {
+						matchtype_id = matchtype_id;
+					},
+					success : function(result) {
+						l(result);
+						ret = result;
+					}
+				});	
+				// ret.push("9"); // CD
 	}
 	else{
 

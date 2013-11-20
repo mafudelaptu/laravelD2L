@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration {
 			$table->integer('basePoints');
 			$table->integer('basePointsUpdatedTimestamp');
 			$table->integer('resetStats');
+			$table->integer("region_id");
 			$table->timestamps();
 		});
 	}

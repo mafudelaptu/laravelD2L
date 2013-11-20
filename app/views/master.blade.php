@@ -26,10 +26,16 @@
 			@include("footer")
 		@show
 	</div>
-	{{ HTML::script('js/jquery-1.10.2.min.js') }}
-	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/bootbox.min.js') }}
-	{{ HTML::script('js/jquery.cookie.js') }}
+	{{ HTML::script('js/10.jquery-1.10.2.min.js') }}
+	{{ HTML::script('js/11.bootstrap.min.js') }}
+	{{ HTML::script('js/14.bootbox.min.js') }}
+	{{ HTML::script('js/20.jquery.cookie.js') }}
+	{{ HTML::script('js/30.jquery.countDown.js') }}
+	{{ HTML::script('js/31.jquery.stopwatch.js') }}
+	{{ HTML::script('js/60.jquery.dataTables.min.js') }}
+	{{ HTML::script('js/61.dataTable.paging.js') }}
+	{{ HTML::script('js/80.highcharts.js') }}
+	{{ HTML::script('js/90.buzz.js') }}
 	{{ HTML::script("js/main.js")}}
 	{{ HTML::script("js/findMatch/queue.js")}}
 </body>

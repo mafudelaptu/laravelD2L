@@ -54,6 +54,7 @@ class SteamController extends \BaseController{
 			$user->avatarFull = $steam_avatarFull;
 			$user->basePoints = GlobalSetting::getBasePoints();
 			$user->basePointsUpdatedTimestamp = $date;
+			$user->region_id = GlobalSetting::getDefaultRegionID();
 			$user->save();
 
 			$user = User::find($steam_id);

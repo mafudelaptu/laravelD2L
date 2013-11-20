@@ -63,9 +63,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return DB::select("SELECT * FROM users ORDER BY RAND() LIMIT 1 ");
 	}
 
+	public static function setRegion($user_id, $region_id){
+		return DB::table("users")->where("id", $user_id)->update(array("region_id"=> $region_id));
+	}
+
 	public function permaban(){
 		return $this->hasOne("Permaban", "user_id");
 	}
+
+	public function region(){
+		return $this->belongsTo("Region");
+	}
+
 	// public function queues(){
 	// 	return $this->hasMany("Queue", "user_id");
 	// }

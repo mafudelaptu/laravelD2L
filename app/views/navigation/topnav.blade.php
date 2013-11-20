@@ -28,7 +28,11 @@
       </ul>
     </li>
   </ul>
+  <ul class="nav navbar-nav navbar-right">
+    @include("navigation.region")
   @include("navigation.usernavi")
+
+  </ul>
  </li>
 </ul>
 </div><!-- /.navbar-collapse -->

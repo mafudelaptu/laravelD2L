@@ -8,6 +8,7 @@ $( document ).ready(function() {
     }
   });
 
+  initRegionMenu();
 });
 
 function l(stuff){
@@ -28,11 +29,25 @@ function setConfirmUnload(on) {
 
 }
 
-function getRegion(){
-  ret = new Array();
-  var region = $.cookie("region");
-  ret.push(region);
-  return ret;
+function setRegion(id){
+  $.ajax({
+      url : "setRegion",
+      type : "POST",
+      dataType : 'json',
+      data : {
+        region : id,
+      },
+      success : function(data){
+        window.location.reload();
+      }
+    });
+}
+
+function initRegionMenu(){
+  $("#regionMenu li>a").click(function(){
+      region_id = $(this).attr("data-id");
+      setRegion(region_id);
+  });
 }
 
 // conn = new ab.Session(

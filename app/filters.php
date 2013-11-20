@@ -88,6 +88,14 @@ View::composer("featured.stats", function($view){
 	->with("liveMatches", Match::getAllLiveMatches()->count());
 });
 
+View::composer("navigation.region", function($view){
+	$regions = Region::getAllActiveRegions()->get();
+	$selected_region_shortcut = Auth::user()->region->shortcut;
+	$view->with("regions", $regions)
+	->with("selected_region", $selected_region_shortcut);
+});
+
+
 View::composer("navigation.usernavi", function($view){
 	if(Auth::check()){
 		$view->with("userAvatar", Auth::user()->avatar)

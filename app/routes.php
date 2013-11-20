@@ -44,6 +44,19 @@ Route::group(array('before' => 'auth'), function()
 		return View::make('help.rules')
 		->with("title", $title);
 	});
+
+	// ajax
+	// findMatch
+	Route::post("find_match/checkJoinQueue", array('before' => 'csrf', 'uses' => 'GameQueuesController@checkJoinQueue'));
+	Route::post("find_match/joinQueue", array('before' => 'csrf', 'uses' => 'GameQueuesController@joinQueue'));
+	Route::get("find_match/getMMInfo", array('before' => 'csrf', 'uses' => 'FetchViewController@getMMInfo'));
+	
+	// general
+	Route::post("setRegion", array('before' => 'csrf', 'uses' => 'RegionsController@setRegion'));
+
+	//matchmode
+	Route::post("matchmodes/getQuickJoinModes", array('before' => 'csrf', 'uses' => 'MatchmodesController@getQuickJoinModes'));
+
 });
 
 // Login/logout stuff
@@ -62,9 +75,7 @@ if(Config::get('app.debug') == true){
 }
 
 // ajax
-Route::post("find_match/checkJoinQueue", array('before' => 'csrf', 'uses' => 'GameQueuesController@checkJoinQueue'));
-Route::post("find_match/joinQueue", array('before' => 'csrf', 'uses' => 'GameQueuesController@joinQueue'));
-
+	
 
 // test geschichten
 
@@ -101,3 +112,5 @@ Route::resource('banlists', 'BanlistsController');
 Route::resource('votetypes', 'VotetypesController');
 
 Route::resource('userpoints', 'UserpointsController');
+
+Route::resource('regions', 'RegionsController');

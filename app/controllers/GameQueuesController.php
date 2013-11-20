@@ -134,11 +134,12 @@ class GameQueuesController extends BaseController {
 	}
 
 	public static function joinQueue(){
+		$ret = array();
 		if(Auth::check()){
 			if (Request::ajax()){
 				$ret = array();
 				$modes = Input::get("modes");
-				$region = Input::get("region");
+				$region_id = Auth::user()->region->id;
 				$matchtype_id = Input::get("matchtype_id");
 				$user_id = Auth::user()->id;
 				$inMatch = Match::isUserInMatch($user_id);
@@ -146,8 +147,7 @@ class GameQueuesController extends BaseController {
 					// get Points of user
 					$points = Userpoint::getPoints($user_id);
 					
-					if(is_array($modes) && is_array($region)){
-						$region_id = $region[0];
+					if(is_array($modes)){
 						$insertArray = array();
 						foreach ($modes as $k => $mode) {
 							$mode_id = (int) $mode;
@@ -164,19 +164,19 @@ class GameQueuesController extends BaseController {
 						}
 						
 						DB::table('queues')->insert($insertArray);
-						
-						return true;
+						$ret['status'] = true;
 					}	
 				}
 				else{
-					return false;
+					$ret['status'] = false;
 				}
 				
 			}
 		}
 		else{
-			return false;
+			$ret['status'] = false;
 		}
+		return $ret;
 	}
 
 }

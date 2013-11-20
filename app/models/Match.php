@@ -51,15 +51,15 @@ class Match extends Eloquent {
  //                                                         AND md.Submitted = 0 AND md.SubmissionFor = 0 AND SubmissionTimestamp = 0
  //                                                                AND m.TeamWonID = -1 AND m.Canceled = 0 AND m.ManuallyCheck = 0 AND m.TimestampClosed = 0
  //                                                                ";
-			$user = DB::table("matches")->join('matchdetails', 'matches.match_id', '=', 'matchdetails.match_id')
-						->where("user_id", $user_id)
+			$user = DB::table("matches")->join('matchdetails', 'matches.id', '=', 'matchdetails.match_id')
+						->where("matchdetails.user_id", $user_id)
 						->where("matchdetails.submitted", "0")
 						->where("matchdetails.submissionFor", "0")
 						->where("matchdetails.sub_date", "0")
-						->where("match.team_won_id", "-1")
-						->where("match.canceled", "0")
-						->where("match.check", "0")
-						->where("match.closed", "0");
+						->where("matches.team_won_id", "-1")
+						->where("matches.canceled", "0")
+						->where("matches.check", "0")
+						->where("matches.closed", "0")->get();
 			if(!empty($user)){
 				return true;
 			}

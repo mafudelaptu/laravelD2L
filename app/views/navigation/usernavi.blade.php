@@ -1,5 +1,5 @@
 @if(Auth::check())
-<ul class="nav navbar-nav navbar-right">
+
   <li id="fat-menu" class="dropdown">
    <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">
 
@@ -15,4 +15,5 @@
    <li><a tabindex="-1" href="http://steamcommunity.com/profiles/{{Auth::user()->id}}" target="_blank">Steam-Profile</a></li>
    <li><a href="logout">Logout</a></li>
  </ul>
+  </li>
  @endif
