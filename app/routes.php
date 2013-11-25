@@ -55,7 +55,7 @@ Route::group(array('before' => 'auth'), function()
 	Route::post("setRegion", array('before' => 'csrf', 'uses' => 'RegionsController@setRegion'));
 
 	//matchmode
-	Route::post("matchmodes/getQuickJoinModes", array('before' => 'csrf', 'uses' => 'MatchmodesController@getQuickJoinModes'));
+	Route::get("matchmodes/getQuickJoinModes", array('before' => 'csrf', 'uses' => 'MatchmodesController@getQuickJoinModes'));
 
 });
 

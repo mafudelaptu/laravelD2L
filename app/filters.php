@@ -89,10 +89,13 @@ View::composer("featured.stats", function($view){
 });
 
 View::composer("navigation.region", function($view){
-	$regions = Region::getAllActiveRegions()->get();
-	$selected_region_shortcut = Auth::user()->region->shortcut;
-	$view->with("regions", $regions)
-	->with("selected_region", $selected_region_shortcut);
+	if(Auth::check()){
+		$regions = Region::getAllActiveRegions()->get();
+		$selected_region_shortcut = Auth::user()->region->shortcut;
+		$view->with("regions", $regions)
+			->with("selected_region", $selected_region_shortcut);
+
+	}
 });
 
 

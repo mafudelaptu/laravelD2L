@@ -109,52 +109,50 @@ function joinSingleQueue(quickJoin, justCM, matchtype_id){
 	var modes = null;
 	var region = null;
 
-	modes = getMatchModes(matchtype_id, quickJoin);
-	l(modes);
-	if (modes.length > 0) {
-		// beim Verlassen der Seite eine Warnung anzeigen:
-		// aktivieren
-		setConfirmUnload(true);
-		$.ajax({
-			url : "find_match/joinQueue",
-			type : "POST",
-			dataType : 'json',
-			data : {
-				modes : modes,
-				matchtype_id : matchtype_id
-			},
-			success : function(result) {
-				l(result);
-				$.ajax({
-					url : "find_match/getMMInfo",
-					type : "GET",
-					dataType : 'json',
-					data : {
-						modes : modes
-					},
-					success : function(html_data) {
-						l(html_data);
-					
-					}
-				});		
-			}
-		});
-	}
+	retModes = getMatchModes(matchtype_id, quickJoin);
+	
+	retModes.success(function(modes){
+		l(modes);
+		if (modes.length > 0) {
+			// beim Verlassen der Seite eine Warnung anzeigen:
+			// aktivieren
+			setConfirmUnload(true);
+			$.ajax({
+				url : "find_match/joinQueue",
+				type : "POST",
+				dataType : 'json',
+				data : {
+					modes : modes,
+					matchtype_id : matchtype_id
+				},
+				success : function(result) {
+					l(result);
+					$.ajax({
+						url : "find_match/getMMInfo",
+						type : "GET",
+						dataType : 'json',
+						data : {
+							modes : modes
+						},
+						success : function(html_data) {
+							l(html_data);
+						}
+					});		
+				}
+			});
+		}	
+	});
 }
 
 function getMatchModes(matchtype_id, quickJoin){
 	var ret = null;
 	if(quickJoin == true){ 
-				$.ajax({
+				ret = $.ajax({
 					url : "matchmodes/getQuickJoinModes",
 					type : "GET",
 					dataType : 'json',
 					data : {
-						matchtype_id = matchtype_id;
-					},
-					success : function(result) {
-						l(result);
-						ret = result;
+						matchtype_id : matchtype_id
 					}
 				});	
 				// ret.push("9"); // CD

@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-sm-6">
 		@foreach($modes as $mode)
-			{{$mode}}
+			{{ $mode->name }} <div class="label">{{$mode->shortcut}}</div>
 		@endforeach
 	</div>
 	<div class="col-sm-6"></div>

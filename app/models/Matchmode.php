@@ -9,7 +9,7 @@ class Matchmode extends Eloquent {
 		return $this->hasMany("Gamequeue", "matchmode_id");
 	}
 
-	publuc static function getQuickJoinModes($matchtype_id){
+	public static function getQuickJoinModes($matchtype_id){
 		switch ($matchtype_id) {
 			case 1: // single5vs5
 			default:
