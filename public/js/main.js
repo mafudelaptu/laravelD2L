@@ -9,6 +9,7 @@ $( document ).ready(function() {
   });
 
   initRegionMenu();
+
 });
 
 function l(stuff){

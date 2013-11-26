@@ -136,6 +136,10 @@ function joinSingleQueue(quickJoin, justCM, matchtype_id){
 						},
 						success : function(html_data) {
 							l(html_data);
+							$("#generalModal .modal-body").html(html_data);
+
+							$("#generalModal").modal("show");
+
 						}
 					});		
 				}
