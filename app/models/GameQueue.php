@@ -25,6 +25,20 @@ class GameQueue extends Eloquent {
 		return true;
 	}
 
+	public static function updateQueueTime($user_id){
+		$retIns = DB::table('queues')
+            ->where('user_id', $user_id)
+            ->update(array('updated_at' => new DateTime));
+		return $retIns;
+	}
+
+	public static function updateForceSearch($user_id, $force_search){
+		$retUpd = DB::table('queues')
+            ->where('user_id', $user_id)
+            ->update(array('force_search' => $force_search));
+		return $retUpd;
+	}
+
 	// public function user(){
 	// 	return $this->belongsTo("User");
 	// }

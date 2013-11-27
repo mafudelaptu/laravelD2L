@@ -50,6 +50,7 @@ Route::group(array('before' => 'auth'), function()
 	Route::post("find_match/checkJoinQueue", array('before' => 'csrf', 'uses' => 'GameQueuesController@checkJoinQueue'));
 	Route::post("find_match/joinQueue", array('before' => 'csrf', 'uses' => 'GameQueuesController@joinQueue'));
 	Route::get("find_match/getMMInfo", array('before' => 'csrf', 'uses' => 'FetchViewController@getMMInfo'));
+	Route::get("findMatch/doMatchmaking", array("before" => "csrf", "uses" => "GameQueuesController@doMatchmaking"));
 	
 	// general
 	Route::post("setRegion", array('before' => 'csrf', 'uses' => 'RegionsController@setRegion'));

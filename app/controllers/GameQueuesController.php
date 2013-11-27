@@ -179,4 +179,148 @@ class GameQueuesController extends BaseController {
 		return $ret;
 	}
 
+	public function doMatchmaking(){
+		        $ret = array ();
+                $user_id = Auth::user()->id;
+                $matchtype_id = Input::get("matchtype_id", 1);
+                $forceSearch = Input::get("forceSearch",false);
+                $modes = Input::get("modes");
+
+                // // Range Array erstellen - workaround
+                // if (is_array ( $modes ) && count ( $modes ) > 0) {
+                //         $rangeArray = array ();
+                //         foreach ( $modes as $k => $modus ) {
+                //                 // Count von gefundenen Spielern auf 1 setzen
+                //                 $_SESSION ['queue'] [$modus] ['count'] = "1";
+                //                 $_SESSION ['queue'] [$modus] ['position'] = "1";
+
+                //                 // Anfangsrange setzen = aktueller Elo
+                //                 if ($_SESSION ['points'] >= Matchmaking::maxEloRange) {
+                //                         $rangeArray [$modus] ['obere_grenze'] = $_SESSION ['points'] [$modus] + Matchmaking::maxEloRange;
+                //                         $rangeArray [$modus] ['untere_grenze'] = $_SESSION ['points'] [$modus] - Matchmaking::maxEloRange;
+                //                 } else {
+                //                         $rangeArray [$modus] ['obere_grenze'] = $_SESSION ['points'] [$modus] + Matchmaking::maxEloRange;
+                //                         $rangeArray [$modus] ['untere_grenze'] = 0;
+                //                 }
+                //         }
+                // }
+                GameQueue::updateQueueTime($user_id);
+
+                // update ForceSearch
+                GameQueue::updateForceSearch($user_id, $forceSearch);
+
+                // checken ob bereits in MatchTeams
+                $MatchTeams = new MatchTeams ();
+                $retMT = $MatchTeams->checkIfPlayerAlreadyInMatchTeams();
+                $ret['inMatchTeams'] = $retMT['status'];
+
+                // UserLeague kontrollieren und in ne schublade packen
+                // $UserLeague = new UserLeague();
+                // $retU = $UserLeague->getLeagueOfUser($steamID);
+                // $userLeague = $retU['data']['LeagueTypeID'];
+                // if($userLeague >= 3){
+                // $silverOrHigher = true;
+                // }
+                // else{
+                // $silverOrHigher = false;
+                // }
+
+                $UserSkillBracket = new UserSkillBracket ();
+                $retUSB = $UserSkillBracket->getSkillBracketOfUser ($steamID, $matchType);
+                $userSkillBRacketTypeID = $retUSB ['data'] ['SkillBracketTypeID'];
+
+                if ($forceSearch == "true" && $userSkillBRacketTypeID != "1") {
+                        $skillBracket = "Force";
+                } else {
+                        switch ($userSkillBRacketTypeID) {
+                                case 1 :
+                                case 2 :
+                                        $skillBracket = $retUSB ['data'] ['Name'];
+                                        break;
+                                default :
+                                        $skillBracket = "Amateur or higher";
+                                        break;
+                        }
+                }
+
+                $ret ['skillBracket'] = $skillBracket;
+
+                // Queue Stats
+                $retSBQC = $this->getSkillBracketQueueCounts($matchType);
+                $ret['queueCounts'] = $retSBQC['data'];
+
+                $retSingle = $this->getPlayerCountsOfQueueSkillBracket ( $steamID, $spielmodi, $rangeArray, $regions, $userSkillBRacketTypeID, $forceSearch, $matchType );
+                $retTest .= $retSingle ['debug'];
+                $matchDetails .= $retSingle ['matchDetails'];
+
+
+        
+                
+                // checken ob schon durch vronjob gefunden wurde
+                $sql = "SELECT DISTINCT mt.MatchID
+                                From `MatchTeams` mt JOIN `Match` m ON m.MatchID = mt.MatchID
+                                JOIN `MatchDetails` md ON m.MatchID = md.MatchID AND mt.SteamID = md.SteamID
+                                WHERE mt.SteamID = " . secureNumber ( $steamID ) . "
+                                                AND m.TeamWonID = -1 AND TimestampClosed = 0 AND Canceled = 0 AND ManuallyCheck = 0 AND mt.Ready = 0
+                                                AND md.Submitted = 0 AND md.SubmissionFor = 0 AND md.SubmissionTimestamp = 0 AND EloChange = ''
+                                                ORDER BY mt.MatchID DESC
+                                                LIMIT 1";
+
+                $matchID = $DB->select ( $sql );
+
+                $matchID = ( int ) $matchID ['MatchID'];
+                $matchID2 = ( int ) $retMatchID ['MatchID'];
+                $retTest .= "##MATCHID##:" . $matchID . "|" . $matchID2;
+                // p($count);
+                // wenn match bereits gefunden durch andere User gefudnen
+
+                if ($matchID > 0 || $matchID2 > 0) {
+
+                        $log = new KLogger ( "log.txt", KLogger::INFO );
+                        $log->LogInfo ( "Durch anderen Spieler gefunden! MatchID=" . ( int ) $matchID . "|" . ( int ) $matchID2 . "! ID der dieses Verfahren bekommt: " . $steamID ); // Prints to the log file
+
+                        $ret ['queue'] = $_SESSION ['queue'];
+                        $ret ['range'] = $_SESSION ['range'];
+                        $ret ['erweiterteSuche'] = $_SESSION ['erweiterteSuche'];
+                        unset ( $_SESSION ['queue'] );
+                        unset ( $_SESSION ['erweiterteSuche'] );
+                        unset ( $_SESSION ['range'] );
+                        $ret ['test'] = $retTest;
+
+                        if ($matchID >= $matchID2) {
+                                $ret ['matchID'] = $matchID;
+                                $log->LogInfo ( "MatchID=" . ( int ) $matchID . " weitergereicht - " . $steamID ); // Prints to the log file
+                        } else {
+                                $log->LogInfo ( "MatchID2=" . ( int ) $matchID2 . " weitergereicht - " . $steamID ); // Prints to the log file
+                                $ret ['matchID'] = $matchID2;
+                        }
+                        $ret ['status'] = "finished";
+                } else {
+                        // checken ob User noch in Queue
+                        $inQueue = $Queue->inQueue();
+                        if(!$inQueue){
+                                $ret['status'] = "notInQueue";
+                        }
+                        else{
+                                $ret ['status'] = "searching";
+                        }
+                        
+                }
+                // $retTest .= $retWideRange;
+                $ret ['retWideRange'] = $retWideRange;
+                $ret ['test'] = $retTest . "\n\n\n####################\n";
+                $ret ['queue'] = $_SESSION ['queue'];
+                $ret ['range'] = $rangeArray;
+                $ret ['erweiterteSuche'] = $_SESSION ['erweiterteSuche'];
+
+                $ret ['matchDetails'] = $matchDetails . $retWideRange;
+
+                // seconds till next matchmaking
+                $cur_secs = date ( "s" );
+                $left_sec = 60 - $cur_secs;
+                $ret ['nextMatchmaking'] = ( int ) $left_sec;
+
+                return $ret;
+	}
+
 }

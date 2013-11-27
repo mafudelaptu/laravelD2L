@@ -107,7 +107,6 @@ function initJoinQueueButtons(){
 
 function joinSingleQueue(quickJoin, justCM, matchtype_id){
 	var modes = null;
-	var region = null;
 
 	retModes = getMatchModes(matchtype_id, quickJoin);
 	
@@ -136,6 +135,10 @@ function joinSingleQueue(quickJoin, justCM, matchtype_id){
 						},
 						success : function(html_data) {
 							l(html_data);
+
+							// Uhr starten
+                            $('#matchMakingClock').stopwatch('start');
+
 							$("#generalModal .modal-content").html(html_data.html);
 							$("#generalModal .modal-dialog").css({
 								width : '81%',
@@ -146,14 +149,146 @@ function joinSingleQueue(quickJoin, justCM, matchtype_id){
 							$("#generalModal").modal({
 								backdrop : "static",
 								keyboard : false
-							})
+							});
 
+							startMatchmaking(modes, regions, matchtype_id, quickJoin);
 						}
-					});		
+					});
 				}
 			});
 		}	
 	});
+}
+
+function startMatchmaking(modes, regions, matchtype_id, quickJoin){
+        // auslesen ob forceSearch checkbox activiert wurde
+        forceChecked = $("#forceSearching").attr("checked");
+
+        if (forceChecked == "checked") {
+                force = true;
+        }
+        else {
+                force = false;
+        }
+
+        
+                $.ajax({
+                        url : 'findMatch/doMatchmaking',
+                        type : "GET",
+                        dataType : 'json',
+                        data : {
+                                modi : modes,
+                                matchtype_id: matchtype_id,
+                                forceSearch : force
+                        },
+                        success : function(result) {
+                                l(result);
+
+                                updatePlayersFound(result.queue);
+                                updateRange(result.range);
+                                updateUserPool(result.skillBracket);
+                                updateNextMatchmakingTime(result.nextMatchmaking);
+                                updateQueueStats(result.queueCounts);
+
+                                if (result.status == "searching") {
+                                        // check still in DuoQueue?
+                                        if (result.inQueue == false && groupID > 0) {
+                                                if (result.inMatchTeams == false) {
+                                                        // beim Verlassen der Seite eine
+                                                        // Warnung anzeigen: aktivieren
+                                                        setConfirmUnload(false);
+
+                                                        clearTimeout(doMatchmakingTimeout);
+                                                        doMatchmakingTimeout = null;
+
+                                                        // JoinQueue Modal schlie�en
+                                                        $("#myModalMatchMaking").modal("hide");
+
+                                                        text = "<div align='center'><h4>Your Partner of Group:#" + groupID + " left the Queue!</h4>" + "<p>You just got also kicked from Queue. </p></div>";
+
+                                                        bootbox.alert(text, function() {
+                                                                window.location = "find_match.php";
+                                                        });
+                                                }
+                                                else {
+                                                        doMatchmakingTimeout = setTimeout(function() {
+                                                                doSingleQueueMatchMaking3(spielmodi, regions, quickJoin, groupID, joinMode);
+                                                        }, timePulling);
+                                                }
+                                        }
+                                        else {
+                                                doMatchmakingTimeout = setTimeout(function() {
+                                                        doSingleQueueMatchMaking3(spielmodi, regions, quickJoin, groupID, joinMode);
+                                                }, timePulling);
+                                        }
+                                }
+                                else if (result.status == "finished") {
+
+                                        clearTimeout(doMatchmakingTimeout);
+                                        doMatchmakingTimeout = null;
+
+                                        l("################### SAVE!!!!!");
+                                        // MatchDetails einfuegen
+                                        // saveMatchDetails(result.matchID);
+                                        l("################### SAVE END!!!!!");
+
+                                        // match found Sound abspielen
+                                        playMatchFoundSound();
+                                        // $.playSound("files/sound/matchReadySound.mp3");
+
+                                        // title blinken lassen wenn match geufnden
+                                        $.titleAlert("Match found!", {
+                                                stopOnFocus : true,
+                                                duration : 0,
+                                                interval : 500
+                                        });
+
+                                        setTimeout(function() {
+                                                // aktuelles Modal schlie�en und
+                                                // ReadyMatchModal
+                                                // �ffnen
+                                                $("#myModalMatchMaking").modal("hide");
+                                                matchWasFoundModal2(result.matchID, quickJoin, groupID, joinMode);
+                                        }, 1000);
+                                }
+                                else if (result.status == "notInQueue") {
+                                        if(result.inQueue == false && groupID > 0){
+                                                // beim Verlassen der Seite eine
+                                                // Warnung anzeigen: aktivieren
+                                                setConfirmUnload(false);
+
+                                                clearTimeout(doMatchmakingTimeout);
+                                                doMatchmakingTimeout = null;
+
+                                                // JoinQueue Modal schlie�en
+                                                $("#myModalMatchMaking").modal("hide");
+
+                                                text = "<div align='center'><h4>Your Partner of Group:#" + groupID + " left the Queue!</h4>" + "<p>You just got also kicked from Queue. </p></div>";
+
+                                                bootbox.alert(text, function() {
+                                                        window.location = "find_match.php";
+                                                });
+                                        }
+                                        else{
+                                                setConfirmUnload(false);
+                                                clearTimeout(doMatchmakingTimeout);
+                                                doMatchmakingTimeout = null;
+                                                
+                                                // JoinQueue Modal schlie�en
+                                                $("#myModalMatchMaking").modal("hide");
+                                                text = "<div align='center'><h4>You are not in Queue anymore</h4>" +
+                                                                "<p>You had an error in queueing! Please rejoin the Queue.</p>" +
+                                                                "</div>";
+
+                                                bootbox.alert(text, function() {
+                                                        window.location = "find_match.php";
+                                                });
+                                        }
+                                        
+                                }
+                        }
+                });
+        }
 }
 
 function getMatchModes(matchtype_id, quickJoin){
