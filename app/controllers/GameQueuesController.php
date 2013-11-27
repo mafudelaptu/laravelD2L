@@ -2,80 +2,6 @@
 
 class GameQueuesController extends BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		return View::make('queues.index');
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		return View::make('queues.create');
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		return View::make('queues.show');
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		return View::make('queues.edit');
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
 	public function checkJoinQueue(){
 		if(Auth::check()){
 			if (Request::ajax()){
@@ -210,32 +136,20 @@ class GameQueuesController extends BaseController {
                 GameQueue::updateForceSearch($user_id, $forceSearch);
 
                 // checken ob bereits in MatchTeams
-                $MatchTeams = new MatchTeams ();
-                $retMT = $MatchTeams->checkIfPlayerAlreadyInMatchTeams();
-                $ret['inMatchTeams'] = $retMT['status'];
 
-                // UserLeague kontrollieren und in ne schublade packen
-                // $UserLeague = new UserLeague();
-                // $retU = $UserLeague->getLeagueOfUser($steamID);
-                // $userLeague = $retU['data']['LeagueTypeID'];
-                // if($userLeague >= 3){
-                // $silverOrHigher = true;
-                // }
-                // else{
-                // $silverOrHigher = false;
-                // }
+                $alreadyMatched = Matched_user::alreadyMatched($user_id);
+				$ret['alreadyMatched'] = $alreadyMatched;
 
-                $UserSkillBracket = new UserSkillBracket ();
-                $retUSB = $UserSkillBracket->getSkillBracketOfUser ($steamID, $matchType);
-                $userSkillBRacketTypeID = $retUSB ['data'] ['SkillBracketTypeID'];
-
-                if ($forceSearch == "true" && $userSkillBRacketTypeID != "1") {
+                $skillbracketData = Userskillbracket::getSkillbracket($user_id, $matchtype_id)->get();
+                $skillbracket_id = $skillbracketData->skillbracket_id;
+                $skillbracket_name = $skillbracketData->name;
+                if ($forceSearch == "true" && $skillbracket_id != "1") {
                         $skillBracket = "Force";
                 } else {
                         switch ($userSkillBRacketTypeID) {
                                 case 1 :
                                 case 2 :
-                                        $skillBracket = $retUSB ['data'] ['Name'];
+                                        $skillBracket = $skillbracket_name;
                                         break;
                                 default :
                                         $skillBracket = "Amateur or higher";
@@ -323,4 +237,77 @@ class GameQueuesController extends BaseController {
                 return $ret;
 	}
 
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		return View::make('queues.index');
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		return View::make('queues.create');
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		//
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		return View::make('queues.show');
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		return View::make('queues.edit');
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
+	{
+		//
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		//
+	}
 }

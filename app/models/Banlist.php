@@ -34,4 +34,15 @@ class Banlist extends Eloquent {
 		return $ret;
 	}
 
+	public static function getAllActiveBans($user_id){
+		if($user_id > 0){
+			$data = DB::table("banlists")->where("user_id", $user_id)
+								->where("display", 1);
+			
+			return $data;
+		}
+		else{
+			return  "user_id == 0";
+		}
+	}
 }

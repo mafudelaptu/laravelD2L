@@ -117,3 +117,9 @@ Route::resource('userpoints', 'UserpointsController');
 Route::resource('regions', 'RegionsController');
 
 Route::resource('matched_users', 'Matched_usersController');
+
+Route::resource('userskillbrackets', 'UserskillbracketsController');
+
+Route::resource('usercredits', 'UsercreditsController');
+
+Route::resource('skillbrackettypes', 'SkillbrackettypesController');

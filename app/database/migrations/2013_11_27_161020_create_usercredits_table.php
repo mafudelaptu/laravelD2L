@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateMatchedUsersTable extends Migration {
+class CreateUsercreditsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,15 +12,14 @@ class CreateMatchedUsersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('matched_users', function(Blueprint $table) {
-			$table->integer('match_id');
+		Schema::create('usercredits', function(Blueprint $table) {
 			$table->bigInteger('user_id');
-			$table->integer('team_id');
-			$table->integer('points');
-			$table->integer('ready');
+			$table->bigInteger('voted_by_user_id');
+			$table->integer('match_id');
+			$table->integer('vote');
 			$table->timestamps();
 
-			$table->primary(array("match_id", "user_id"));
+			$table->primary("user_id", "voted_by_user_id", "match_id");
 		});
 	}
 
@@ -32,7 +31,7 @@ class CreateMatchedUsersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('matched_users');
+		Schema::drop('usercredits');
 	}
 
 }

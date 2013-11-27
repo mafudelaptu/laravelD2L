@@ -27,6 +27,9 @@ class DatabaseSeeder extends Seeder {
 		$this->call('UserpointsTableSeeder');
 		$this->call('RegionsTableSeeder');
 		$this->call('Matched_usersTableSeeder');
+		$this->call('UserskillbracketsTableSeeder');
+		$this->call('UsercreditsTableSeeder');
+		$this->call('SkillbrackettypesTableSeeder');
 	}
 
 }

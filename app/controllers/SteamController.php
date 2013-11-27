@@ -24,7 +24,7 @@ class SteamController extends \BaseController{
 		// Get Community ID
 		$steamCommunityId = str_replace( "http://steamcommunity.com/openid/id/", "", $hybridAuthUserProfile->identifier );
 		
-		echo "Hello {$hybridAuthUserProfile->displayName}, your Steam Community ID is $steamCommunityId";
+		//echo "Hello {$hybridAuthUserProfile->displayName}, your Steam Community ID is $steamCommunityId";
 
 		// Create SteamId Object
 		$steamIdObject = new SteamId( "$steamCommunityId" );
@@ -35,15 +35,16 @@ class SteamController extends \BaseController{
 		$steam_name = $steamIdObject->getNickname();
 		$steam_id = $steamIdObject->getSteamId64();
 
-		echo $steam_avatar." ".$steam_name." ".$steam_id;
+		//echo $steam_avatar." ".$steam_name." ".$steam_id;
 		//var_dump($steamIdObject);
 		$userData = User::find($steam_id);
-		var_dump($userData);
+		//var_dump($userData);
 
 		if(!empty($userData)){
 			$user = User::find($steam_id);
-			var_dump($user);
+			//var_dump($user);
 			Auth::login($user);
+
 		}
 		else{
 			$date = new \DateTime;
@@ -62,6 +63,9 @@ class SteamController extends \BaseController{
 			Auth::login($user);
 		}
 
+		// set first Skillbrackets
+		Userskillbracket::setSkillbrackets($steam_id);
+		
 		return Redirect::to("/");
 	}
 
