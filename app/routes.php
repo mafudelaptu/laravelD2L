@@ -115,3 +115,5 @@ Route::resource('votetypes', 'VotetypesController');
 Route::resource('userpoints', 'UserpointsController');
 
 Route::resource('regions', 'RegionsController');
+
+Route::resource('matched_users', 'Matched_usersController');
