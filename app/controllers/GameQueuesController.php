@@ -160,16 +160,17 @@ class GameQueuesController extends BaseController {
                 $ret ['skillBracket'] = $skillBracket;
 
                 // Queue Stats
-                $retSBQC = $this->getSkillBracketQueueCounts($matchType);
+
+                $retSBQC = Userskillbracket::getSkillbracketQueueCounts($matchtype_id);
                 $ret['queueCounts'] = $retSBQC['data'];
 
-                $retSingle = $this->getPlayerCountsOfQueueSkillBracket ( $steamID, $spielmodi, $rangeArray, $regions, $userSkillBRacketTypeID, $forceSearch, $matchType );
-                $retTest .= $retSingle ['debug'];
+                $retSingle = Userskillbracket::getQueueCounts ( $user_id, $modes, $region, $skillbracket_id, $forceSearch, $matchtype_id );
+
                 $matchDetails .= $retSingle ['matchDetails'];
 
 
         
-                
+               	
                 // checken ob schon durch vronjob gefunden wurde
                 $sql = "SELECT DISTINCT mt.MatchID
                                 From `MatchTeams` mt JOIN `Match` m ON m.MatchID = mt.MatchID

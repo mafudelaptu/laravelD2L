@@ -173,7 +173,7 @@ function startMatchmaking(modes, regions, matchtype_id, quickJoin){
 
         
                 $.ajax({
-                        url : 'findMatch/doMatchmaking',
+                        url : 'find_match/doMatchmaking',
                         type : "GET",
                         dataType : 'json',
                         data : {
