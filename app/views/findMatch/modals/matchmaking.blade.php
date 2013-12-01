@@ -21,7 +21,7 @@
                                 <p>
                                         <label class="checkbox" class="t"
                                                 title="enlarge your elo-search-range"> <input
-                                                type="checkbox" name="forceSearching" id="forceSearching" checked="checked">
+                                                type="checkbox" name="forceSearching" id="forceSearching">
                                                 force Searching <a href="help.php#forceSearching" target="_blanc"><i
                                                         class="icon-question-sign"></i></a>
                                         </label>

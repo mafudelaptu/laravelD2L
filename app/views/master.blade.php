@@ -11,7 +11,7 @@
 	{{ HTML::style("css/font-awesome.min.css")}}
 	{{ HTML::style("css/main.css")}}
 	{{ HTML::style("css/findMatch/queueStats.css")}}
-
+	{{ HTML::style("css/findMatch/modal.css")}}
 </head>
 <body>
 	<div class="main-container">
@@ -39,5 +39,6 @@
 	{{ HTML::script('js/90.buzz.js') }}
 	{{ HTML::script("js/main.js")}}
 	{{ HTML::script("js/findMatch/queue.js")}}
+	{{ HTML::script("js/findMatch/queueModal.js")}}
 </body>
 </html>

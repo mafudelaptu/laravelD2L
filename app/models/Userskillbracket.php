@@ -20,7 +20,7 @@ class Userskillbracket extends Eloquent {
 		return $this->hasOne("User", "user_id");
 	}
 
-	public static function getSkillbracket($user_id, $matchtype_id=0){
+	public static function getSkillbracket($user_id, $matchtype_id=0, $cache=false){
 		switch ($matchtype_id) {
 			case 0:
 				$data = DB::table("userskillbrackets")
@@ -33,6 +33,9 @@ class Userskillbracket extends Eloquent {
 								->where("user_id",$user_id)
 								->where("matchtype_id", $matchtype_id);
 			break;
+		}
+		if($cache){
+			$data = $data->remember(30);
 		}
 		return $data;
 	}
