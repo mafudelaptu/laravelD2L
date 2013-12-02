@@ -20,4 +20,8 @@ class Matchmode extends Eloquent {
 		return $mm;
 	}
 
+	public static function getAllActiveModes(){
+		$modes = Matchmode::where("active", 1)->remember(60);
+		return $modes;
+	}
 }

@@ -171,6 +171,20 @@ public static function inQueue($user_id){
     }
 }
 
+public static function insertInQueue($user_id, $matchtype_id, $matchmode_id, $region_id, $points, $force=0){
+        $tmp = array();
+        $tmp['user_id'] = $user_id;
+        $tmp['matchtype_id'] = $matchtype_id;
+        $tmp['matchmode_id'] = $matchmode_id;
+        $tmp['rank'] = $points;
+        $tmp['created_at'] = new DateTime;
+        $tmp['updated_at'] = new DateTime;
+        $tmp['region_id'] = $region_id;
+        $tmp['force_search'] = $force;
+
+        DB::table('queues')->insert($tmp);
+    }
+
 	// public function user(){
 	// 	return $this->belongsTo("User");
 	// }

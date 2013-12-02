@@ -177,30 +177,45 @@ class GameQueuesController extends BaseController {
 	}
 
 	public function insertRandomUserIntoQueue(){
+		$ret = array();
+
 		$matchtype_id = Input::get("matchtype_id", 1);
 
-		$user = User::getRandomUser()->get();
+		$user = User::getRandomUser();
+		$user = $user[0];
+		$user_id = $user->id;
 
 		// set skillbracket
-		$retSB = setSkillbrackets($user->id);
+		$retSB = Userskillbracket::setSkillbrackets($user_id);
 
 		// get points
-		$points = Userpoint::getPoints($user->id);
+		$points = Userpoint::getPoints($user_id);
 
+		$matchmodes = MatchMode::getAllActiveModes()->get();
+		// general Settings
+		$region_id = 1;
+		$force = 0;
+		if(!GameQueue::inQueue($user_id)){
+			if(!empty($matchmodes)){
+				foreach($matchmodes as $mode){
+
+					$matchmode_id = $mode->id;
+					echo $matchmode_id."|";
+					GameQueue::insertInQueue($user_id, $matchtype_id, $matchmode_id, $region_id, $points, $force);
+				}
+				$ret['status'] = "true";
+			}
+			else{
+				$ret['status'] = "matchmodes null";
+			}
+		}
+		else{
+			$ret['status'] = "already in Queue";
+		}
+		return $ret;
 	}
 
-	public static function insertInQueue($user_id, $matchtype_id, $matchmode_id, $region_id, $points, $force=0){
-		$tmp = array();
-		$tmp['user_id'] = $user_id;
-		$tmp['matchtype_id'] = $matchtype_id;
-		$tmp['matchmode_id'] = $mode_id;
-		$tmp['rank'] = $points;
-		$tmp['created_at'] = new DateTime;
-		$tmp['updated_at'] = new DateTime;
-		$tmp['region_id'] = $region_id;
-		$tmp['force_search'] = $force;
-
-	}
+	
 
 	/**
 	 * Display a listing of the resource.
