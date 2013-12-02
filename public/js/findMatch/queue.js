@@ -1,9 +1,11 @@
 var timePulling = 3000;
 
 $( document ).ready(function() {
+	if (document.URL.indexOf("/find_match") >= 0) {
 		// init Buttons
 		initJoinQueueButtons();
-	});
+	}
+});
 
 	function initJoinQueueButtons(){
 		var justCM = $("#jCM").val();

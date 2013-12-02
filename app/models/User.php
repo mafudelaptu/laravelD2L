@@ -78,6 +78,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function userskillbrackets(){
 		return $this->belongsTo("Userskillbracket", "user_id");
 	}
+
+	public static function getRandomUser(){
+		return User::getFakeUser();
+	}
+
 	// public function queues(){
 	// 	return $this->hasMany("Queue", "user_id");
 	// }

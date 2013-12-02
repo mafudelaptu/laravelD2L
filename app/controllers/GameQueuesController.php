@@ -176,6 +176,32 @@ class GameQueuesController extends BaseController {
 		return $ret;
 	}
 
+	public function insertRandomUserIntoQueue(){
+		$matchtype_id = Input::get("matchtype_id", 1);
+
+		$user = User::getRandomUser()->get();
+
+		// set skillbracket
+		$retSB = setSkillbrackets($user->id);
+
+		// get points
+		$points = Userpoint::getPoints($user->id);
+
+	}
+
+	public static function insertInQueue($user_id, $matchtype_id, $matchmode_id, $region_id, $points, $force=0){
+		$tmp = array();
+		$tmp['user_id'] = $user_id;
+		$tmp['matchtype_id'] = $matchtype_id;
+		$tmp['matchmode_id'] = $mode_id;
+		$tmp['rank'] = $points;
+		$tmp['created_at'] = new DateTime;
+		$tmp['updated_at'] = new DateTime;
+		$tmp['region_id'] = $region_id;
+		$tmp['force_search'] = $force;
+
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *

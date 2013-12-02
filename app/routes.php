@@ -58,6 +58,16 @@ Route::group(array('before' => 'auth'), function()
 	//matchmode
 	Route::get("matchmodes/getQuickJoinModes", array('before' => 'csrf', 'uses' => 'MatchmodesController@getQuickJoinModes'));
 
+	/* 
+	// Admin
+	*/
+	Route::group(array('before' => 'admin'), function(){
+		Route::get("admin", "AdminController@home");
+
+		Route::post("admin/queue/insertInQueue", "GameQueuesController@insertRandomUserIntoQueue");
+
+	});
+
 });
 
 // Login/logout stuff
