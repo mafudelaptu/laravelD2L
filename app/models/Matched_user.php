@@ -17,4 +17,7 @@ class Matched_user extends Eloquent {
 		return $ret;
 	}
 
+	public static function getMatchedUserData($user_id){
+		return Matched_user::where("user_id", $user_id);
+	}
 }

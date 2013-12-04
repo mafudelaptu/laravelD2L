@@ -155,6 +155,8 @@ class GameQueuesController extends BaseController {
 		//var_dump($retSingle);
 		$ret['queue'] = $retSingle['data'];
 		if ($alreadyMatched === true) {
+			$userData = Matched_user::getMatchedUserData($user_id)->get();
+			$ret['match_id'] = $userData->match_id;
 			$ret ['status'] = "finished";
 		} else {
             // checken ob User noch in Queue

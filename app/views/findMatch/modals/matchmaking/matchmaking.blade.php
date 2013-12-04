@@ -8,7 +8,7 @@
         </div>
         
         <div class="modal-body">
-                @include("findMatch.modals.mmStats")
+                @include("findMatch.modals.matchmaking.mmStats")
                 <hr>
                 <div class="row">
                         <div class="col-sm-3" align="center">
@@ -41,7 +41,7 @@
         
                                         <h4>Searching details</h4>
                                         <div class="MatchMakingInfo">
-                                                @include("findMatch.modals.mmInfo")
+                                                @include("findMatch.modals.matchmaking.mmInfo")
                                         </div>
                                 
                         </div>

@@ -1,4 +1,5 @@
 var timePulling = 3000;
+var waitingTime4AcceptReady = 15000;
 
 $( document ).ready(function() {
 	if (document.URL.indexOf("/find_match") >= 0) {
@@ -203,15 +204,9 @@ function doMatchmaking(modes, matchtype_id, quickJoin){
 						clearTimeout(doMatchmakingTimeout);
 						doMatchmakingTimeout = null;
 
-						l("################### SAVE!!!!!");
-							// MatchDetails einfuegen
-							// saveMatchDetails(result.matchID);
-							l("################### SAVE END!!!!!");
-
 							// match found Sound abspielen
 							playMatchFoundSound();
-							// $.playSound("files/sound/matchReadySound.mp3");
-
+							
 							// title blinken lassen wenn match geufnden
 							$.titleAlert("Match found!", {
 								stopOnFocus : true,
@@ -223,26 +218,23 @@ function doMatchmaking(modes, matchtype_id, quickJoin){
 									// aktuelles Modal schlie�en und
 									// ReadyMatchModal
 									// �ffnen
-									$("#myModalMatchMaking").modal("hide");
-									matchWasFoundModal2(result.matchID, quickJoin, groupID, joinMode);
+									$("#generalModal").modal("hide");
+									matchWasFound(result.match_id, quickJoin, matchtype_id);
 								}, 1000);
 						}
 						else if (result.status == "notInQueue") {
-							if(result.inQueue == false && groupID > 0){
-							// beim Verlassen der Seite eine
-							// Warnung anzeigen: aktivieren
 							setConfirmUnload(false);
-
 							clearTimeout(doMatchmakingTimeout);
 							doMatchmakingTimeout = null;
 
 							// JoinQueue Modal schlie�en
-							$("#myModalMatchMaking").modal("hide");
-
-							text = "<div align='center'><h4>Your Partner of Group:#" + groupID + " left the Queue!</h4>" + "<p>You just got also kicked from Queue. </p></div>";
+							$("#generalModal").modal("hide");
+							text = "<div align='center'><h4>You are not in Queue anymore</h4>" +
+							"<p>You had an error in queueing! Please rejoin the Queue.</p>" +
+							"</div>";
 
 							bootbox.alert(text, function() {
-								window.location = "find_match.php";
+								window.location = "find_match";
 							});
 						}
 						else{
@@ -251,19 +243,181 @@ function doMatchmaking(modes, matchtype_id, quickJoin){
 							doMatchmakingTimeout = null;
 
 							// JoinQueue Modal schlie�en
-							$("#myModalMatchMaking").modal("hide");
+							$("#generalModal").modal("hide");
 							text = "<div align='center'><h4>You are not in Queue anymore</h4>" +
 							"<p>You had an error in queueing! Please rejoin the Queue.</p>" +
 							"</div>";
 
 							bootbox.alert(text, function() {
-								window.location = "find_match.php";
+								window.location = "find_match";
 							});
 						}
 					}
 				}
 			});
 }
+
+/*
+ * Copyright 2013 Artur Leinweber Date: 2013-01-01
+ */
+ var timeout = null;
+function matchWasFound(match_id, quickJoin, matchtype_id) {
+
+		$.ajax({
+			url : "find_match/getReadyMatch",
+			type : "GET",
+			dataType : 'json',
+			success : function(html_data) {
+				l(html_data);
+				$("#generalModal").html(html_data.html);						
+
+				$("#generalModal span.countdown").stop(true);
+				$("#generalModal span.countdown").html("");
+
+				clearTimeout(timeout);
+				timeout = null;
+
+				// initialisier Countdown
+				waitingDauer = waitingTime4AcceptReady / 1000;
+
+				$("#generalModal span.countdown").countDown({
+						startNumber : waitingDauer,
+						startFontSize : "20px",
+						endFontSize : "20px",
+				});
+
+				// Modal anzeigen
+				$('#generalModal').modal({
+						backdrop : "static",
+						keyboard : false
+				});
+
+				// Nach 15 Sekunden Player aus der Queue hauen
+				timeout = setTimeout(function() {
+						clearTimeout(timeout);
+						timeout = null;
+						kickFromQueue(match_id, "autoKick", quickJoin, true, matchtype_id);
+				}, waitingTime4AcceptReady);
+
+				// Wenn Accept dann nächsten Modal aufmachen
+				$("#readyMatchAcceptButton").click(function() {
+						l("matchWasFoundModal Accept clicked");
+						$("#generalModal span.countdown").html("");
+						clearTimeout(timeout);
+						timeout = null;
+						acceptMatch(match_id, quickJoin, matchtype_id);
+				});
+
+				// Wenn Cancel dann Player aus der Queue hauen
+				$("#readyMatchCancelButton").click(function() {
+						clearTimeout(timeout);
+						timeout = null;
+						$("#generalModal span.countdown").html("");
+						kickFromQueue(matchID, "decline", quickJoin, true, matchtype_id);
+				});
+			}
+		});
+}
+
+/*
+ * Copyright 2013 Artur Leinweber Date: 2013-01-01
+ */
+function kickFromQueue(match_id, reason, quickJoin, cancelRejoin, matchtype_id) {
+        l("kickFromQueue Start");
+        $('.modal').modal('hide');
+        $("#generalModal span.countdown").html("");
+        var redirect = true;
+        
+        l(reason);
+        switch (reason) {
+                case "decline":
+                case "autoKick":
+                        $.ajax({
+                                url : 'find_match/setQueueLock',
+                                type : "POST",
+                                dataType : 'json',
+                                success : function(result) {
+                                        l("insertLock success");
+                                        if (result.status == true) {
+                                                l("added insertLock!");
+                                        }
+                                }
+                        });
+                        break;
+        }
+
+        // SeitenWarnung daktivieren
+        setConfirmUnload(false);
+
+        l("joinMode:"+joinMode);
+        var rejoin = "";
+        if (cancelRejoin == false) {
+                l("ey homo!");
+                switch(joinMode){
+                        case "1vs1Queue":
+                                l("heyho  hier bin ich!");
+                                rejoin = "?rejoin=true&joinType=1vs1QueueJoin";
+                                break;
+                        case "singleQueue":
+                                l("QUICKJOIN:" + quickJoin);
+                                if (groupID > 0) {
+                                        switch (quickJoin) {
+                                                case true:
+                                                        rejoin = "";
+                                                        break;
+                                                case false:
+                                                default:
+                                                        rejoin = "?rejoin=true&joinType=duoQueueJoin&gid=" + groupID;
+                                                        break;
+
+                                        }
+                                }
+                                else {
+                                        switch (quickJoin) {
+                                                case true:
+                                                        rejoin = "?rejoin=true&joinType=singleQueueQuickJoin";
+                                                        break;
+                                                case false:
+                                                default:
+                                                        rejoin = "?rejoin=true&joinType=singleQueueJoin";
+                                                        break;
+
+                                        }
+                                }
+                                break;
+                }
+        }
+        else {
+                l("nee  du bist der homo!");
+                var rejoin = "";
+        }
+        l("RJ:"+rejoin);
+        l("start cleanEverything und so");
+        $.ajax({
+                url : 'ajax.php',
+                type : "POST",
+                dataType : 'json',
+                data : {
+                        type : "matchmaking",
+                        mode : "cleanEverything",
+                        matchID : matchID,
+                        groupID : groupID,
+                        reason : reason
+                },
+                success : function(data) {
+                        l("test redirect");
+                        l(data);
+                        setTimeout(function() {
+                                l("Rejoin: "+rejoin);
+                                if (redirect) {
+                                        window.location = "find_match.php" + rejoin;
+                                }
+                                l("test redirected!");
+                        }, (300));
+                }
+        });
+}
+
 
 function getMatchModes(matchtype_id, quickJoin){
 	var ret = null;

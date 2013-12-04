@@ -33,6 +33,7 @@
 	{{ HTML::script('js/20.jquery.cookie.js') }}
 	{{ HTML::script('js/30.jquery.countDown.js') }}
 	{{ HTML::script('js/31.jquery.stopwatch.js') }}
+	{{ HTML::script('js/33.jquery.titleAlert.min.js') }}
 	{{ HTML::script('js/60.jquery.dataTables.min.js') }}
 	{{ HTML::script('js/61.dataTable.paging.js') }}
 	{{ HTML::script('js/80.highcharts.js') }}
@@ -40,5 +41,6 @@
 	{{ HTML::script("js/main.js")}}
 	{{ HTML::script("js/findMatch/queue.js")}}
 	{{ HTML::script("js/findMatch/queueModal.js")}}
+	{{ HTML::script("js/audio/audio.js")}}
 </body>
 </html>

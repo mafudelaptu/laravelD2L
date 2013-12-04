@@ -51,6 +51,8 @@ Route::group(array('before' => 'auth'), function()
 	Route::post("find_match/joinQueue", array('before' => 'csrf', 'uses' => 'GameQueuesController@joinQueue'));
 	Route::get("find_match/getMMInfo", array('before' => 'csrf', 'uses' => 'FetchViewController@getMMInfo'));
 	Route::get("find_match/doMatchmaking", array("before" => "csrf", "uses" => "GameQueuesController@doMatchmaking"));
+	Route::get("find_match/getReadyMatch", array("before" => "csrf", "uses" => "FetchViewController@getReadyMatch"));
+	Route::post("find_match/setQueueLock", array("before" => "csrf", "uses" => "QueuelocksController@setQueueLock"));
 	
 	// general
 	Route::post("setRegion", array('before' => 'csrf', 'uses' => 'RegionsController@setRegion'));
@@ -136,3 +138,5 @@ Route::resource('userskillbrackets', 'UserskillbracketsController');
 Route::resource('usercredits', 'UsercreditsController');
 
 Route::resource('skillbrackettypes', 'SkillbrackettypesController');
+
+Route::resource('queuelocks', 'QueuelocksController');

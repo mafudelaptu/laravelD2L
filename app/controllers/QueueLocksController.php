@@ -2,6 +2,20 @@
 
 class QueueLocksController extends BaseController {
 
+	public function setQueueLock(){
+		$ret = array();
+		if(Auth::check()){
+			if (Request::ajax()){
+				$user_id = Auth::user()->id;
+
+				Queuelocks::insertLock($user_id);
+				$ret['status'] = true;
+
+				return $ret;
+			}
+		}
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
