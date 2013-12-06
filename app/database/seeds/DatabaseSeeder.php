@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('UserskillbracketsTableSeeder');
 		$this->call('UsercreditsTableSeeder');
 		$this->call('SkillbrackettypesTableSeeder');
+		$this->call('MatchhostsTableSeeder');
 	}
 
 }

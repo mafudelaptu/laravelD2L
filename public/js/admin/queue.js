@@ -18,6 +18,7 @@ function initInsertInQueueButtons(){
 				},
 				success : function(result) {
 					l(result);
+					$("#insertRandomUserinQueueResponse").html(result.status);
 				}
 		});
 	});

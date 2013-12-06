@@ -8,4 +8,8 @@ class Matchdetail extends Eloquent {
 	protected $table = "matchdetails";
 	public $timestamps = false;
 
+	public static function deleteMatchdetails($match_id){
+		return DB::table("matchdetails")->where("match_id", $match_id)
+			->delete();
+	}
 }

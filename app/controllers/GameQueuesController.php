@@ -202,7 +202,6 @@ class GameQueuesController extends BaseController {
 				foreach($matchmodes as $mode){
 
 					$matchmode_id = $mode->id;
-					echo $matchmode_id."|";
 					GameQueue::insertInQueue($user_id, $matchtype_id, $matchmode_id, $region_id, $points, $force);
 				}
 				$ret['status'] = "true";

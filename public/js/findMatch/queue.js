@@ -7,9 +7,11 @@ $( document ).ready(function() {
 		initJoinQueueButtons();
 	}
 });
-
+function getJustCM(){
+	return $("#jCM").val();
+}
 	function initJoinQueueButtons(){
-		var justCM = $("#jCM").val();
+		var justCM = getJustCM();
 		$("#quickJoin5vs5Single").click(function(){
 			var matchtype_id = 1;
 			var quickJoin = true;
@@ -25,7 +27,7 @@ $( document ).ready(function() {
 
 					switch (result.status) {
 						case true:
-						joinSingleQueue(quickJoin, justCM, matchtype_id);
+						joinQueue(quickJoin, justCM, matchtype_id);
 						break;
 
 						case "inMatch":
@@ -65,7 +67,7 @@ $( document ).ready(function() {
 								+ "<h3>It is your " + banCounts + ". warn!</h3>" + "<p>Until then you cant join normal Queue and stay in Prison-Queue! Try be more mannered next time.</p></div>";
 
 								bootbox.alert(text, function(){
-									joinSingleQueueFkt(quickJoin, groupID, justCM);
+									joinQueue(quickJoin, justCM, matchtype_id);
 								});
 							}
 							else {
@@ -75,14 +77,14 @@ $( document ).ready(function() {
 
 									bootbox.alert(text, function() {
 									//cleanBansOfPlayer();
-									joinSingleQueueFkt(quickJoin, groupID, justCM);
+									joinQueue(quickJoin, justCM, matchtype_id);
 								});
 								}
 								else {
 									var text = "<div align='center'><h4>you are not banned anymore!</h4>" + "<p>Now you can join the Normal-Queue again!</p></div>";
 
 									bootbox.alert(text, function() {
-										joinSingleQueueFkt(quickJoin, groupID, justCM);
+										joinQueue(quickJoin, justCM, matchtype_id);
 									});
 								}
 							}
@@ -109,7 +111,7 @@ $( document ).ready(function() {
 });
 }
 
-function joinSingleQueue(quickJoin, justCM, matchtype_id){
+function joinQueue(quickJoin, justCM, matchtype_id){
 	var modes = null;
 
 	retModes = getMatchModes(matchtype_id, quickJoin);
@@ -346,82 +348,33 @@ function kickFromQueue(match_id, reason, quickJoin, cancelRejoin, matchtype_id) 
                         break;
         }
 
-        // SeitenWarnung daktivieren
-        setConfirmUnload(false);
-
-        l("joinMode:"+joinMode);
-        var rejoin = "";
-        if (cancelRejoin == false) {
-                l("ey homo!");
-                switch(joinMode){
-                        case "1vs1Queue":
-                                l("heyho  hier bin ich!");
-                                rejoin = "?rejoin=true&joinType=1vs1QueueJoin";
-                                break;
-                        case "singleQueue":
-                                l("QUICKJOIN:" + quickJoin);
-                                if (groupID > 0) {
-                                        switch (quickJoin) {
-                                                case true:
-                                                        rejoin = "";
-                                                        break;
-                                                case false:
-                                                default:
-                                                        rejoin = "?rejoin=true&joinType=duoQueueJoin&gid=" + groupID;
-                                                        break;
-
-                                        }
-                                }
-                                else {
-                                        switch (quickJoin) {
-                                                case true:
-                                                        rejoin = "?rejoin=true&joinType=singleQueueQuickJoin";
-                                                        break;
-                                                case false:
-                                                default:
-                                                        rejoin = "?rejoin=true&joinType=singleQueueJoin";
-                                                        break;
-
-                                        }
-                                }
-                                break;
-                }
-        }
-        else {
-                l("nee  du bist der homo!");
-                var rejoin = "";
-        }
-        l("RJ:"+rejoin);
-        l("start cleanEverything und so");
         $.ajax({
-                url : 'ajax.php',
+                url : 'find_match/cleanUpFailedQueue',
                 type : "POST",
                 dataType : 'json',
                 data : {
-                        type : "matchmaking",
-                        mode : "cleanEverything",
-                        matchID : matchID,
-                        groupID : groupID,
+                        match_id : match_id,
                         reason : reason
                 },
                 success : function(data) {
                         l("test redirect");
                         l(data);
-                        setTimeout(function() {
-                                l("Rejoin: "+rejoin);
-                                if (redirect) {
-                                        window.location = "find_match.php" + rejoin;
-                                }
-                                l("test redirected!");
-                        }, (300));
                 }
         });
+        // SeitenWarnung daktivieren
+        setConfirmUnload(false);
+
+        if (cancelRejoin == false) {
+                l("ey homo!");
+                var justCM = getJustCM();
+                joinQueue(quickJoin, justCM, matchtype_id);
+        }
 }
 
 
 function getMatchModes(matchtype_id, quickJoin){
 	var ret = null;
-	if(quickJoin == true){ 
+	if(quickJoin == true){
 		ret = $.ajax({
 			url : "matchmodes/getQuickJoinModes",
 			type : "GET",
@@ -430,12 +383,10 @@ function getMatchModes(matchtype_id, quickJoin){
 				matchtype_id : matchtype_id
 			}
 		});	
-					// ret.push("9"); // CD
-				}
-				else{
+	}
+	else{
 
-				}
-
-				return ret;
-			}
+	}
+	return ret;
+}
 

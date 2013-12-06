@@ -68,4 +68,9 @@ class Match extends Eloquent {
 			}
 		}
 	}
+
+	public static function deleteCreatedMatch($match_id){
+		return DB::table("matches")->where("match_id", $match_id)
+					->delete();
+	}
 }

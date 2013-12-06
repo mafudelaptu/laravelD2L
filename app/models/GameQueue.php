@@ -8,7 +8,7 @@ class GameQueue extends Eloquent {
 	protected $table = 'queues';
 
 	public static function getAllUsersInQueueByRegion($region_id){
-		return GameQueue::where("region_id", $region_id);
+		return GameQueue::where("region_id", $region_id)->groupBy("user_id");
 	}
 
 	public static function getPlayersInQueue($matchtypeID){
@@ -188,4 +188,22 @@ public static function insertInQueue($user_id, $matchtype_id, $matchmode_id, $re
 	// public function user(){
 	// 	return $this->belongsTo("User");
 	// }
+
+    public static function kickAllUsersOutOfQueue($match_id){
+        // get all Users
+        $users = Matched_user::getAllMatchedUsersByMatchID($match_id);
+        if(!empty($users)){
+            foreach ($users as $k => $user) {
+                $user_id = $user->user_id;
+                DB::table("queues")->where("user_id", $user_id)
+                    ->delete();
+            }
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
+
+

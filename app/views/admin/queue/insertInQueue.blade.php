@@ -4,5 +4,5 @@
 	@foreach($matchtypes as $type)
         <button class="btn" type="button" data-id="{{$type->id}}">{{$type->name}}</button>
     @endforeach
-    <span id="insertRandomUserinQueueResposne"></span>
+    <span id="insertRandomUserinQueueResponse"></span>
 </form>
