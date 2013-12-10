@@ -46,8 +46,10 @@ class GameQueue extends Eloquent {
       $sbdata = DB::table("queues")->join('userskillbrackets', 'queues.user_id', '=', 'userskillbrackets.user_id')
       ->where("queues.force_search", 0)
       ->where("userskillbrackets.matchtype_id", $matchtype_id)
-      ->where("queues.matchtype_id", $matchtype_id)->get();
-
+      ->where("queues.matchtype_id", $matchtype_id)
+      ->groupBy("queues.user_id")
+      ->get();
+      
       $retData = array (
         -1 => 0,
         1 => 0,

@@ -177,6 +177,7 @@ function doMatchmaking(modes, matchtype_id, quickJoin){
 			else {
 				force = false;
 			}
+
 			$.ajax({
 				url : 'find_match/doMatchmaking',
 				type : "GET",
@@ -255,7 +256,6 @@ function doMatchmaking(modes, matchtype_id, quickJoin){
 							});
 						}
 					}
-				}
 			});
 }
 
