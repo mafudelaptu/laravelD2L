@@ -3,15 +3,16 @@
 class CronjobMatchmakingController extends BaseController {
 
 	public function doMatchmaking(){
+		$ret = "";
 
 		/*
 		 * Check if someone left site without leaving the Queue
 		*/
 		GameQueue::deleteAFKUsers();
 
-		$matchtypes = Matchtype::getAllActiveMatchtypes()->order_by(DB::raw('RAND()'))->get();
-		$modes = Matchmode::getAllActiveModes()->order_by(DB::raw('RAND()'))->get();
-		$regions = Region::getAllActiveRegions()->order_by(DB::raw('RAND()'))->get();
+		$matchtypes = Matchtype::getAllActiveMatchtypes()->orderBy(DB::raw('RAND()'))->get();
+		$modes = Matchmode::getAllActiveModes()->orderBy(DB::raw('RAND()'))->get();
+		$regions = Region::getAllActiveRegions()->orderBy(DB::raw('RAND()'))->get();
 
 		if(!empty($matchtypes)){
 			foreach ($matchtypes as $key => $matchtype) {
@@ -24,7 +25,7 @@ class CronjobMatchmakingController extends BaseController {
 								$region_id = $region->id;
 								$playercount = $matchtype->playercount;
 
-								$this->searchForMatchingUsersInQueue($matchtype_id, $matchmode_id, $region_id, $playercount);						
+								$ret = $this->searchForMatchingUsersInQueue($matchtype_id, $matchmode_id, $region_id, $playercount);						
 							}
 						}
 					}
@@ -32,10 +33,11 @@ class CronjobMatchmakingController extends BaseController {
 			}
 		}
 
-		return true;
+		return $ret;
 	}
 
 	public function searchForMatchingUsersInQueue($matchtype_id, $matchmode_id, $region_id, $playercount){
+		$ret = "";
 		$nochWelcheInQueue = true;
 		while($nochWelcheInQueue){
 			for($i=0; $i<2; $i++){
@@ -43,10 +45,15 @@ class CronjobMatchmakingController extends BaseController {
 					$retCount = $this->getUserCountsInQueue($matchmode_id, $matchtype_id, $region_id, $i, $j, $playercount);
 					if(!$retCount){
 						$nochWelcheInQueue = false;
+						$ret .= "nope! \r\n";
+					}
+					else{
+						$ret .= "gefunden! \r\n";
 					}
 				}
 			}
 		}
+		return $ret;
 	}
 
 	public function getUserCountsInQueue($matchmode_id, $matchtype_id, $region_id, $force, $skillbracket, $playercount){

@@ -224,10 +224,11 @@ public static function insertInQueue($user_id, $matchtype_id, $matchmode_id, $re
         if(!empty($users)){
             foreach ($users as $k => $user) {
                 // delete user
-                var_dump(dirname(__FILE__));
+                // var_dump(dirname(__FILE__));
 
                 $user_id = $user->user_id;
-                if(strpos($dirTest, "d2l.dev") !== 0){
+                $dirTest = dirname(__FILE__);
+                if(strpos($dirTest, "laravelD2L") !== 0){
                     GameQueue::deleteUserOutOfQueue($user_id);
                 }
             }
