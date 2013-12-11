@@ -73,4 +73,22 @@ class Match extends Eloquent {
 		return DB::table("matches")->where("match_id", $match_id)
 					->delete();
 	}
+
+	public static function createNewMatch($matchtype_id, $matchmode_id, $region_id){
+		$insertArray = array();
+		$insertArray['team_won_id'] = 0;
+		$insertArray['matchtype_id'] = $matchtype_id;
+		$insertArray['matchmode_id'] = $matchmode_id;
+		$insertArray['region_id'] = $region_id;
+		$insertArray['check'] = 0;
+		$insertArray['canceled'] = 0;
+		$insertArray['closed'] = null;
+		$insertArray['created_at'] = new DateTime;
+		$insertArray['updated_at'] = new DateTime;
+
+		$id = DB::table("matches")->insertGetId($insertArray);
+
+		return $id; 
+	}
+
 }

@@ -23,10 +23,51 @@ class Matched_user extends Eloquent {
 
 	public static function cleanMatchedUsers($match_id){
 		return DB::table("matched_users")->where("match_id", $match_id)
-						->delete();
+		->delete();
 	}
 
 	public static function getAllMatchedUsersByMatchID($match_id){
 		return Matched_user::where("match_id", $match_id);
+	}
+
+	public static function insertUsers($users, $teamcount){
+		if(!empty($users)){
+			$insertArray = array();
+			$countTeam = array();
+			foreach ($users as $key => $user) {
+				$retAve = General::getAvePointsOfTeam($insertArray);
+				$team_id = $retAve['data'];
+
+				$tmpArray = array();
+				$tmpArray['match_id'] = (int) $matchID;
+				$tmpArray['user_id'] = $user->user_id;
+				$tmpArray['points'] = $user->rank;
+				$tmpArray['ready'] = 0;
+				$tmpArray['created_at'] = new DateTime;
+				$tmpArray['updated_at'] = new DateTime;
+				
+				if($countTeam[$team_id] < 5){
+					$tmpArray['team_id'] = (int) $team_id;
+					$countTeam[$team_id]++;
+				}
+				else{
+					if($team_id == 1){
+						$team_id = 2;
+					}
+					else{
+						$team_id = 1;
+					}
+					$tmpArray['team_id'] = (int) $team_id;	
+					$countTeam[$team_id]++;
+				}
+
+				$insertArray[] = $tmpArray;
+
+				$i++;
+			}
+
+			Matched_user::insert($insertArray);
+			return $insertArray;
+		}
 	}
 }

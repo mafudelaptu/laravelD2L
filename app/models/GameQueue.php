@@ -11,6 +11,10 @@ class GameQueue extends Eloquent {
 		return GameQueue::where("region_id", $region_id)->groupBy("user_id");
 	}
 
+    public static function getAllUsersInQueue(){
+        return DB::table("queues");
+    }
+
 	public static function getPlayersInQueue($matchtypeID){
 		//return $matchtype_id;
 		return GameQueue::where("matchtype_id", $matchtypeID);
@@ -125,7 +129,7 @@ public static function getPlayersQueueCounts($user_id, $modes, $region, $skillbr
 
 }
 
-public static function getQueueCounts($matchmode_id, $matchtype_id, $region, $forceSearch, $skillbrackettype_id){
+public static function getQueueCounts($matchmode_id, $matchtype_id, $region, $forceSearch, $skillbrackettype_id, $returnAjax = true){
  $ret = array ();
  $ret ['debug'] = "Start getQueueCountsSkillBracket <br>\n";
 
@@ -154,12 +158,17 @@ public static function getQueueCounts($matchmode_id, $matchtype_id, $region, $fo
 }
 
 $data = $data->orderBy('queues.created_at', 'asc');
-$count = $data->count();
+if($returnAjax){
+    $count = $data->count();
 
 $ret ['count'] = $count;
 $ret ['data'] = $data->get();
 $ret ['debug'] .= "End getQueueCountsSkillBracket <br>\n";
-return $ret;
+    return $ret;    
+}
+else{
+    return $data;
+}
 }
 
 public static function inQueue($user_id){
@@ -204,6 +213,24 @@ public static function insertInQueue($user_id, $matchtype_id, $matchmode_id, $re
         }
         else{
             return false;
+        }
+    }
+
+    public static function deleteAFKUsers(){
+        $checkTime = time()-30;
+
+        $users = DB::table("queues")->where("updated_at", "<", date("Y-m-d H:i:s", $checkTime))->get();
+
+        if(!empty($users)){
+            foreach ($users as $k => $user) {
+                // delete user
+                var_dump(dirname(__FILE__));
+
+                $user_id = $user->user_id;
+                if(strpos($dirTest, "d2l.dev") !== 0){
+                    GameQueue::deleteUserOutOfQueue($user_id);
+                }
+            }
         }
     }
 }
