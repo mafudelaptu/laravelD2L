@@ -10,9 +10,9 @@ class CronjobMatchmakingController extends BaseController {
 		*/
 		GameQueue::deleteAFKUsers();
 
-		$matchtypes = Matchtype::getAllActiveMatchtypes()->orderBy(DB::raw('RAND()'))->get();
-		$modes = Matchmode::getAllActiveModes()->orderBy(DB::raw('RAND()'))->get();
-		$regions = Region::getAllActiveRegions()->orderBy(DB::raw('RAND()'))->get();
+		$matchtypes = GameQueue::getAllMatchtypes()->orderBy(DB::raw('RAND()'))->get();
+		$modes = GameQueue::getAllMatchmodes()->orderBy(DB::raw('RAND()'))->get();
+		$regions = GameQueue::getAllRegions()->orderBy(DB::raw('RAND()'))->get();
 
 		if(!empty($matchtypes)){
 			foreach ($matchtypes as $key => $matchtype) {
@@ -20,13 +20,13 @@ class CronjobMatchmakingController extends BaseController {
 					foreach ($modes as $key => $matchmode) {
 						if(!empty($regions)){
 							foreach ($regions as $key => $region) {
-								$matchtype_id = $matchtype->id;
-								$matchmode_id = $matchmode->id;
-								$region_id = $region->id;
+								$matchtype_id = $matchtype->matchtype_id;
+								$matchmode_id = $matchmode->matchmode_id;
+								$region_id = $region->region_id;
 								$playercount = $matchtype->playercount;
 								$ret .= "MT:".$matchtype_id." MM:".$matchmode_id." R:".$region_id." PC:".$playercount." ";
 								$ret .= $this->searchForMatchingUsersInQueue($matchtype_id, $matchmode_id, $region_id, $playercount);
-								$ret .= "\r\n";						
+								$ret .= "\r\n";		
 							}
 						}
 					}
@@ -63,10 +63,12 @@ class CronjobMatchmakingController extends BaseController {
 		$usersData = GameQueue::getQueueCounts($matchmode_id, $matchtype_id, $region_id, $force, $skillbracket, false)->take($playercount);
 		$count = $usersData->count();
 		$users = $usersData->get();
+		//echo "MT:".$matchtype_id." MM:".$matchmode_id." R:".$region_id." PC:".$playercount." \r\n";
+		
 		$ret['debug'] = $count;
 		if($count == $playercount){
 			// delete User out of Queue
-			$usersData->delete();
+			//$usersData->delete();
 
 			// create Match
 			$match_id = Match::createNewMatch($matchtype_id, $matchmode_id, $region_id);

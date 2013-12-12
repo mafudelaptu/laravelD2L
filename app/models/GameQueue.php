@@ -234,6 +234,16 @@ public static function insertInQueue($user_id, $matchtype_id, $matchmode_id, $re
             }
         }
     }
+
+    public static function getAllMatchmodes(){
+        return GameQueue::join("matchmodes", "queues.matchmode_id", "=", "matchmodes.id")->groupBy("queues.matchmode_id");
+    }
+
+    public static function getAllMatchtypes(){
+        return GameQueue::join("matchtypes", "queues.matchtype_id", "=", "matchtypes.id")->groupBy("queues.matchtype_id");
+    }
+
+    public static function getAllRegions(){
+        return GameQueue::join("regions", "queues.region_id", "=", "regions.id")->groupBy("queues.region_id");
+    }
 }
-
-
