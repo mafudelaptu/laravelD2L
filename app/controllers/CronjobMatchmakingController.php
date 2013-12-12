@@ -24,8 +24,9 @@ class CronjobMatchmakingController extends BaseController {
 								$matchmode_id = $matchmode->id;
 								$region_id = $region->id;
 								$playercount = $matchtype->playercount;
-
-								$ret = $this->searchForMatchingUsersInQueue($matchtype_id, $matchmode_id, $region_id, $playercount);						
+								$ret .= "MT:".$matchtype_id." MM:".$matchmode_id." R:".$region_id." PC:".$playercount." ";
+								$ret .= $this->searchForMatchingUsersInQueue($matchtype_id, $matchmode_id, $region_id, $playercount);
+								$ret .= "\r\n";						
 							}
 						}
 					}
@@ -43,12 +44,12 @@ class CronjobMatchmakingController extends BaseController {
 			for($i=0; $i<2; $i++){
 				for($j=1; $j<=3; $j++){
 					$retCount = $this->getUserCountsInQueue($matchmode_id, $matchtype_id, $region_id, $i, $j, $playercount);
-					if(!$retCount){
+					if(!$retCount['status']){
 						$nochWelcheInQueue = false;
-						$ret .= "nope! \r\n";
+						$ret .= "nope(".$retCount['debug'].")!";
 					}
 					else{
-						$ret .= "gefunden! \r\n";
+						$ret .= "gefunden!";
 					}
 				}
 			}
@@ -57,11 +58,12 @@ class CronjobMatchmakingController extends BaseController {
 	}
 
 	public function getUserCountsInQueue($matchmode_id, $matchtype_id, $region_id, $force, $skillbracket, $playercount){
+		$ret = array();
 		( $force==1 ? $force = "true" : $force="false" );
 		$usersData = GameQueue::getQueueCounts($matchmode_id, $matchtype_id, $region_id, $force, $skillbracket, false)->take($playercount);
 		$count = $usersData->count();
 		$users = $usersData->get();
-
+		$ret['debug'] = $count;
 		if($count == $playercount){
 			// delete User out of Queue
 			$usersData->delete();
@@ -75,11 +77,11 @@ class CronjobMatchmakingController extends BaseController {
 			// create Matchdetails
 			Matchdetail::addDetailsToMatch($match_id, $matchedUsersArray);
 
-			return true;
+			$ret['status'] = true;
 		}
 		else{
-			return false;
+			$ret['status'] = false;
 		}
+		return $ret;
 	}
 }
-

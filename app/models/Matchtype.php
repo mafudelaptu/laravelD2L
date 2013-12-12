@@ -6,7 +6,7 @@ class Matchtype extends Eloquent {
 	public static $rules = array();
 
 	public static function getAllActiveMatchtypes(){
-		return Matchtype::where("active", 1);
+		return Matchtype::where("active", 1)->remember(60);
 	}
 
 }

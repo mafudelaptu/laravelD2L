@@ -13,6 +13,6 @@ class Region extends Eloquent {
 	}
 
 	public static function getAllActiveRegions(){
-		return Region::where("active", 1);
+		return Region::where("active", 1)->remember(60);
 	}
 }
