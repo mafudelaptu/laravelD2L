@@ -13,12 +13,13 @@ class General {
 
 	public static function getAvePointsOfTeam($array){
 		$ret = array();
+		$ret['debug'] = "";
 		if(is_array($array) && count($array) > 0){
                                 //$ret['debug'] .= p($array,1);
 			$sum1 = 0; $sum2 = 0; $count1 = 0; $count2 = 0;
 			foreach ($array as $k => $v) {
-				$teamID = $v['TeamID'];
-				$points = $v['Rank'];
+				$teamID = $v['team_id'];
+				$points = $v['points'];
 				if($teamID == 1){
 					$sum1 += $points;
 					$count1++;
@@ -31,7 +32,7 @@ class General {
 
 			$ave1 = ($count1 > 0 ? $sum1/$count1 : 0);
 			$ave2 = ($count2 > 0 ? $sum2/$count2 : 0);
-			$ret['debug'] .= p("S:".$sum1." C:".$count1." S2:".$sum2." C2:".$count2." A:".$ave1." A2:".$ave2,1);
+			$ret['debug'] .= "S:".$sum1." C:".$count1." S2:".$sum2." C2:".$count2." A:".$ave1." A2:".$ave2;
 			$ret['ave1'] = $ave1;
 			$ret['ave2'] = $ave2;
 			if($ave1 <= $ave2){
@@ -43,6 +44,7 @@ class General {
 			$ret['status'] = true;
 		}
 		else {
+			$ret['data'] = 1;
 			$ret['status'] = false;
 		}
 		return $ret;

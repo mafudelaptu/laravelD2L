@@ -181,7 +181,7 @@ class GameQueuesController extends BaseController {
 	public function insertRandomUserIntoQueue(){
 		$ret = array();
 
-		$matchtype_id = Input::get("matchtype_id", 1);
+		$matchtype_id = Input::get("matchtype_id");
 
 		$user = User::getRandomUser();
 		$user = $user[0];

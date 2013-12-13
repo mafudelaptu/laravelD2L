@@ -14,7 +14,7 @@ function initInsertInQueueButtons(){
 				type : "POST",
 				dataType : 'json',
 				data : {
-					type : matchtype_id
+					matchtype_id : matchtype_id
 				},
 				success : function(result) {
 					l(result);

@@ -30,16 +30,16 @@ class Matched_user extends Eloquent {
 		return Matched_user::where("match_id", $match_id);
 	}
 
-	public static function insertUsers($users, $teamcount){
+	public static function insertUsers($users, $teamcount, $match_id){
 		if(!empty($users)){
 			$insertArray = array();
-			$countTeam = array();
+			$countTeam = array(1=>0, 2=>0);
 			foreach ($users as $key => $user) {
 				$retAve = General::getAvePointsOfTeam($insertArray);
 				$team_id = $retAve['data'];
 
 				$tmpArray = array();
-				$tmpArray['match_id'] = (int) $matchID;
+				$tmpArray['match_id'] = (int) $match_id;
 				$tmpArray['user_id'] = $user->user_id;
 				$tmpArray['points'] = $user->rank;
 				$tmpArray['ready'] = 0;
@@ -47,8 +47,10 @@ class Matched_user extends Eloquent {
 				$tmpArray['updated_at'] = new DateTime;
 				
 				if($countTeam[$team_id] < 5){
+					
 					$tmpArray['team_id'] = (int) $team_id;
 					$countTeam[$team_id]++;
+
 				}
 				else{
 					if($team_id == 1){
@@ -57,13 +59,12 @@ class Matched_user extends Eloquent {
 					else{
 						$team_id = 1;
 					}
+					
 					$tmpArray['team_id'] = (int) $team_id;	
 					$countTeam[$team_id]++;
 				}
 
 				$insertArray[] = $tmpArray;
-
-				$i++;
 			}
 
 			Matched_user::insert($insertArray);

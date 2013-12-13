@@ -41,11 +41,12 @@ class CronjobMatchmakingController extends BaseController {
 		$ret = "";
 		$nochWelcheInQueue = true;
 		while($nochWelcheInQueue){
+			$checkArray = array();
 			for($i=0; $i<2; $i++){
 				for($j=1; $j<=3; $j++){
 					$retCount = $this->getUserCountsInQueue($matchmode_id, $matchtype_id, $region_id, $i, $j, $playercount);
+					$checkArray[] = $retCount['status'];
 					if(!$retCount['status']){
-						$nochWelcheInQueue = false;
 						$ret .= "nope(".$retCount['debug'].")!";
 					}
 					else{
@@ -53,6 +54,10 @@ class CronjobMatchmakingController extends BaseController {
 					}
 				}
 			}
+
+			(in_array(true, $checkArray) ? $nochWelcheInQueue=true : $nochWelcheInQueue=false);
+
+
 		}
 		return $ret;
 	}
@@ -60,25 +65,28 @@ class CronjobMatchmakingController extends BaseController {
 	public function getUserCountsInQueue($matchmode_id, $matchtype_id, $region_id, $force, $skillbracket, $playercount){
 		$ret = array();
 		( $force==1 ? $force = "true" : $force="false" );
+
 		$usersData = GameQueue::getQueueCounts($matchmode_id, $matchtype_id, $region_id, $force, $skillbracket, false)->take($playercount);
-		$count = $usersData->count();
+
 		$users = $usersData->get();
-		//echo "MT:".$matchtype_id." MM:".$matchmode_id." R:".$region_id." PC:".$playercount." \r\n";
+		$count = count((array)$users);
+
+		echo "MT:".$matchtype_id." MM:".$matchmode_id." R:".$region_id." PC:".$playercount." C:".$count." \r\n";
 		
 		$ret['debug'] = $count;
 		if($count == $playercount){
 			// delete User out of Queue
-			//$usersData->delete();
-
+			GameQueue::deleteUsers($users);
+			
 			// create Match
 			$match_id = Match::createNewMatch($matchtype_id, $matchmode_id, $region_id);
-
+			
 			// found users insert into matched_users
-			$matchedUsersArray = Matched_user::insertUsers($users, (int)($playercount/2));
-
+			$matchedUsersArray = Matched_user::insertUsers($users, (int)($playercount/2), $match_id);
+			
 			// create Matchdetails
 			Matchdetail::addDetailsToMatch($match_id, $matchedUsersArray);
-
+			
 			$ret['status'] = true;
 		}
 		else{

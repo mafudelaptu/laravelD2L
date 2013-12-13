@@ -224,13 +224,21 @@ public static function insertInQueue($user_id, $matchtype_id, $matchmode_id, $re
         if(!empty($users)){
             foreach ($users as $k => $user) {
                 // delete user
-                // var_dump(dirname(__FILE__));
-
                 $user_id = $user->user_id;
                 $dirTest = dirname(__FILE__);
-                if(strpos($dirTest, "laravelD2L") !== 0){
+                if(strpos($dirTest, "laravelD2L") === false){
                     GameQueue::deleteUserOutOfQueue($user_id);
                 }
+            }
+        }
+    }
+
+     public static function deleteUsers($userData){
+        if(!empty($userData)){
+            foreach ($userData as $k => $user) {
+                // delete user
+                $user_id = $user->user_id;
+                GameQueue::deleteUserOutOfQueue($user_id);
             }
         }
     }
