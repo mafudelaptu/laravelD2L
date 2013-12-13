@@ -71,7 +71,7 @@ class CronjobMatchmakingController extends BaseController {
 		$users = $usersData->get();
 		$count = count((array)$users);
 
-		echo "MT:".$matchtype_id." MM:".$matchmode_id." R:".$region_id." PC:".$playercount." C:".$count." \r\n";
+		//echo "MT:".$matchtype_id." MM:".$matchmode_id." R:".$region_id." PC:".$playercount." C:".$count." \r\n";
 		
 		$ret['debug'] = $count;
 		if($count == $playercount){
