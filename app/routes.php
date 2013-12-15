@@ -54,6 +54,7 @@ Route::group(array('before' => 'auth'), function()
 	Route::get("find_match/getReadyMatch", array("before" => "csrf", "uses" => "FetchViewController@getReadyMatch"));
 	Route::post("find_match/setQueueLock", array("before" => "csrf", "uses" => "QueuelocksController@setQueueLock"));
 	Route::post("find_match/cleanUpFailedQueue", array("before" => "csrf", "uses" => "MatchmakingController@cleanUpFailedQueue"));
+	Route::post("find_match/leaveQueue", array("before" => "csrf", "uses" => "GameQueuesController@leaveQueue"));
 	
 	// general
 	Route::post("setRegion", array('before' => 'csrf', 'uses' => 'RegionsController@setRegion'));

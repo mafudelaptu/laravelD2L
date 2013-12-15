@@ -55,6 +55,5 @@
                 <br />
         </div>
         <div class="modal-footer">
-                <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"
-                        id="leaveQueueButton">Leave Queue!</button>
+                <button class="btn btn-danger" id="leaveQueueButton">Leave Queue!</button>
         </div>

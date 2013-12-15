@@ -24,3 +24,9 @@ function updateQueueStats(queueCounts){
 	$("#amateurOrHigherQueueCount").html(queueCounts[3]);
 	$("#forceQueueCount").html(queueCounts[-1]);
 }
+
+function initLeaveButton(){
+	$("#leaveQueueButton").click(function(){
+		leaveQueue();
+	});
+}

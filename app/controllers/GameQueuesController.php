@@ -52,10 +52,11 @@ class GameQueuesController extends BaseController {
 
 	public function leaveQueue(){
 		$user_id = Auth::user()->id;
-
-		$ret = GameQueue::deleteUserOutOfQueue($user_id);
+		$ret = array();
+		$retDel = GameQueue::deleteUserOutOfQueue($user_id);
 
 		Session::forget("queueJoinTimestamp");
+		$ret['status'] = $retDel;
 		return $ret;
 	}
 
@@ -155,7 +156,7 @@ class GameQueuesController extends BaseController {
 		//var_dump($retSingle);
 		$ret['queue'] = $retSingle['data'];
 		if ($alreadyMatched === true) {
-			$userData = Matched_user::getMatchedUserData($user_id)->get();
+			$userData = Matched_user::getMatchedUserData($user_id)->first();
 			$ret['match_id'] = $userData->match_id;
 			$ret ['status'] = "finished";
 		} else {

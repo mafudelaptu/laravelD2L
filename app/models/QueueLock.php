@@ -39,8 +39,7 @@ class QueueLock extends Eloquent {
 	public static function insertLock($user_id){
 		$insArray = array();
 		$insArray['user_id'] = $user_id;
-		$insArray['created_at'] = new DateTime;
-		$insArray['updated_at'] = new DateTime;
+		$insArray['locked_until'] = new DateTime;
 
 		DB::insert("queuelocks",$insArray);
 

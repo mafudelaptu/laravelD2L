@@ -144,8 +144,7 @@ function joinQueue(quickJoin, justCM, matchtype_id){
 							success : function(html_data) {
 								l(html_data);
 
-								// Uhr starten
-								$('#matchMakingClock').stopwatch('start');
+								
 
 								$("#generalModal .modal-content").html(html_data.html);
 								$("#generalModal .modal-dialog").css({
@@ -158,6 +157,13 @@ function joinQueue(quickJoin, justCM, matchtype_id){
 									backdrop : "static",
 									keyboard : false
 								});
+
+								// Uhr starten
+								$('#matchMakingClock').stopwatch().stopwatch('start');
+
+								
+								// init leave Button
+								initLeaveButton();
 
 								doMatchmaking(modes, matchtype_id, quickJoin);
 							}
@@ -264,14 +270,18 @@ function doMatchmaking(modes, matchtype_id, quickJoin){
  */
  var timeout = null;
 function matchWasFound(match_id, quickJoin, matchtype_id) {
-
+		// Uhr resetten
+		$('#matchMakingClock').stopwatch('reset');
+		$('#matchMakingClock').stopwatch('stop');
+		$('#matchMakingClock').html("");
+		
 		$.ajax({
 			url : "find_match/getReadyMatch",
 			type : "GET",
 			dataType : 'json',
 			success : function(html_data) {
 				l(html_data);
-				$("#generalModal").html(html_data.html);						
+				$("#generalModal .modal-content").html(html_data.html);						
 
 				$("#generalModal span.countdown").stop(true);
 				$("#generalModal span.countdown").html("");
@@ -315,7 +325,7 @@ function matchWasFound(match_id, quickJoin, matchtype_id) {
 						clearTimeout(timeout);
 						timeout = null;
 						$("#generalModal span.countdown").html("");
-						kickFromQueue(matchID, "decline", quickJoin, true, matchtype_id);
+						kickFromQueue(match_id, "decline", quickJoin, true, matchtype_id);
 				});
 			}
 		});
@@ -328,6 +338,7 @@ function kickFromQueue(match_id, reason, quickJoin, cancelRejoin, matchtype_id) 
         l("kickFromQueue Start");
         $('.modal').modal('hide');
         $("#generalModal span.countdown").html("");
+
         var redirect = true;
         
         l(reason);
@@ -365,7 +376,7 @@ function kickFromQueue(match_id, reason, quickJoin, cancelRejoin, matchtype_id) 
         setConfirmUnload(false);
 
         if (cancelRejoin == false) {
-                l("ey homo!");
+                //l("ey homo!");
                 var justCM = getJustCM();
                 joinQueue(quickJoin, justCM, matchtype_id);
         }
@@ -390,3 +401,26 @@ function getMatchModes(matchtype_id, quickJoin){
 	return ret;
 }
 
+function leaveQueue(){
+	// Uhr resetten
+	$('#matchMakingClock').stopwatch('reset');
+	$('#matchMakingClock').stopwatch('stop');
+	$('#matchMakingClock').html("");
+
+	// timeout Beenden
+	clearTimeout(doMatchmakingTimeout);
+	doMatchmakingTimeout = null;
+
+	$.ajax({
+		url : 'find_match/leaveQueue',
+		type : "POST",
+		dataType : 'json',
+		success : function(result) {
+			l("leaveQueue2 success");
+			// SeitenWarnung daktivieren
+			setConfirmUnload(false);
+
+			$(".modal").modal("hide");
+		}
+	});
+}

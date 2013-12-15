@@ -8,7 +8,7 @@ class QueueLocksController extends BaseController {
 			if (Request::ajax()){
 				$user_id = Auth::user()->id;
 
-				Queuelocks::insertLock($user_id);
+				Queuelock::insertLock($user_id);
 				$ret['status'] = true;
 
 				return $ret;
