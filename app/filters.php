@@ -88,10 +88,10 @@ Route::filter('csrf', function()
 View::composer("featured.stats", function($view){
 	$default_region = (int) GlobalSetting::getDefaultRegionID();
 
-	$view->with("uniqueUser", User::getAllUsers()->count())
-	->with("matchesPlayed", Match::getAllMatchesPlayed()->count())
-	->with("usersInQueue", GameQueue::getAllUsersInQueueByRegion($default_region)->count())
-	->with("liveMatches", Match::getAllLiveMatches()->count());
+	$view->with("uniqueUser", (int)User::getAllUsers()->count())
+	->with("matchesPlayed", (int)Match::getAllMatchesPlayed()->count())
+	->with("usersInQueue", (int)GameQueue::getAllUsersInQueueByRegion($default_region)->count())
+	->with("liveMatches", (int)Match::getAllLiveMatches()->count());
 });
 
 View::composer("navigation.region", function($view){

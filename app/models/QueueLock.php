@@ -11,6 +11,8 @@ class QueueLock extends Eloquent {
 	public static function checkLock($user_id){
 		$ret = array("time" => 0, "sec" => 0, "status" => false );
 
+		Queuelock::deleteOldLock($user_id);
+
 		$lock = QueueLock::find($user_id);
 		
 		if($lock){
@@ -37,11 +39,19 @@ class QueueLock extends Eloquent {
 	}
 
 	public static function insertLock($user_id){
+		$queueLockTime = time() + GlobalSetting::getQueueLockTime();
+		$date = new DateTime;
+		$date->setTimestamp($queueLockTime);
+
 		$insArray = array();
 		$insArray['user_id'] = $user_id;
-		$insArray['locked_until'] = new DateTime;
+		$insArray['locked_until'] = $date;
 
-		DB::insert("queuelocks",$insArray);
+		DB::table("queuelocks")->insert($insArray);
 
+	}
+
+	public static function deleteOldLock($user_id){
+		Queuelock::where("user_id", $user_id)->where("locked_until", "<=", new DateTime)->delete();
 	}
 }

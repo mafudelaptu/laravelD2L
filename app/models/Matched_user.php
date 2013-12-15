@@ -71,4 +71,13 @@ class Matched_user extends Eloquent {
 			return $insertArray;
 		}
 	}
+
+	public static function setReadyForUser($user_id){
+		Matched_user::where("user_id", $user_id)->update(array("ready" => 1));
+	}
+
+	public static function getReadyCount($match_id){
+		$ret = Matched_user::where("match_id", $match_id)->where("ready", 1)->count();
+		return $ret;
+	}
 }

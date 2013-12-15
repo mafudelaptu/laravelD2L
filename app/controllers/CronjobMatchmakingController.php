@@ -87,6 +87,9 @@ class CronjobMatchmakingController extends BaseController {
 			// create Matchdetails
 			Matchdetail::addDetailsToMatch($match_id, $matchedUsersArray);
 			
+			// set Host for Match
+			Matchhost::setHost($match_id, $matchedUsersArray);
+
 			$ret['status'] = true;
 		}
 		else{

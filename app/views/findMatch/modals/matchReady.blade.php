@@ -6,6 +6,6 @@
     <p><span class="countdown"></span> Seconds</p>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true" id="readyMatchCancelButton">Not Ready, Cancel and leave Queue</button>
+    <button class="btn btn-danger" id="readyMatchCancelButton">Not Ready, Cancel and leave Queue</button>
     <button id="readyMatchAcceptButton" class="btn btn-success" >Ready and Join Match!</button>
   </div>

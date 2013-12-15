@@ -20,7 +20,7 @@ class FindMatchController extends BaseController {
 	public function index(){
 		$this->layout->title = $this->title;
 		$qs5vs5Single = array(
-			"queueCount" => GameQueue::getPlayersInQueue(1)->groupBy("user_id")->count(),
+			"queueCount" => (int) GameQueue::getPlayersInQueue(1)->groupBy("user_id")->count(),
 			"openMatches" => 0,
 			"maxMatchmode" => "",
 			"maxRegion" => "",
@@ -28,7 +28,7 @@ class FindMatchController extends BaseController {
 		$queueStats5vs5Single = json_decode(json_encode($qs5vs5Single), FALSE);
 
 		$qs1vs1 = array(
-			"queueCount" => GameQueue::getPlayersInQueue(2)->groupBy("user_id")->count(),
+			"queueCount" => (int) GameQueue::getPlayersInQueue(2)->groupBy("user_id")->count(),
 			"openMatches" => "",
 			"maxMatchmode" => "",
 			"maxRegion" => "",

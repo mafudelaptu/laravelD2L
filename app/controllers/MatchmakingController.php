@@ -3,6 +3,7 @@
 class MatchmakingController extends BaseController {
 
 	public function cleanUpFailedQueue(){
+		$ret = array();
 		if(Auth::check()){
 			if (Request::ajax()){
 				$match_id = Input::get("match_id");
@@ -12,23 +13,21 @@ class MatchmakingController extends BaseController {
                 $ret['debug'] = "Start cleanUpFailedQueue <br>\n";
                 // clean Queue
                 $retKAPOFQ = GameQueue::kickAllUsersOutOfQueue($match_id);
-                $ret['debug'] .= p($retKAPOFQ,1);
 
                 // clean DBMM
                 $retMM = Matched_user::cleanMatchedUsers($match_id);
-                $ret['debug'] .= p($retMM,1);
+
                 
                 // clean MatchDetails
                 $retMD = Matchdetail::deleteMatchdetails($match_id);
-                $ret['debug'] .= p($retMD,1);
                 
                 // clean created Match
                 $retM = Match::deleteCreatedMatch($match_id);
-                $ret['debug'] .= p($retM,1);
+
                 
                 // clean Host of Match
                 $retHFM = Matchhost::deleteHost($match_id);
-                $ret['debug'] .= p($retHFM,1);
+
                 
                 // prio Queue resetten für bestimmte faelle
                 switch($reason){
@@ -47,78 +46,29 @@ class MatchmakingController extends BaseController {
 		}
 	}
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-        return View::make('matchmakings.index');
+	public function acceptMatch(){
+		$ret = array();
+		if(Auth::check()){
+			if (Request::ajax()){
+				$user_id = Auth::user()->id;
+				Matched_user::setReadyForUser($user_id);
+
+				$ret['status'] = true;
+			}
+		}
+		return $ret;
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-        return View::make('matchmakings.create');
+	public function checkAllReadyForMatch(){
+		$ret = array();
+		if(Auth::check()){
+			if (Request::ajax()){
+				$match_id = Input::get("match_id");
+				$count = Matched_user::getReadyCount($match_id);
+				$ret['countReady'] = (int) $count;
+				$ret['status'] = true;
+			}
+		}
+		return $ret;
 	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-        return View::make('matchmakings.show');
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-        return View::make('matchmakings.edit');
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
 }

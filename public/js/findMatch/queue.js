@@ -1,5 +1,6 @@
 var timePulling = 3000;
 var waitingTime4AcceptReady = 15000;
+var waitingTime4AllReady = 20000;
 
 $( document ).ready(function() {
 	if (document.URL.indexOf("/find_match") >= 0) {
@@ -41,28 +42,28 @@ function getJustCM(){
 					});
 						break;
 						case "queueLock":
-						var time = checkResult.time;
+						var time = result.time;
 						text = "<div align='center'><h4>You just declined a match or you were afk!</h4>" + "<p>You can't queue for <strong>" + time + "</strong>. Please be ready next time.</p></div>";
 
 						bootbox.alert(text, function() {
-							window.location = "find_match.php";
+							
 						});
 						break;
 						case "banned":
 						var rejoin = getParameterByName("rejoin");
 						if(rejoin != "true"){
-							var banCounts = checkResult.banCounts;
-							if (checkResult.banned) {
-								var bannedTillTimestamp = checkResult.data.BannedTill;
-								var bannedAtTimestamp = checkResult.data.BannedAt;
+							var banCounts = result.banCounts;
+							if (result.banned) {
+								var bannedTillTimestamp = result.data.BannedTill;
+								var bannedAtTimestamp = result.data.BannedAt;
 								var bannedAt = new Date(bannedAtTimestamp * 1000).format('d.m.Y - H:i:s');
 								var bannedTill = new Date(bannedTillTimestamp * 1000).format('d.m.Y - H:i:s');
 								l(bannedTill);
 
-								var bannedBy = checkResult.bannData.Reason + " - <img src='" + checkResult.bannData.Avatar + "'><a href='profile.php?ID=" + checkResult.bannData.BannedBySteamID + "'>"
-								+ checkResult.bannData.Name + "</a>";
+								var bannedBy = result.bannData.Reason + " - <img src='" + checkResult.bannData.Avatar + "'><a href='profile.php?ID=" + checkResult.bannData.BannedBySteamID + "'>"
+								+ result.bannData.Name + "</a>";
 
-								var banReasonText = checkResult.data.BanReasonText;
+								var banReasonText = result.data.BanReasonText;
 								var text = "<div align='center'><h4>You got warned " + bannedBy + "</h4> " + "<p>at " + bannedAt + " till " + bannedTill + "</p>" + "<p class='well'>" + banReasonText + "</p>"
 								+ "<h3>It is your " + banCounts + ". warn!</h3>" + "<p>Until then you cant join normal Queue and stay in Prison-Queue! Try be more mannered next time.</p></div>";
 
@@ -223,13 +224,15 @@ function doMatchmaking(modes, matchtype_id, quickJoin){
 								interval : 500
 							});
 
+							$('.modal').modal('hide');
+
 							setTimeout(function() {
 									// aktuelles Modal schlie�en und
 									// ReadyMatchModal
 									// �ffnen
-									$("#generalModal").modal("hide");
+									
 									matchWasFound(result.match_id, quickJoin, matchtype_id);
-								}, 1000);
+								}, 500);
 						}
 						else if (result.status == "notInQueue") {
 							setConfirmUnload(false);
@@ -274,7 +277,7 @@ function matchWasFound(match_id, quickJoin, matchtype_id) {
 		$('#matchMakingClock').stopwatch('reset');
 		$('#matchMakingClock').stopwatch('stop');
 		$('#matchMakingClock').html("");
-		
+
 		$.ajax({
 			url : "find_match/getReadyMatch",
 			type : "GET",
@@ -423,4 +426,203 @@ function leaveQueue(){
 			$(".modal").modal("hide");
 		}
 	});
+}
+
+function acceptMatch(match_id, quickJoin, matchtype_id){
+	$('.modal').modal('hide');
+	$("#generalModal").on('hidden.bs.modal', function (e) {
+	 $.ajax({
+			url : 'find_match/acceptMatch',
+			type : "POST",
+			dataType : 'json',
+			success : function(result) {
+
+				if (result.status == true) {
+						$.ajax({
+							url : 'find_match/getWaitingForOtherUsers',
+							type : "GET",
+							dataType : 'json',
+							data : {
+								matchtype_id : matchtype_id
+							},
+							success : function(html_data) {
+								$('#generalModal .modal-content').html(html_data.html);
+
+								$("#spanWaitingMatchID").html(match_id);
+								
+								// show Waiting for all Ready Modal
+								$('#generalModal').modal({
+										backdrop : "static",
+										keyboard : false
+								});
+
+								// Countdown anwerfen
+								$("#generalModal span.countdown").stop(true);
+								$("#generalModal span.countdown").html("");
+								waitingDauer = waitingTime4AllReady / 1000;
+								$("#generalModal span.countdown").countDown({
+									startNumber : waitingDauer,
+									startFontSize : "20px",
+									endFontSize : "20px",
+								});
+								
+								checkAllReadyForMatch(match_id, 0, quickJoin, matchtype_id);
+							}
+						});
+					
+						
+				}
+				else {
+					l("accept Match failed");
+
+				}
+				l("acceptMatch2 End");
+			}
+		});
+	});
+	
+
+}
+
+var iterationTime = 2000;
+var runnedTimeout = null;
+function checkAllReadyForMatch(match_id, runnedTime, quickJoin, matchtype_id) {
+	l("Start checkAllReadyForMatch2");
+	// wenn noch gewartet werden kann, dann nochmal suchen
+	if (runnedTime <= waitingTime4AllReady) {
+
+		$.ajax({
+			url : 'find_match/checkAllReadyForMatch',
+			type : "GET",
+			dataType : 'json',
+			data : {
+				match_id : match_id
+			},
+			success : function(result) {
+				l("getCountsOfReadyPlayer success");
+				if (result.status == true) {
+
+					badges = $("#generalModal span[class*='label']");
+	
+					countReady = result.countReady;
+
+					l("count:" + countReady);
+
+					runnedTimeout = null;
+					
+					switch(matchtype_id){
+						// wenn 1vs1 Queueu -> dann count 2 ausreichend
+						case 2:
+							// haben alle auf Ready geklickt?
+							if (countReady == 2) {
+								l("2 gefunden!");
+								$('.modal').modal('hide');
+
+								// timeout clearen
+								clearTimeout(runnedTimeout);
+								runnedTimeout = null;
+
+								// Host von Lobby festlegen
+								setLobbyHostForMatch(match_id);
+
+								// SeitenWarnung daktivieren
+								setConfirmUnload(false);
+
+								// Umleitung auf Match-Seite
+								setTimeout(function() {
+									window.location = "match/" + match_id;
+									// l("UMLEITUNG");
+								}, 1000);
+							}
+
+							// irgendjemand bereits abgebrochen
+							else if (countReady == null || countReady == 0) {
+								// timeout clearen
+								clearTimeout(runnedTimeout);
+								runnedTimeout = null;
+								kickFromQueue(match_id, "autoKickAfterAccept", quickJoin, false, matchtype_id);
+							}
+							// noch nciht alle auf Ready geklickt
+							else {
+								var i = 0;
+								$(badges).each(function() {
+									if (i < countReady) {
+										$(this).attr("class", "label label-success");
+									}
+									i++;
+								});
+								// Rekursion und runnedTime erhï¿½hen
+								runnedTime += iterationTime;
+								runnedTimeout = setTimeout(function() {
+									checkAllReadyForMatch(match_id, runnedTime, quickJoin, matchtype_id);
+								}, iterationTime);
+
+							}
+							break;
+						// alle anderen matchTypes 5vs5 und so
+						default:
+							// haben alle auf Ready geklickt?
+							if (countReady == 10) {
+								$('.modal').modal('hide');
+
+								// timeout clearen
+								clearTimeout(runnedTimeout);
+								runnedTimeout = null;
+
+								// Host von Lobby festlegen
+								setLobbyHostForMatch(match_id);
+
+
+								// SeitenWarnung daktivieren
+								setConfirmUnload(false);
+
+								// Umleitung auf Match-Seite
+								setTimeout(function() {
+									window.location = "match/" + match_id;
+									// l("UMLEITUNG");
+								}, 1000);
+							}
+
+							// irgendjemand bereits abgebrochen
+							else if (countReady == null || countReady == 0) {
+								// timeout clearen
+								clearTimeout(runnedTimeout);
+								runnedTimeout = null;
+								kickFromQueue(match_id, "autoKickAfterAccept", quickJoin, false, matchtype_id);
+							}
+							// noch nciht alle auf Ready geklickt
+							else {
+
+								// Badges einfï¿½rben, je nachdem wie viele
+								// Player
+								// akzeptiert haben
+								var i = 0;
+								$(badges).each(function() {
+									if (i < countReady) {
+										$(this).attr("class", "label label-success");
+									}
+									i++;
+								});
+
+								// Rekursion und runnedTime erhï¿½hen
+								runnedTime += iterationTime;
+
+								runnedTimeout = setTimeout(function() {
+									l("singleQueue5vs5 rekursion");
+									checkAllReadyForMatch(match_id, runnedTime, quickJoin, matchtype_id);
+								}, iterationTime);
+
+							}
+					}		
+				}
+			}
+		});
+
+	}
+	// zu lange gewartet, Match abbrechen, Player aus QUeue hauen und
+	// MatchTeam/Match lï¿½schen
+	else {
+		//kickFromQueue(match_id, "autoKickAfterAccept", quickJoin, false, matchtype_id);
+	}
+	l("End checkAllReadyForMatch2");
 }
