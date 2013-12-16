@@ -1,6 +1,7 @@
 $(function(){
 	if (document.URL.indexOf("/admin") >= 0) {
 		initInsertInQueueButtons();
+		initSetAllReadyButton();
 	}
 });
 
@@ -19,6 +20,24 @@ function initInsertInQueueButtons(){
 				success : function(result) {
 					l(result);
 					$("#insertRandomUserinQueueResponse").html(result.status);
+				}
+		});
+	});
+}
+
+function initSetAllReadyButton(){
+	$("#setAllReadyButton").click(function(){
+		var match_id = $("#submitAllMatchAcceptMatchID").val();
+		$.ajax({
+				url : "admin/queue/setAllReady",
+				type : "POST",
+				dataType : 'json',
+				data : {
+					match_id : match_id
+				},
+				success : function(result) {
+					l(result);
+					$("#submitAllMatchAcceptResponse").html(result.status);
 				}
 		});
 	});

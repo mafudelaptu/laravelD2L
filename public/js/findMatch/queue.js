@@ -569,10 +569,6 @@ function checkAllReadyForMatch(match_id, runnedTime, quickJoin, matchtype_id) {
 								clearTimeout(runnedTimeout);
 								runnedTimeout = null;
 
-								// Host von Lobby festlegen
-								setLobbyHostForMatch(match_id);
-
-
 								// SeitenWarnung daktivieren
 								setConfirmUnload(false);
 

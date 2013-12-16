@@ -45,6 +45,11 @@ Route::group(array('before' => 'auth'), function()
 		->with("title", $title);
 	});
 
+	Route::pattern('match_id', '[0-9]+');
+	//match
+	Route::get("match/{match_id}", "MatchesController@showMatch");
+
+
 	// ajax
 	// findMatch
 	Route::post("find_match/checkJoinQueue", array('before' => 'csrf', 'uses' => 'GameQueuesController@checkJoinQueue'));
@@ -65,6 +70,8 @@ Route::group(array('before' => 'auth'), function()
 	//matchmode
 	Route::get("matchmodes/getQuickJoinModes", array('before' => 'csrf', 'uses' => 'MatchmodesController@getQuickJoinModes'));
 
+
+
 	/* 
 	// Admin
 	*/
@@ -72,6 +79,7 @@ Route::group(array('before' => 'auth'), function()
 		Route::get("admin", "AdminController@home");
 
 		Route::post("admin/queue/insertInQueue", "GameQueuesController@insertRandomUserIntoQueue");
+		Route::post("admin/queue/setAllReady", "Matched_usersController@setAllReady");
 
 	});
 

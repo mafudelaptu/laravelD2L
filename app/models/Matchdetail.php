@@ -36,4 +36,15 @@ class Matchdetail extends Eloquent {
 			return false;
 		}
 	}
+
+	public static function checkResultSubmitted($match_id, $user_id){
+		$ret = false;
+		$data = Matchdetail::where("match_id", $match_id)->where("user_id", $user_id)->first();
+		if(!empty($data)){
+			if($data->submitted > 0){
+				$ret = true;
+			}
+		}
+		return $ret;
+	}
 }

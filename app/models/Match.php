@@ -41,14 +41,14 @@ class Match extends Eloquent {
 		}
 		else{
 			$user = DB::table("matches")->join('matchdetails', 'matches.id', '=', 'matchdetails.match_id')
-						->where("matchdetails.user_id", $user_id)
-						->where("matchdetails.submitted", "0")
-						->where("matchdetails.submissionFor", "0")
-						->where("matchdetails.sub_date", "0")
-						->where("matches.team_won_id", "0")
-						->where("matches.canceled", "0")
-						->where("matches.check", "0")
-						->where("matches.closed", "0")->get();
+			->where("matchdetails.user_id", $user_id)
+			->where("matchdetails.submitted", "0")
+			->where("matchdetails.submissionFor", "0")
+			->where("matchdetails.sub_date", "0")
+			->where("matches.team_won_id", "0")
+			->where("matches.canceled", "0")
+			->where("matches.check", "0")
+			->where("matches.closed", "0")->get();
 			if(!empty($user)){
 				return true;
 			}
@@ -60,7 +60,7 @@ class Match extends Eloquent {
 
 	public static function deleteCreatedMatch($match_id){
 		return DB::table("matches")->where("id", $match_id)
-					->delete();
+		->delete();
 	}
 
 	public static function createNewMatch($matchtype_id, $matchmode_id, $region_id){
@@ -80,4 +80,33 @@ class Match extends Eloquent {
 		return $id; 
 	}
 
+	public static function getStateOfMatch($match_id, $user_id){
+		$ret = array();
+
+		$matchData = Match::getMatchData($match_id)->first();
+
+		if(!empty($matchData)){
+			if($matchData->team_won_id === 0){
+				$submitted = Matchdetail::checkResultSubmitted($match_id, $user_id);				
+				
+				if($submitted){
+					$ret['status'] = "submitted";
+				}
+				else{
+					$ret['status'] = "open";
+				}
+			}
+			elseif($matchData->team_won_id > 0){
+				$ret['status'] = "closed";
+			}
+		}
+		else{
+			$ret['status'] = "noMatch";
+		}
+		return $ret;
+	}
+
+	public static function getMatchData($match_id){
+		$ret = Match::where("match_id", $match_id);
+	}
 }

@@ -1,7 +1,19 @@
 <?php
 
 class Matched_usersController extends BaseController {
+	public function setAllReady(){
+		$ret = array();
+		if(Auth::check()){
+			if (Request::ajax()){
+				$match_id = Input::get("match_id");
 
+				Matched_user::setAllReady($match_id);
+
+				$ret['status'] = true;
+			}
+		}
+		return $ret;
+	}
 	/**
 	 * Display a listing of the resource.
 	 *

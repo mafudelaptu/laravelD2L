@@ -80,4 +80,8 @@ class Matched_user extends Eloquent {
 		$ret = Matched_user::where("match_id", $match_id)->where("ready", 1)->count();
 		return $ret;
 	}
+
+	public static function setAllReady($match_id){
+		Matched_user::where("match_id", $match_id)->update(array("ready" => 1));
+	}
 }

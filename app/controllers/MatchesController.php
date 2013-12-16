@@ -2,6 +2,20 @@
 
 class MatchesController extends BaseController {
 
+	protected $layout = "master";
+	protected $title = "Match";
+
+	public function showMatch($match_id){
+		$this->layout->title = $this->title;
+
+		$contentData = array(
+			"heading" => $this->title,
+			"match_id" => $match_id,
+			"matchState" => "",
+			);
+		$this->layout->nest("content", 'matches.match.index', $contentData);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
