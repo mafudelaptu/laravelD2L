@@ -11,7 +11,8 @@ class Usercredit extends Eloquent {
 		$ret = array();
 		if($user_id > 0){
 
-			$sum = DB::table("usercredits")->where("user_id", $user_id)->sum("vote")->remember(10);
+			$sum = DB::table("usercredits")->where("user_id", $user_id)
+						->sum("vote");
 
 			if($sum > 0){
 				return $sum;
@@ -20,7 +21,6 @@ class Usercredit extends Eloquent {
 			else{
 				return 0;
 			}
-			
 		}
 		else{
 			return "user_id = 0";

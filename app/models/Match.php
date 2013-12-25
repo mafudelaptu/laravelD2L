@@ -106,8 +106,20 @@ class Match extends Eloquent {
 		return $ret;
 	}
 
-	public static function getMatchData($match_id){
-		$ret = Match::where("id", $match_id);
+	public static function getMatchData($match_id, $matchmodeData=false, $regionData=false){
+		$ret = Match::where("matches.id", $match_id);
+		if($matchmodeData){
+			$ret = $ret->join("matchmodes", "matchmodes.id", "=", "matches.matchmode_id")
+							->select("matchmodes.name as matchmode")
+							->select("matchmodes.shortcut as mm_shortcut")
+							->select("matchmodes.descr as mm_descr");
+		}
+		if($regionData){
+			$ret = $ret->join("regions", "regions.id", "=", "matches.region_id")
+							->select("regions.name as region")
+							->select("regions.shortcut as r_shortcut");
+		}
+
 		return $ret;
 	}
 
