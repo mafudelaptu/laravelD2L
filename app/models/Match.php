@@ -121,7 +121,7 @@ class Match extends Eloquent {
 				$gameStats = Userpoint::getGameStats($user_id, $matchtype_id);
 				$skillbracket_id = Userskillbracket::getSkillbracket($user_id, $matchtype_id, true)->first()->id;
 				$skillbrackettypeData = Skillbrackettype::getData($skillbracket_id)->first();
-				
+
 				$tmp["user_id"] = $user_id;
 				$tmp["name"] = $detail->name;
 				$tmp["avatar"] = $detail->avatar;
@@ -135,6 +135,47 @@ class Match extends Eloquent {
 				$ret[] = $tmp;
 			}
 		}
+		return $ret;
+	}
+
+	public static function playerLeftTheMatch($user_id, $match_id){
+		$ret = array();
+
+		$ret['debug'] .= "Start playerLeftTheMatch <br>\n";
+		if($user_id > 0 && $match_id > 0){
+			
+			// $sql = "SELECT Count(VoteForPlayer) as Count, VoteForPlayer
+			// 		FROM `MatchDetailsLeaverVotes`
+			// 		WHERE MatchID = ".(int) $matchID." AND VoteForPlayer = ".secureNumber($steamID)."
+			// 				GROUP BY VoteForPlayer;
+			// 				";
+			// $data = $DB->select($sql);
+
+			// $sql = "SELECT Count(VoteForPlayer) as Count, VoteForPlayer
+			// 		FROM `MatchDetailsCancelMatchVotes`
+			// 		WHERE MatchID = ".(int) $matchID." AND VoteForPlayer = ".secureNumber($steamID)."
+			// 				GROUP BY VoteForPlayer;
+			// 				";
+			// $data2 = $DB->select($sql);
+
+			// if($data['Count'] >= $this->leaverGrenze || $data2['Count'] >= $this->leaverGrenze){
+			// 	$MatchDetails = new MatchDetails();
+			// 	$data2 = $MatchDetails->getMatchDetailsDataOfPlayer($matchID, $steamID);
+			// 	$ret['data'] = $data2['data'];
+			// 	$ret['left'] = true;
+			// }
+			// else{
+			// 	$ret['left'] = false;
+			// }
+
+			// $ret['status'] = true;
+		}
+		else{
+			$ret['status'] = "steamID = 0 or matchid = 0";
+		}
+
+		$ret['debug'] .= "End playerLeftTheMatch <br>\n";
+
 		return $ret;
 	}
 }

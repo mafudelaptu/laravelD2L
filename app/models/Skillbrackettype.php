@@ -9,4 +9,8 @@ class Skillbrackettype extends Eloquent {
 		'losepoints' => 'required',
 		'active' => 'required'
 	);
+
+	public static function getData($skillbrackettype_id){
+		return Skillbrackettype::where("id", $skillbrackettype_id);
+	}
 }
