@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('UsercreditsTableSeeder');
 		$this->call('SkillbrackettypesTableSeeder');
 		$this->call('MatchhostsTableSeeder');
+		$this->call('UservotecountsTableSeeder');
 	}
 
 }

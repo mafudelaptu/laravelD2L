@@ -155,3 +155,5 @@ Route::resource('skillbrackettypes', 'SkillbrackettypesController');
 Route::resource('queuelocks', 'QueuelocksController');
 
 Route::resource('matchhosts', 'MatchhostsController');
+
+Route::resource('uservotecounts', 'UservotecountsController');

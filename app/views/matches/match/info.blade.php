@@ -1,20 +1,20 @@
 <div class="row">
 	 @if($matchState != "closed")
 	 	@if($host->user_id == Auth::user()->id)
-	 		<div class="span8">
+	 		<div class="col-sm-8">
 				<div class="alert alert-info">
 					<strong>You are Host of this Match! <br></strong>
 					Now go into Dota2 and create a <strong>lobby</strong>. Therefore
 					click on <i>"Play"</i> -> <i>"create Lobby"</i>. Set the password to
-					the current MatchID: <strong>{$match_id}</strong>, the Matchmode to <strong>{{$matchData.MatchMode}}</strong>
-					and Region to <strong>{{$matchData.Region}}</strong>
+					the current MatchID: <strong>{$match_id}</strong>, the Matchmode to <strong>{{$matchData->matchmode}}</strong>
+					and Region to <strong>{{$matchData->region}}</strong>
 				</div>
 			</div>
 	 	@else
 	 		@if($host->user_id > 0)
-	 			<div class="span8">
+	 			<div class="col-sm-8">
 					<div class="alert alert-info">
-						Host of this Match is <img alt="Avatar" src="{$data.matchdetails.hostAvatar}" width="25" height="25">{$data.matchdetails.hostName}. The Lobby password is <strong>{$matchID}</strong>
+						Host of this Match is <img alt="Avatar" src="{{$host->avatar}}" width="25" height="25">&nbsp;{{$host->name}}. The Lobby password is <strong>{{$match_id}}</strong>
 					</div>
 				</div>
 	 		@endif
@@ -22,11 +22,11 @@
 	 @endif
 
 	 @if($inMatch)
-	     <div class="span4">
+	     <div class="col-sm-4">
 			<blockquote class="pull-right">
 				<p>
-					You have <span id="userUpvotesLeft">{$userVotesAllowed.upvotesCount}</span>
-					Upvotes and <span id="userDownvotesLeft">{$userVotesAllowed.downvotesCount}</span>
+					You have <col-sm- id="userUpvotesLeft">{$userVotesAllowed.upvotesCount}</col-sm->
+					Upvotes and <col-sm- id="userDownvotesLeft">{$userVotesAllowed.downvotesCount}</col-sm->
 					Downvotes left
 				</p>
 				<small><a href="help.php#WhatIsTheCreditSystem"
