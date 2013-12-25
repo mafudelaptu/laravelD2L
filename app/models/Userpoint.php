@@ -16,10 +16,10 @@ class Userpoint extends Eloquent {
 			case 1:
 				$points = $points->where(function($query){
 					$query->where("matchtype_id", 0)->orWhere("matchtype_id", 1);
-				});
+				})->remember(10);
 			break;
 			default:
-				$points = $points->where("matchtype_id", $matchtype_id);
+				$points = $points->where("matchtype_id", $matchtype_id)->remember(10);
 		}
 		$points = $points->sum("pointschange");
 		$ret = $basePoints+$points;
@@ -38,19 +38,19 @@ class Userpoint extends Eloquent {
 			// Wins
 			$data = Userpoint::where("user_id",$user_id)
 								->where("pointstype_id", 1)
-								->where("matchtype_id", $matchtype_id);
+								->where("matchtype_id", $matchtype_id)->remember(10);
 			$wins = (int) $data->count();
 
 			// Losses
 			$data = Userpoint::where("user_id",$user_id)
 								->where("pointstype_id", 2)
-								->where("matchtype_id", $matchtype_id);
+								->where("matchtype_id", $matchtype_id)->remember(10);
 			$losses = (int) $data->count();
 
 			// Leaves
 			$data = Userpoint::where("user_id",$user_id)
 								->where("pointstype_id", 5)
-								->where("matchtype_id", $matchtype_id);
+								->where("matchtype_id", $matchtype_id)->remember(10);
 			$leaves = (int) $data->count();
 
 			$totalGames = (int) $wins+$losses;

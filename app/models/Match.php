@@ -77,7 +77,7 @@ class Match extends Eloquent {
 
 		$id = DB::table("matches")->insertGetId($insertArray);
 
-		return $id; 
+		return $id;
 	}
 
 	public static function getStateOfMatch($match_id, $user_id){
@@ -107,6 +107,34 @@ class Match extends Eloquent {
 	}
 
 	public static function getMatchData($match_id){
-		$ret = Match::where("match_id", $match_id);
+		$ret = Match::where("id", $match_id);
+		return $ret;
+	}
+
+	public static function getPlayersData($matchdetailsData, $matchtype_id){
+		$ret = array();
+		if(!empty($matchdetailsData)){
+			foreach ($matchdetailsData as $key => $detail) {
+				$tmp = array();
+				$user_id = $detail->user_id;
+
+				$gameStats = Userpoint::getGameStats($user_id, $matchtype_id);
+				$skillbracket_id = Userskillbracket::getSkillbracket($user_id, $matchtype_id, true)->first()->id;
+				$skillbrackettypeData = Skillbrackettype::getData($skillbracket_id)->first();
+				
+				$tmp["user_id"] = $user_id;
+				$tmp["name"] = $detail->name;
+				$tmp["avatar"] = $detail->avatar;
+				$tmp["stats"] = $gameStats['data'];
+				$tmp['points'] = (int) $detail->points;
+				$tmp['team_id'] = $detail->team_id;
+				$tmp['winPoints'] = $skillbrackettypeData->winpoints;
+				$tmp['losePoints'] = $skillbrackettypeData->losepoints;
+				$tmp['credits'] = Usercredit::getCreditCount($user_id);
+
+				$ret[] = $tmp;
+			}
+		}
+		return $ret;
 	}
 }

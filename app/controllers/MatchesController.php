@@ -7,12 +7,24 @@ class MatchesController extends BaseController {
 
 	public function showMatch($match_id){
 		$this->layout->title = $this->title;
+		$user_id = Auth::user()->id;
+		$matchStateData = Match::getStateOfMatch($match_id, $user_id);
+		$matchData = Match::getMatchData($match_id)->first();
+		$matchdetailsData = Matchdetail::getMatchdetailData($match_id, true)->get();
+
+		$matchPlayersData = Match::getPlayersData($matchdetailsData, $matchData->matchtype_id);
 
 		$contentData = array(
 			"heading" => $this->title,
 			"match_id" => $match_id,
-			"matchState" => "",
+			"matchState" => $matchStateData['status'],
+			"inMatch" => Match::isUserInMatch($user_id, $match_id),
+			"host" => Matchhost::getHost($match_id, true)->first(),
+			"matchdetails" => $matchdetailsData,
+			"matchPlayersData" => $matchPlayersData,
+			"matchData" => $matchData,
 			);
+		dd($contentData);
 		$this->layout->nest("content", 'matches.match.index', $contentData);
 	}
 

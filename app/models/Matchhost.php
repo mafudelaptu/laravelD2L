@@ -29,4 +29,16 @@ class Matchhost extends Eloquent {
 
 		DB::table("matchhosts")->insert($insArray);
 	}
+
+	public static function getHost($match_id, $userData=false){
+		if($userData == true){
+			$ret = Matchhost::where("match_id", $match_id)
+								->join("users", "users.id", "=", "matchhosts.user_id");
+		}
+		else{
+			$ret = Matchhost::where("match_id", $match_id);
+		}
+		
+		return $ret;
+	}
 }

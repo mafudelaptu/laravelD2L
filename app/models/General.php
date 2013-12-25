@@ -49,4 +49,15 @@ class General {
 		}
 		return $ret;
 	}
+
+	public static function calculateWinRate($wins, $losses){
+		$ret = 0;
+		$wins = (int) $wins;
+		$losses = (int) $losses;
+
+		if ($wins+$losses > 0){
+			$ret = round(($wins/(($wins+$losses)*100)),2);
+		}
+		return $ret;
+	}
 }

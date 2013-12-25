@@ -47,4 +47,18 @@ class Matchdetail extends Eloquent {
 		}
 		return $ret;
 	}
+
+	public static function getMatchdetailData($match_id, $userData=false){
+		if($userData == true){
+			$ret = Matchdetail::where("match_id", $match_id)
+								->join('users', 'users.id', '=', 'matchdetails.user_id')
+								->remember(10);
+		}
+		else{
+			$ret = Matchdetail::where("match_id", $match_id)
+								->remember(10);
+		}
+		
+		return $ret;
+	}
 }
