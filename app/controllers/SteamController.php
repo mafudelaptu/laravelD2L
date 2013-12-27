@@ -61,10 +61,15 @@ class SteamController extends \BaseController{
 			$user = User::find($steam_id);
 
 			Auth::login($user);
+
+			// set init uservotecounts
+			Uservotecount::initUserVoteCounts($user->id);
 		}
 
 		// set first Skillbrackets
 		Userskillbracket::setSkillbrackets($steam_id);
+		// set init uservotecounts
+		Uservotecount::initUserVoteCounts($user->id);
 		
 		return Redirect::to("/");
 	}

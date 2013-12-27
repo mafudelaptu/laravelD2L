@@ -6,6 +6,7 @@ class Matchdetail extends Eloquent {
 	public static $rules = array();
 
 	protected $table = "matchdetails";
+	protected $primaryKey = array("match_id", "user_id");
 	public $timestamps = false;
 
 	public static function deleteMatchdetails($match_id){
@@ -48,17 +49,24 @@ class Matchdetail extends Eloquent {
 		return $ret;
 	}
 
-	public static function getMatchdetailData($match_id, $userData=false){
+	public static function getMatchdetailData($match_id, $userData=false, $getPointChanges=false){
 		if($userData == true){
-			$ret = Matchdetail::where("match_id", $match_id)
-								->join('users', 'users.id', '=', 'matchdetails.user_id')
-								->remember(10);
+			$ret = Matchdetail::where("matchdetails.match_id", $match_id)
+								->leftJoin('users', 'users.id', '=', 'matchdetails.user_id')
+								;
 		}
 		else{
-			$ret = Matchdetail::where("match_id", $match_id)
-								->remember(10);
+			$ret = Matchdetail::where("matchdetails.match_id", $match_id)
+								;
 		}
-		
+
+		if($getPointChanges){
+			$ret = $ret->leftJoin("userpoints", function($join){
+				$join->on("userpoints.user_id","=", "matchdetails.user_id")
+						->on("userpoints.match_id","=", "matchdetails.match_id");
+			});
+		}
+
 		return $ret;
 	}
 }

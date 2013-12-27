@@ -57,4 +57,51 @@ class GlobalSetting extends Eloquent {
 			return 0;
 		}
 	}
+
+	public static function getWeeklyUpvoteCount(){
+		$ret = GlobalSetting::where("id", 6)->remember(60)->first();
+		if($ret->active == 1){
+			return (int) $ret->value;
+		}
+		else{
+			return 0;
+		}
+	}
+
+	public static function getWeeklyDownvoteCount(){
+		$ret = GlobalSetting::where("id", 7)->remember(60)->first();
+		if($ret->active == 1){
+			return (int) $ret->value;
+		}
+		else{
+			return 0;
+		}
+	}
+
+	public static function getCreditBorders(){
+		$ret = GlobalSetting::where("id", 8)
+								->orWhere("id", 9)
+								->orWhere("id", 10)
+								->remember(60)
+								->get();
+		if(!empty($ret)){
+			$borderArray = array();
+			foreach ($ret as $key => $credit) {
+				if ($credit->id == 8) {
+					$borderArray["bronze"] = $credit->value;
+				}
+				elseif ($credit->id == 9) {
+					$borderArray["silver"] = $credit->value;	
+				}
+				else{
+					$borderArray["gold"] = $credit->value;
+				}
+			}
+			return $borderArray;
+		}
+		else{
+			return null;
+		}
+	}
+
 }

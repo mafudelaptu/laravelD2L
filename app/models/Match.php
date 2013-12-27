@@ -107,17 +107,12 @@ class Match extends Eloquent {
 	}
 
 	public static function getMatchData($match_id, $matchmodeData=false, $regionData=false){
-		$ret = Match::where("matches.id", $match_id);
+		$ret = Match::where("matches.id", $match_id)->select("matches.*");
 		if($matchmodeData){
-			$ret = $ret->join("matchmodes", "matchmodes.id", "=", "matches.matchmode_id")
-							->select("matchmodes.name as matchmode")
-							->select("matchmodes.shortcut as mm_shortcut")
-							->select("matchmodes.descr as mm_descr");
+			$ret = $ret->join("matchmodes", "matchmodes.id", "=", "matches.matchmode_id");
 		}
 		if($regionData){
-			$ret = $ret->join("regions", "regions.id", "=", "matches.region_id")
-							->select("regions.name as region")
-							->select("regions.shortcut as r_shortcut");
+			$ret = $ret->join("regions", "regions.id", "=", "matches.region_id");
 		}
 
 		return $ret;
@@ -128,8 +123,8 @@ class Match extends Eloquent {
 		if(!empty($matchdetailsData)){
 			foreach ($matchdetailsData as $key => $detail) {
 				$tmp = array();
-				$user_id = $detail->user_id;
-
+				$user_id = $detail['user_id'];
+				
 				$gameStats = Userpoint::getGameStats($user_id, $matchtype_id);
 				$skillbracket_id = Userskillbracket::getSkillbracket($user_id, $matchtype_id, true)->first()->id;
 				$skillbrackettypeData = Skillbrackettype::getData($skillbracket_id)->first();
@@ -143,8 +138,9 @@ class Match extends Eloquent {
 				$tmp['winPoints'] = $skillbrackettypeData->winpoints;
 				$tmp['losePoints'] = $skillbrackettypeData->losepoints;
 				$tmp['credits'] = Usercredit::getCreditCount($user_id);
-
-				$ret[] = $tmp;
+				$tmp['pointschange'] = $detail->pointschange;
+				
+				$ret[$detail->team_id][] = $tmp;
 			}
 		}
 		return $ret;

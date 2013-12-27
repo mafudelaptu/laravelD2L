@@ -12,6 +12,7 @@
 	{{ HTML::style("css/main.css")}}
 	{{ HTML::style("css/findMatch/queueStats.css")}}
 	{{ HTML::style("css/findMatch/modal.css")}}
+	{{ HTML::style("css/match/match.css")}}
 </head>
 <body>
 	<div class="main-container">

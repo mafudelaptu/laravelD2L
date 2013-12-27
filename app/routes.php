@@ -98,6 +98,8 @@ if(Config::get('app.debug') == true){
 		//var_dump($fakeUser->id);
 		// set first Skillbrackets
 		Userskillbracket::setSkillbrackets($user->id);
+		// set init uservotecounts
+		Uservotecount::initUserVoteCounts($user->id);
 		
 		return Redirect::to("/");
 	});
@@ -157,3 +159,5 @@ Route::resource('queuelocks', 'QueuelocksController');
 Route::resource('matchhosts', 'MatchhostsController');
 
 Route::resource('uservotecounts', 'UservotecountsController');
+
+Route::resource('teams', 'TeamsController');

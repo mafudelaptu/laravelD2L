@@ -69,3 +69,37 @@ body{
 .footer a{
 	line-height: 50px;
 }
+
+.text-bronze{
+color: peru;
+text-shadow: 1px 1px 2px #999;
+}
+.text-silver{
+color: silver;
+text-shadow: 1px 1px 2px #666;
+}
+.text-gold{
+color: gold;
+text-shadow: 1px 1px 2px #666;
+}
+
+.clearer{
+	clear:both;
+}
+
+.badge-danger{
+	background-color: #d9534f;
+}
+.badge-primary{
+	background-color: #428bca;
+}
+
+.badge-warning{
+	background-color: #f0ad4e;
+}
+.badge-info{
+	background-color: #5bc0de;
+}
+.badge-success{
+	background-color: #5cb85c;
+}

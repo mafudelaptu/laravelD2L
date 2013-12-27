@@ -13,6 +13,11 @@ class GlobalsettingsTableSeeder extends Seeder {
 			array("name" => "DuoJoin","value" => "","active" => 0, "created_at" => new DateTime, "updated_at" => new DateTime),
 			array("name" => "justCM","value" => "","active" => 0, "created_at" => new DateTime, "updated_at" => new DateTime),
 			array("name" => "QueueLockTime","value" => "180","active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
+			array("name" => "WeeklyUpvoteCount","value" => "10","active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
+			array("name" => "WeeklyDownvoteCount","value" => "5","active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
+			array("name" => "CreditBronzeBorder","value" => "25","active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
+			array("name" => "CreditSilverBorder","value" => "125","active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
+			array("name" => "CreditGoldBorder","value" => "250","active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
 		);
 
 		// Uncomment the below to run the seeder

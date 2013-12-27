@@ -2,7 +2,10 @@
     <h1>{{$heading}} <small>MatchID:{{$match_id}}</small></h1>
     @if(!empty($matchPlayersData))
     	 @include("matches.match.info")
-    	 test
+    	 @include("matches.match.team", array('data' => $matchPlayersData[1], "team_id" => 1))
+    	 @include("matches.match.middle_area", array('matchmode' => $matchData['matchmode'], "region" => $matchData['region'], "mm_shortcut" => $matchData['mm_shortcut'], "r_shortcut" => $matchData['r_shortcut']))
+
+    	 @include("matches.match.team", array('data' => $matchPlayersData[2], "team_id" => 2))
     @else
     	<p>access denied!</p>
     @endif

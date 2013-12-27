@@ -25,8 +25,8 @@
 	     <div class="col-sm-4">
 			<blockquote class="pull-right">
 				<p>
-					You have <col-sm- id="userUpvotesLeft">{$userVotesAllowed.upvotesCount}</col-sm->
-					Upvotes and <col-sm- id="userDownvotesLeft">{$userVotesAllowed.downvotesCount}</col-sm->
+					You have <span id="userUpvotesLeft">{{$voteCounts->upvotes}}</span>
+					Upvotes and <col-sm- id="userDownvotesLeft">{{$voteCounts->downvotes}}</span>
 					Downvotes left
 				</p>
 				<small><a href="help.php#WhatIsTheCreditSystem"

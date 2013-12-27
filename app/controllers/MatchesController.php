@@ -9,11 +9,17 @@ class MatchesController extends BaseController {
 		$this->layout->title = $this->title;
 		$user_id = Auth::user()->id;
 		$matchStateData = Match::getStateOfMatch($match_id, $user_id);
-		$matchData = Match::getMatchData($match_id, true, true)->first();
-		$matchdetailsData = Matchdetail::getMatchdetailData($match_id, true)->get();
+		$matchData = Match::getMatchData($match_id, true, true)
+						->select("matches.*", "matchmodes.name as matchmode", "matchmodes.shortcut as mm_shortcut",
+								"regions.name as region", "regions.shortcut as r_shortcut")
+						->first();
+		
+		$matchdetailsData = Matchdetail::getMatchdetailData($match_id, true, true)->orderBy("matchdetails.points")
+			->select("matchdetails.*", "users.*", "userpoints.pointschange")
+			->get();
 
 		$matchPlayersData = Match::getPlayersData($matchdetailsData, $matchData->matchtype_id);
-
+		
 		$contentData = array(
 			"heading" => $this->title,
 			"match_id" => $match_id,
@@ -22,7 +28,10 @@ class MatchesController extends BaseController {
 			"host" => Matchhost::getHost($match_id, true)->first(),
 			"matchPlayersData" => $matchPlayersData,
 			"matchData" => $matchData,
+			"voteCounts" => Uservotecount::getVoteCounts($user_id)->first(),
+			"team" => Team::getTeamsAsArray(),
 			);
+
 		// dd($contentData);
 		$this->layout->nest("content", 'matches.match.index', $contentData);
 	}
