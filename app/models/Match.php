@@ -145,7 +145,32 @@ class Match extends Eloquent {
 		}
 		return $ret;
 	}
+	public static function getAveragePointsOfTeams($matchdetailsData, $matchtype_id){
+		$ret = array("team_1"=>0, "team_2"=>0);
+		if(!empty($matchdetailsData) && $matchtype_id > 0){
+			$rank_team = 0;
+			for($i=1; $i<=2; $i++){
+					$elo_sum = 0;
 
+					foreach($matchdetailsData as $k => $v){
+						if($v->team_id == $i){
+
+						$elo_sum += $v->points;
+						}
+					}
+					switch($matchtype_id){
+						case "2":
+							$rank_team = (int) $elo_sum;
+							break;
+						default:
+							$rank_team = (int) $elo_sum / 5;
+					}
+
+					$ret['team_'.$i]= round($rank_team,0);
+				}
+		}
+		return $ret;
+	}
 	public static function playerLeftTheMatch($user_id, $match_id){
 		$ret = array();
 

@@ -30,6 +30,7 @@ class MatchesController extends BaseController {
 			"matchData" => $matchData,
 			"voteCounts" => Uservotecount::getVoteCounts($user_id)->first(),
 			"team" => Team::getTeamsAsArray(),
+			"teamStats" => Match::getAveragePointsOfTeams($matchdetailsData, $matchData->matchtype_id),
 			);
 
 		// dd($contentData);

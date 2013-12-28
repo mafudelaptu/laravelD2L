@@ -1,0 +1,759 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"sta",
+				"status"
+			],
+			[
+				"Match",
+				"Matchdetail"
+			],
+			[
+				"user_",
+				"user_id"
+			],
+			[
+				"match",
+				"match_id"
+			],
+			[
+				"mat",
+				"matchData"
+			],
+			[
+				"id",
+				"id"
+			],
+			[
+				"Matched",
+				"Matched_user"
+			],
+			[
+				"matchtypes",
+				"matchtypes"
+			],
+			[
+				"matchmode",
+				"matchmode_id"
+			],
+			[
+				"ma",
+				"matchmode_id"
+			],
+			[
+				"ret",
+				"retCount"
+			],
+			[
+				"ar",
+				"array	$… = array (…)"
+			],
+			[
+				"matched",
+				"matchedUsersArray"
+			],
+			[
+				"check",
+				"checkAlreadyExists"
+			],
+			[
+				"DB",
+				"DB-table	DB-table"
+			],
+			[
+				"cou",
+				"countTeam"
+			],
+			[
+				"team",
+				"team_id"
+			],
+			[
+				"reg",
+				"region_id"
+			],
+			[
+				"insert",
+				"insertArray"
+			],
+			[
+				"return",
+				"returnAjax"
+			],
+			[
+				"noch",
+				"nochWelcheInQueue"
+			],
+			[
+				"for",
+				"foreach"
+			],
+			[
+				"dir",
+				"dirTest"
+			],
+			[
+				"user",
+				"user_id"
+			],
+			[
+				"dele",
+				"deleteUserOutOfQueue"
+			],
+			[
+				"users",
+				"users"
+			],
+			[
+				"ch",
+				"checkTime"
+			],
+			[
+				"ins",
+				"insArray"
+			],
+			[
+				"stat",
+				"static"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"match_id",
+				"match_id"
+			],
+			[
+				"Input",
+				"Input-get	Input-get"
+			],
+			[
+				"marg",
+				"margin-top"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"con",
+				"contentData"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"pos",
+				"posi"
+			],
+			[
+				"force",
+				"force"
+			],
+			[
+				"matchmo",
+				"matchmode_id"
+			],
+			[
+				"matchtype",
+				"matchtype_id"
+			],
+			[
+				"queu",
+				"queues"
+			],
+			[
+				"sk",
+				"skillbracketData"
+			],
+			[
+				"ski",
+				"skillbracketData"
+			],
+			[
+				"mo",
+				"modes"
+			],
+			[
+				"User",
+				"Userskillbracket"
+			],
+			[
+				"queue",
+				"queueus"
+			],
+			[
+				"userski",
+				"userskillbrackets"
+			],
+			[
+				"fo",
+				"forceSearch"
+			],
+			[
+				"In",
+				"Input-get	Input-get"
+			],
+			[
+				"IN",
+				"Input-get	Input-get"
+			],
+			[
+				"Auth",
+				"Auth-user	Auth-user"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"inser",
+				"insertArray"
+			],
+			[
+				"matches",
+				"matches"
+			],
+			[
+				"region",
+				"region_id"
+			],
+			[
+				"sele",
+				"selected_region_shortcut"
+			],
+			[
+				"var",
+				"var_dump"
+			],
+			[
+				"Redi",
+				"Redirect-to	Redirect-to"
+			],
+			[
+				"regio",
+				"region_id"
+			],
+			[
+				"ba",
+				"basepoints"
+			],
+			[
+				"eve",
+				"event_id"
+			],
+			[
+				"poin",
+				"pointstype_id"
+			],
+			[
+				"is_a",
+				"is_array"
+			],
+			[
+				"matchdeta",
+				"matchdetails"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 173.0,
+		"selected_items":
+		[
+			[
+				"db",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"migra",
+				"Laravel Artisan: Migrate"
+			],
+			[
+				"genera",
+				"Laravel Generate: Migration"
+			],
+			[
+				"db:",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"db:Se",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"gene",
+				"Laravel Generate: Controller"
+			],
+			[
+				"db:se",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"db:S",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"packa",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"mi",
+				"Laravel Artisan: Migrate"
+			],
+			[
+				"genere",
+				"Laravel Generate: Controller"
+			],
+			[
+				"db:sed",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"scaff",
+				"Laravel Generate: Scaffold"
+			],
+			[
+				"db:s",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"roll",
+				"Laravel Artisan: Migrate: Rollback"
+			],
+			[
+				"db:see",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"mig",
+				"Laravel Artisan: Migrate"
+			],
+			[
+				"scaffol",
+				"Laravel Generate: Scaffold"
+			],
+			[
+				"scaffo",
+				"Laravel Generate: Scaffold"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Match.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/AdminController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/js/admin/queue.js",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/routes.php",
+		"/D/Eigene Dokumente/Webprojekte/dotacinema/arena/templates/match/index.tpl",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/matches/showMatch.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/FindMatchController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/matches/match/info.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/MatchesController.php",
+		"/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/match/match.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Matchdetail.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Matched_user.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/Matched_usersController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/GameQueuesController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/js/findMatch/queue.js",
+		"/D/Eigene Dokumente/Webprojekte/dotacinema/arena/templates/match/info_message.tpl",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/matches/index.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/matches/match/info",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/findMatch/index.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/admin/queue/fakeSubmits.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/fonts/fontawesome-webfont.svg",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/CONTRIBUTING.md",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/CronjobMatchmakingController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/GameQueue.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Region.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/seeds/MatchtypesTableSeeder.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Matchmode.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Matchtype.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/commands/MatchmakingCronjob.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/migrations/2013_12_11_121512_change_matchdetails.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/General.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/migrations/2013_12_11_104944_add_matchtype_playercount.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/node_modules/grunt-contrib-less/node_modules/less/test/css/mixins-guards.css",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/seeds/GlobalsettingsTableSeeder.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/start/artisan.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/findMatch/modals/matchReady.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/findMatch/modals/matchmaking/matchmaking.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/FetchViewController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/QueueLocksController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/QueueLock.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/migrations/2013_12_04_103051_create_queuelocks_table.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/js/audio/audio.js",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/master.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/js/33.jquery.titleAlert.min.js",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/filters.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/admin/index.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/admin/queue/insertInQueue.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/footer.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/css/main.css",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/admin/master.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/User.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Userskillbracket.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/admin/navigation/topnavi.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/HomeController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/admin.master.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/css/findMatch/modal.css",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/findMatch/modals/mmInfo.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/js/findMatch/queueModal.js",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/findMatch/modals/matchmaking.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/seeds/Matched_usersTableSeeder.php",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/sublime-jslint/sublime-jslint.sublime-settings",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/JSLint/JSLint.sublime-settings",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/JSLint/JSLint.sublime-build",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/SyntaxChecker/SyntaxChecker.sublime-settings",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/CodeFormatter/CodeFormatter.sublime-settings",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/User/CodeFormatter.sublime-settings",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/SteamController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/MatchmodesController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/generalModal.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/js/main.js",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/navigation/usernavi.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Userpoint.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/prototypes/skillbracketIcon.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/navigation/topnav.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/RegionsController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/navigation/region.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/migrations/2013_11_11_191647_create_users_table.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/migrations/2013_11_20_091000_create_regions_table.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/seeds/RegionsTableSeeder.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/config/app.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/composer.json",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/GlobalSetting.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/migrations/2013_11_19_125535_create_userpoints_table.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/findMatch/queuestats.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/vendor/autoload.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/UsersController.php"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"dirTest",
+			"dirtest",
+			"getSkillbracketQueueCounts",
+			"close"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 87.0
+	},
+	"output.jslint_result_view":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"match",
+				"app/models/Matchdetail.php"
+			],
+			[
+				"matches",
+				"app/controllers/MatchesController.php"
+			],
+			[
+				"findma",
+				"app/controllers/FindMatchController.php"
+			],
+			[
+				"f",
+				"public/fonts/fontawesome-webfont.svg"
+			],
+			[
+				"con",
+				"CONTRIBUTING.md"
+			],
+			[
+				"game",
+				"app/controllers/GameQueuesController.php"
+			],
+			[
+				"admin",
+				"app/controllers/AdminController.php"
+			],
+			[
+				"matched",
+				"app/controllers/Matched_usersController.php"
+			],
+			[
+				"route",
+				"app/routes.php"
+			],
+			[
+				"gameque",
+				"app/models/GameQueue.php"
+			],
+			[
+				"region",
+				"app/models/Region.php"
+			],
+			[
+				"matchty",
+				"app/models/Matchtype.php"
+			],
+			[
+				"matchmo",
+				"app/models/Matchmode.php"
+			],
+			[
+				"matchde",
+				"app/models/Matchdetail.php"
+			],
+			[
+				"gene",
+				"app/models/General.php"
+			],
+			[
+				"glo",
+				"app/database/seeds/GlobalsettingsTableSeeder.php"
+			],
+			[
+				"mat",
+				"app/models/Matchdetail.php"
+			],
+			[
+				"gamequeue",
+				"app/models/GameQueue.php"
+			],
+			[
+				"gamequ",
+				"app/controllers/GameQueuesController.php"
+			],
+			[
+				"queue",
+				"public/js/findMatch/queue.js"
+			],
+			[
+				"queuelock",
+				"app/controllers/QueueLocksController.php"
+			],
+			[
+				"fet",
+				"app/controllers/FetchViewController.php"
+			],
+			[
+				"fetchview",
+				"app/controllers/FetchViewController.php"
+			],
+			[
+				"master",
+				"app/views/master.blade.php"
+			],
+			[
+				"skill",
+				"app/models/Userskillbracket.php"
+			],
+			[
+				"userskil",
+				"app/models/Userskillbracket.php"
+			],
+			[
+				"user",
+				"app/models/User.php"
+			],
+			[
+				"topnavi",
+				"app/views/admin/navigation/topnavi.blade.php"
+			],
+			[
+				"modetyp",
+				"app/models/Matchtype.php"
+			],
+			[
+				"userskill",
+				"app/models/Userskillbracket.php"
+			],
+			[
+				"mmin",
+				"app/views/findMatch/modals/mmInfo.blade.php"
+			],
+			[
+				"userski",
+				"app/models/Userskillbracket.php"
+			],
+			[
+				"gamecon",
+				"app/controllers/GameQueuesController.php"
+			],
+			[
+				"gamequeu",
+				"app/models/GameQueue.php"
+			],
+			[
+				"steam",
+				"app/controllers/SteamController.php"
+			],
+			[
+				"matchmode",
+				"app/controllers/MatchmodesController.php"
+			],
+			[
+				"userpo",
+				"app/models/Userpoint.php"
+			],
+			[
+				"global",
+				"app/models/GlobalSetting.php"
+			],
+			[
+				"queuelo",
+				"app/models/QueueLock.php"
+			],
+			[
+				"css",
+				"public/css/main.css"
+			],
+			[
+				"users",
+				"app/controllers/UsersController.php"
+			],
+			[
+				"queuesta",
+				"app/views/findMatch/queuestats.blade.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 371.0,
+	"status_bar_visible": true
+}

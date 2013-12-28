@@ -1,5 +1,5 @@
-<div id="match_middle_area">
-	<div class="pull-left">
+<div class="row" id="match_middle_area">
+	<div class="col-sm-4" align="right">
 		<dl class="dl-horizontal">
 		  <dt>Matchmode:</dt>
 		  <dd class="t" title="{{$matchmode}}"><div class="badge badge-info">{{$mm_shortcut}}</div></dd>
@@ -9,11 +9,29 @@
 		  <dd><div class="badge">{{$match_id}}</div></dd>
 		</dl>
 	</div>
-	<div class="pull-left">
-		middle
+	<div class="col-sm-4" align="center">
+		<div>
+			<div class="label label-default">{{$teamStats['team_1']}}</div>
+		</div>
+		<div class="h1">VS</div>
+		<div>
+			<div class="label label-default">{{$teamStats['team_2']}}</div>
+		</div>
 	</div>
-	<div class="pull-left">
-		right
+	<div class="col-sm-4">
+		@if($inMatch && $matchState == "open")
+			{{-- in Match und noch nix gemacht --}}
+			@include("matches.match.middle_area_result_open")
+		@elseif($inMatch && $matchState == "submitted")
+			{{-- in Match und submitted --}}
+			@include("matches.match.middle_area_result_submitted")
+		@elseif($matchState == "closed")
+			{{-- Matchresult ist fest --}}
+			@include("matches.match.middle_area_result_closed")
+		@else
+			{{-- Besucher: spieler in Match --}}
+			@include("matches.match.middle_area_result_visitor")
+		@endif
 	</div>
 	<div class="clearer"></div>
 </div>

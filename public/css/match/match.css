@@ -10,7 +10,10 @@
 }
 
 #match_middle_area{
-	width:400px;
-	margin: auto;
-	clear: both;
+	margin:10px 0px;
 }
+
+#match_cancel_button{
+	margin: 10px 0 0 0;
+}
+
