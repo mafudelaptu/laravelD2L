@@ -28,6 +28,7 @@
 		@show
 	</div>
 	@include('generalModal')
+	
 	{{ HTML::script('js/10.jquery-1.10.2.min.js') }}
 	{{ HTML::script('js/11.bootstrap.min.js') }}
 	{{ HTML::script('js/14.bootbox.min.js') }}
@@ -43,5 +44,6 @@
 	{{ HTML::script("js/findMatch/queue.js")}}
 	{{ HTML::script("js/findMatch/queueModal.js")}}
 	{{ HTML::script("js/audio/audio.js")}}
+	{{ HTML::script("js/match/match.js")}}
 </body>
 </html>

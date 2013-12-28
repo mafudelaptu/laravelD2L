@@ -54,3 +54,10 @@ function initRegionMenu(){
 function initTooltips(){
   $(".t").tooltip();
 }
+
+function getLastPartOfUrl(){
+  var url = $(location).attr('pathname');
+    parts = url.split('/');
+    lastPart = parts[parts.length-1 ];
+  return lastPart;
+}

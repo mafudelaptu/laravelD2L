@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary btn-lg btn-block">
+<button type="button" id="matchSubmitButton" class="btn btn-primary btn-lg btn-block">
 	submit result
 </button>
 

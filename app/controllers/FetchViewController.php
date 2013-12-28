@@ -45,5 +45,14 @@ class FetchViewController extends BaseController {
 				return Response::json(array("html"=>$content));
 			}
 		}
+	}
+
+	public function getSubmitModal(){
+		if(Auth::check()){
+			if (Request::ajax()){
+				$match_id = Input::get("match_id");
+				
+			}
+		}
 	}	
 }

@@ -70,7 +70,9 @@ Route::group(array('before' => 'auth'), function()
 	//matchmode
 	Route::get("matchmodes/getQuickJoinModes", array('before' => 'csrf', 'uses' => 'MatchmodesController@getQuickJoinModes'));
 
-
+	//match
+	Route::get("match/getSubmitModal", array("before" => "csrf", "uses" => "FetchViewController@matchSubmitModal"));
+	
 
 	/* 
 	// Admin
