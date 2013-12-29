@@ -33,6 +33,7 @@
 	{{ HTML::script('js/11.bootstrap.min.js') }}
 	{{ HTML::script('js/14.bootbox.min.js') }}
 	{{ HTML::script('js/20.jquery.cookie.js') }}
+	{{ HTML::script('js/20.jquery.validate.min.js') }}
 	{{ HTML::script('js/30.jquery.countDown.js') }}
 	{{ HTML::script('js/31.jquery.stopwatch.js') }}
 	{{ HTML::script('js/33.jquery.titleAlert.min.js') }}

@@ -58,6 +58,7 @@ function initTooltips(){
 function getLastPartOfUrl(){
   var url = $(location).attr('pathname');
     parts = url.split('/');
-    lastPart = parts[parts.length-1 ];
+    //l(parts+" "+(parts.length-1));
+    lastPart = parts[(parts.length-1) ];
   return lastPart;
 }
