@@ -263,6 +263,14 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/match/match.php",
+			"settings":
+			{
+				"buffer_size": 56939,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -519,6 +527,33 @@
 		{
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/match/match.php",
+					"settings":
+					{
+						"buffer_size": 56939,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8367,
+								8367
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML5/Syntaxes/HTML 5.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 7551.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -573,7 +608,7 @@
 		[
 			[
 				"match",
-				"app/models/Matchdetail.php"
+				"arena/classes/match/match.php"
 			],
 			[
 				"matches",
@@ -754,6 +789,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 371.0,
+	"side_bar_width": 228.0,
 	"status_bar_visible": true
 }
