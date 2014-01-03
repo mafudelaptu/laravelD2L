@@ -2,6 +2,7 @@ $(function(){
 	if (document.URL.indexOf("/admin") >= 0) {
 		initInsertInQueueButtons();
 		initSetAllReadyButton();
+		initInsertFakeMatchSubmits();
 	}
 });
 
@@ -38,6 +39,26 @@ function initSetAllReadyButton(){
 				success : function(result) {
 					l(result);
 					$("#submitAllMatchAcceptResponse").html(result.status);
+				}
+		});
+	});
+}
+
+function initInsertFakeMatchSubmits(){
+	$("#insertFakeMatchSubmits").click(function(){
+		var match_id = $("#fakeSubmittsMatchID").val();
+		var teamWonID = $("input[name='fakeSubmittsTeamWon']:checked").val();
+		$.ajax({
+				url : "admin/queue/insertFakeMatchSubmits",
+				type : "POST",
+				dataType : 'json',
+				data : {
+					match_id : match_id,
+					team_id: teamWonID
+				},
+				success : function(result) {
+					l(result);
+					$("#fakeSubmittsResposne").html(result.status);
 				}
 		});
 	});
