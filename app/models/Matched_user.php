@@ -84,4 +84,8 @@ class Matched_user extends Eloquent {
 	public static function setAllReady($match_id){
 		Matched_user::where("match_id", $match_id)->update(array("ready" => 1));
 	}
+
+	public static function removeMatchedUserEntry($match_id, $user_id){
+		Matched_user::where("match_id",$match_id)->where("user_id", $user_id)->delete();
+	}
 }

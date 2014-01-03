@@ -14,12 +14,12 @@ class Userpoint extends Eloquent {
 		switch($matchtype_id){
 			case 0:
 			case 1:
-				$points = $points->where(function($query){
-					$query->where("matchtype_id", 0)->orWhere("matchtype_id", 1);
-				})->remember(10);
+			$points = $points->where(function($query){
+				$query->where("matchtype_id", 0)->orWhere("matchtype_id", 1);
+			})->remember(10);
 			break;
 			default:
-				$points = $points->where("matchtype_id", $matchtype_id)->remember(10);
+			$points = $points->where("matchtype_id", $matchtype_id)->remember(10);
 		}
 		$points = $points->sum("pointschange");
 		$ret = $basePoints+$points;
@@ -37,20 +37,20 @@ class Userpoint extends Eloquent {
 
 			// Wins
 			$data = Userpoint::where("user_id",$user_id)
-								->where("pointstype_id", 1)
-								->where("matchtype_id", $matchtype_id)->remember(10);
+			->where("pointstype_id", 1)
+			->where("matchtype_id", $matchtype_id)->remember(10);
 			$wins = (int) $data->count();
 
 			// Losses
 			$data = Userpoint::where("user_id",$user_id)
-								->where("pointstype_id", 2)
-								->where("matchtype_id", $matchtype_id)->remember(10);
+			->where("pointstype_id", 2)
+			->where("matchtype_id", $matchtype_id)->remember(10);
 			$losses = (int) $data->count();
 
 			// Leaves
 			$data = Userpoint::where("user_id",$user_id)
-								->where("pointstype_id", 5)
-								->where("matchtype_id", $matchtype_id)->remember(10);
+			->where("pointstype_id", 5)
+			->where("matchtype_id", $matchtype_id)->remember(10);
 			$leaves = (int) $data->count();
 
 			$totalGames = (int) $wins+$losses;
@@ -77,4 +77,45 @@ class Userpoint extends Eloquent {
 		return $ret;
 	}
 
+	public static function insertPointChanges($match_id, $team_won_id, $matchdetails, $playerData, $matchmode_id){
+		// Matchmode bonus
+		$matchmodeData = Matchmode::getMatchmodeData($matchmode_id)->first();
+		$matchmodeBonus = $matchmodeData->bonus;
+
+		// Handicap and Leavercounts
+		$leaverData = Match::getLeaverTeamCounts($match_id, $matchdetails);
+
+		if(!empty($playerData)){
+			for($i=1; $i<=2; $i++){
+				foreach ($playerData[$i] as $key => $md) {
+					$user_id = $md->user_id;
+					$team_id = $md->team_id;
+					$losePoints = $md->losePoints;
+					$winPoints = $md->winPoints;
+					
+					$winPoints = $winPoints + $matchmodeBonus;
+					if($leaverData['handicapped'] == $team_won_id){
+						
+						if($team_won_id == $team_id){
+							
+						}
+						else{
+
+						}
+					}
+					else{
+						// WIN
+						if($i == $team_won_id){
+
+						}
+						//LOSE
+						else{
+
+						}	
+					}
+					
+				}	
+			}
+		}		
+	}
 }

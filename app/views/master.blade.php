@@ -30,6 +30,7 @@
 	@include('generalModal')
 	
 	{{ HTML::script('js/10.jquery-1.10.2.min.js') }}
+	{{ HTML::script('js/jquery-1.10.2.min.map') }}
 	{{ HTML::script('js/11.bootstrap.min.js') }}
 	{{ HTML::script('js/14.bootbox.min.js') }}
 	{{ HTML::script('js/20.jquery.cookie.js') }}

@@ -104,4 +104,13 @@ class GlobalSetting extends Eloquent {
 		}
 	}
 
+	public static function getMatchLeaverPunishment(){
+		$ret = GlobalSetting::where("id", 10)->remember(60)->first();
+		if($ret->active == 1){
+			return (int) $ret->value;
+		}
+		else{
+			return 0;
+		}
+	}
 }

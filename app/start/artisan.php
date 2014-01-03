@@ -12,3 +12,5 @@
 */
 
 Artisan::add(new MatchmakingCronjob);
+
+Artisan::add(new DoAllCronjobs);

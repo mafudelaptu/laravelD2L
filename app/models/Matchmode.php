@@ -24,4 +24,9 @@ class Matchmode extends Eloquent {
 		$modes = Matchmode::where("active", 1)->remember(60);
 		return $modes;
 	}
+
+	public static function getMatchmodeData($matchmode_id){
+		$modes = Matchmode::where("id", $matchmode_id)->remember(60);
+		return $modes;
+	}
 }

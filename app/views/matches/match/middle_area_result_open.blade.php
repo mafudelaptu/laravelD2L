@@ -2,7 +2,7 @@
 	submit result
 </button>
 
-<div align="center" id="match_cancel_button">
+<div align="center" id="matchCancelButton">
 <button type="button" class="btn btn-default">
 	cancel match
 </button>

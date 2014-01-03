@@ -19,6 +19,7 @@
 		</div>
 	</div>
 	<div class="col-sm-4">
+		
 		@if($inMatch && $matchState == "open")
 			{{-- in Match und noch nix gemacht --}}
 			@include("matches.match.middle_area_result_open")

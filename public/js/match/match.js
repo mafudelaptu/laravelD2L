@@ -34,6 +34,28 @@ function initMatchButtons(){
 		matchVotePlayer(this);
 	});
 
+	$("#matchCancelButton").click(function(){
+		var match_id = getLastPartOfUrl();
+		$.ajax({
+			url : "getCancelModal",
+			type : "GET",
+			dataType : 'json',
+			data : {
+				match_id : match_id
+			},
+			success : function(html_data) {
+				l(html_data);
+				$("#generalModal div.modal-content").html(html_data.html);
+				$("#generalModal").modal("show");
+
+				$("#submitCancelButton").click(function(){
+					submitMatchCancel(match_id);
+				});
+				
+			}
+		});
+	});
+
 }
 
 function submitMatchResult(match_id){
@@ -115,6 +137,36 @@ function showSuccessMatchResultSubmission(){
 	});
 }
 
+function showSuccessCancelVote(){
+	bootbox.dialog({
+		message: "You successfully voted for canceling the match! Do you want to stay on the matchpage?",
+		title: "Match result",
+		buttons: {
+			success: {
+				label: "Stay on matchpage!",
+				className: "btn-default",
+				callback: function() {
+					window.location.reload();
+				}
+			},
+			danger: {
+				label: "Go to 'find match'",
+				className: "btn-default",
+				callback: function() {
+					window.location.href = "http://"+window.location.hostname+"/find_match";
+				}
+			},
+			main: {
+				label: "go to your profile",
+				className: "btn-default",
+				callback: function() {
+					window.location.href = "http://"+window.location.hostname+"/profile";
+				}
+			}
+		}
+	});
+}
+
 function sendPingNotification(that){
 	var user_id = $(that).attr("data-value");
 	var match_id = getParameterByName("matchID");
@@ -146,33 +198,71 @@ function matchVotePlayer(that){
 
 	switch(type){
 		case "Upvote":
-			classType= "success";
-			break;
+		classType= "success";
+		break;
 		case "Downvote":
-			classType = "danger";
-			break;
+		classType = "danger";
+		break;
 		default:
-			return false;
-			break;
+		return false;
+		break;
 	}
 	$.ajax({
 		url : 'votePlayer',
 		type : "POST",
-				dataType : 'json',
-				data : {
-					user_id : user_id,
-					match_id : match_id,
-					type: type
-				},
-				success : function(result) {
-					if(result.status == true){
+		dataType : 'json',
+		data : {
+			user_id : user_id,
+			match_id : match_id,
+			type: type
+		},
+		success : function(result) {
+			if(result.status == true){
 						// switch Vote display
 						html = "<span class='text-center text-"+classType+"'>voted!<span>";
 						$(that).parent().html(html);
 					}
-		}
+				}
+			});
+}
+
+function submitCancelMatch(){
+	var match_id = getLastPartOfUrl();
+	var type = $(that).attr("data-label");
+
+// reset Fehlerstatus
+$("#leaverCancelMatchPannel input[type='checkbox']").css("color", "black");
+$("#checkErrorDiv").html("");
+
+	// reason auslesen
+	reason = $("#checkGroup button.active").val();
+	l(reason);
+
+
+	// LeaverVotes auslesen
+	checkedInputs = $("#leaverCancelMatchPannel input[type='checkbox']:checked");
+	// array zum uebergeben zusammenbauen
+	leaverArray = new Array();
+	$.each(checkedInputs, function(index,value){
+		leaverArray.push($(value).val());
 	});
 
-
+	
+	if(leaverArray.length == 0 && reason=="1"){
+		$("#leaverCancelMatchPannel input[type='checkbox']").css("color", "red");
+		error = '<br><div class="alert alert-block alert-error"><p>select at least one Player who didn\'t join the Match!</p></div>';
+		$("#checkErrorDiv").html(error);
+	}
+	else{
+		$.ajax({
+			url: 'cancelVote',
+			type: "POST",
+			dataType: 'json',
+			data: {match_id:match_id, leaverArray:leaverArray, votetype:reason},
+			success: function(result) {
+				showSuccessCancelVote();
+			}
+		});
+	}
 
 }

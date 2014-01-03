@@ -72,8 +72,10 @@ Route::group(array('before' => 'auth'), function()
 
 	//match
 	Route::get("match/getSubmitModal", array("before" => "csrf", "uses" => "FetchViewController@matchSubmitModal"));
+	Route::get("match/getCancelModal", array("before" => "csrf", "uses" => "FetchViewController@matchCancelModal"));
 	Route::post("match/submitResult", array("before" => "csrf", "uses" => "MatchesController@submitResult"));
 	Route::post("match/votePlayer", array("before" => "csrf", "uses" => "MatchesController@votePlayer"));
+	Route::post("match/cancelVote", array("before" => "csrf", "uses" => "MatchvotesController@cancelVote"));
 
 	/* 
 	// Admin
@@ -171,3 +173,5 @@ Route::resource('usernotifications', 'UsernotificationsController');
 Route::resource('uservotes', 'UservotesController');
 
 Route::resource('votetypes', 'VotetypesController');
+
+Route::resource('matchvotes', 'MatchvotesController');

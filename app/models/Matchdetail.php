@@ -94,9 +94,42 @@ class Matchdetail extends Eloquent {
 				);
 			Matchdetail::where("user_id", $user_id)->where("match_id", $match_id)
 			->update($updateArray);
+
+			// delete matched user
+			Matched_user::removeMatchedUserEntry($match_id, $user_id);
 		}
 		else{
 			return false;
+		}
+	}
+
+	public static function getSubmittedMatchdetails($match_id){
+		return Matchdetail::getMatchdetailData($match_id, false, true)
+				->where("matchdetails.submitted", 1)
+				->where("matchdetails.submissionFor","!=", "0");
+	}
+
+	public static function getTeamWon($matchdetails){
+		if(!empty($matchdetails)){
+			$count = array();
+			foreach ($matchdetails as $key => $md) {
+				$count[$md->team_id]++;
+			}
+
+			if($count[1] == $count[2]){
+				$teamWonID = -1;
+			}
+			else{
+				arsort($count);
+				$teamWonID = key($count);
+			}
+
+			$ret['team_won_id'] = $teamWonID;
+			$ret['status'] = true;
+		}
+		else{
+			$ret['teamWonID'] = -1;
+			$ret['status'] = "matchdetails empty";
 		}
 	}
 }

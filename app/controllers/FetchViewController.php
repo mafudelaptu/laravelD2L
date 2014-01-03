@@ -57,5 +57,21 @@ class FetchViewController extends BaseController {
 				return Response::json(array("html"=>$content));
 			}
 		}
+	}
+
+	public function matchCancelModal(){
+		if(Auth::check()){
+			if (Request::ajax()){
+				
+				$match_id = Input::get("match_id");
+
+				$matchdetails = Matchdetail::getMatchdetailData($match_id)->orderBy("matchdetails.points")->get();
+				$players = Match::getPlayersData($matchdetailsData);
+				$content = View::make('matches/modals/cancelMatch')
+					->with("players", $players)->render();
+
+				return Response::json(array("html"=>$content));
+			}
+		}
 	}	
 }

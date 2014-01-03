@@ -32,7 +32,7 @@ class Match extends Eloquent {
 
 	public static function isUserInMatch($user_id, $match_id=0){
 		if($match_id > 0){
-			$user = Matchdetail::where("match_id", $match_id)->where("user_id", $user_id);
+			$user = Matchdetail::where("match_id", $match_id)->where("user_id", $user_id)->first();
 			if(!empty($user)){
 				return true;
 			}
@@ -119,28 +119,32 @@ class Match extends Eloquent {
 		return $ret;
 	}
 
-	public static function getPlayersData($matchdetailsData, $matchtype_id){
+	public static function getPlayersData($matchdetailsData, $matchtype_id=0){
 		$ret = array();
 		if(!empty($matchdetailsData)){
 			foreach ($matchdetailsData as $key => $detail) {
 				$tmp = array();
 				$user_id = $detail['user_id'];
 				
-				$gameStats = Userpoint::getGameStats($user_id, $matchtype_id);
-				$skillbracket_id = Userskillbracket::getSkillbracket($user_id, $matchtype_id, true)->first()->id;
-				$skillbrackettypeData = Skillbrackettype::getData($skillbracket_id)->first();
-
 				$tmp["user_id"] = $user_id;
 				$tmp["name"] = $detail->name;
 				$tmp["avatar"] = $detail->avatar;
-				$tmp["stats"] = $gameStats['data'];
 				$tmp['points'] = (int) $detail->points;
 				$tmp['team_id'] = $detail->team_id;
-				$tmp['winPoints'] = $skillbrackettypeData->winpoints;
-				$tmp['losePoints'] = $skillbrackettypeData->losepoints;
-				$tmp['credits'] = Usercredit::getCreditCount($user_id);
 				$tmp['pointschange'] = $detail->pointschange;
-				
+
+				if($matchtype_id > 0){					
+					$gameStats = Userpoint::getGameStats($user_id, $matchtype_id);
+					$skillbracket_id = Userskillbracket::getSkillbracket($user_id, $matchtype_id, true)->first()->id;
+					$skillbrackettypeData = Skillbrackettype::getData($skillbracket_id)->first();
+
+					$tmp["stats"] = $gameStats['data'];
+					$tmp['winPoints'] = $skillbrackettypeData->winpoints;
+					$tmp['losePoints'] = $skillbrackettypeData->losepoints;
+					$tmp['credits'] = Usercredit::getCreditCount($user_id);
+
+				}
+
 				$ret[$detail->team_id][] = $tmp;
 			}
 		}
@@ -151,27 +155,65 @@ class Match extends Eloquent {
 		if(!empty($matchdetailsData) && $matchtype_id > 0){
 			$rank_team = 0;
 			for($i=1; $i<=2; $i++){
-					$elo_sum = 0;
+				$elo_sum = 0;
 
-					foreach($matchdetailsData as $k => $v){
-						if($v->team_id == $i){
+				foreach($matchdetailsData as $k => $v){
+					if($v->team_id == $i){
 
 						$elo_sum += $v->points;
-						}
 					}
-					switch($matchtype_id){
-						case "2":
-							$rank_team = (int) $elo_sum;
-							break;
-						default:
-							$rank_team = (int) $elo_sum / 5;
-					}
-
-					$ret['team_'.$i]= round($rank_team,0);
 				}
+				switch($matchtype_id){
+					case "2":
+					$rank_team = (int) $elo_sum;
+					break;
+					default:
+					$rank_team = (int) $elo_sum / 5;
+				}
+
+				$ret['team_'.$i]= round($rank_team,0);
+			}
 		}
 		return $ret;
 	}
+
+	public static function setMatchToManuallyCheck($match_id){
+		$updateArray = array(
+			"check" => 1,
+			);
+
+		return Match::where("id", $match_id)->update($updateArray);
+	}
+
+	public static function setTeamWon($match_id, $team_won_id){
+		$updateArray = array(
+			"team_won_id" => $team_won_id,
+			"closed" => new DateTime(),
+			);
+		Match::where("id", $match_id)->update($updateArray);
+	}
+
+	public static function getLeaverTeamCounts($match_id, $matchdetails){
+		if(!empty($matchdetails)){
+			$leaverArray = array(1=>0, 2=>0);
+			foreach ($matchdetails as $key => $md) {
+				$team_id = $md->team_id;
+				$user_id = $md->user_id;
+				// check enough leaver votes
+				$count = Matchvote::getAllLeaverVotesForUser($match_id, $user_id)->groupBy("vote_for_user")->count();
+				$leaverArray[$team_id] += $count;
+			}
+			if($leaverArray[1] > 0 || $leaverArray[2] > 0){
+				$maxs = array_keys($array, max($array));
+				$leaverArray['handicapped'] = $maxs;
+			}
+			else{
+				$leaverArray['handicapped'] = false;
+			}
+			return $leaverArray;
+		}
+	}
+
 	public static function playerLeftTheMatch($user_id, $match_id){
 		$ret = array();
 
