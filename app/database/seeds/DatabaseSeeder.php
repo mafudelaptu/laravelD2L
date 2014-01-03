@@ -33,6 +33,8 @@ class DatabaseSeeder extends Seeder {
 		$this->call('MatchhostsTableSeeder');
 		$this->call('UservotecountsTableSeeder');
 		$this->call('TeamsTableSeeder');
+		$this->call('UsernotificationsTableSeeder');
+		$this->call('UservotesTableSeeder');
 	}
 
 }

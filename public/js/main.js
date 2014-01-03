@@ -10,6 +10,7 @@ $( document ).ready(function() {
 
   initRegionMenu();
   initTooltips();
+  initPopovers();
 });
 
 function l(stuff){
@@ -53,6 +54,10 @@ function initRegionMenu(){
 
 function initTooltips(){
   $(".t").tooltip();
+}
+
+function initPopovers(){
+  $("*[data-toggle=popover]").popover();
 }
 
 function getLastPartOfUrl(){

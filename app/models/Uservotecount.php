@@ -35,4 +35,30 @@ class Uservotecount extends Eloquent {
 	public static function getVoteCounts($user_id){
 		return Uservotecount::where("user_id", $user_id);
 	}
+
+	public static function allowedToVote($votetype, $user_id){
+		$data = Uservotecount::getVoteCounts($user_id)->first();
+		switch ($votetype) {
+			case 'Upvote':
+				if($data->upvotes > 0){
+					return true;
+				}
+				else{
+					return false;
+				}
+				# code...
+				break;
+			case "Downvote":
+				if($data->downvotes > 0){
+					return true;
+				}
+				else{
+					return false;
+				}
+				break;
+			default:
+				return false;
+				break;
+		}
+	}
 }

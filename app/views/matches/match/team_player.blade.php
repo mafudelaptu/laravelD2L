@@ -20,14 +20,11 @@
 				    <span class="caret"></span>
 				  </a>
 				  <ul class="dropdown-menu">
-				   <li><a href="profile.php?ID={$v.SteamID}" target="_blank"><i class="icon-user"></i> show Profile</a></li>
-				    <li class="divider"></li>
-				    <li><a href="https://dotabuff.com/players/{$v.SteamID}" target="_blank">show DotaBuff-Profile</a></li>
-				    <li><a href="{$v.ProfileURL}ProfileURL" target="_blank">show Steam-Profile</a></li>
+				   @include("matches.match.team_player_button_playerinfo", array("user_id" => Auth::user()->id))
 				  </ul>
 		</div>
 
-		<button class="btn btn-sm btn-default" data-toggle="popover" title="" data-content="Wins: <span class='text-success'>{$v.Wins}</span> Losses: <span class='text-error'>{$v.Losses}</span> Winrate: <span class='text-warning'>{$v.WinRate}%</span> Leaves: {$v.Leaves}" data-original-title="User-Statistics">@include("icons.match_stats")</button>
+		<button class="btn btn-sm btn-default" data-toggle="popover" title="" data-content="Wins: <span class='text-success'>{{$playerdata['stats']['Wins']}}</span> Losses: <span class='text-error'>{{$playerdata['stats']['Losses']}}</span> Winrate: <span class='text-warning'>{{$playerdata['stats']['WinRate']}}%</span> Leaves: {{$playerdata['stats']['Leaves']}}" data-original-title="User-Statistics" data-trigger="hover" data-html="true" data-placement="top">@include("icons.match_stats")</button>
 
 		
 		<button class="btn btn-default btn-sm t" title="Ping Player!" onclick="sendPingNotification(this)" data-value="{$v.SteamID}">
@@ -36,10 +33,21 @@
 		
 	</div>
 	<div class="col-sm-2">
+		
 		@if($inMatch && Auth::user()->id != $playerdata['user_id'])
-			<button class="btn btn-sm btn-success" value="{$v.SteamID}" data-type="1" data-value="7" data-label="Upvote">@include("icons.match_upvote")</i>&nbsp;</button>
-
-			<button class="btn btn-sm btn-danger" value="{$v.SteamID}" data-type="-1" data-value="8" data-label="Downvote">@include("icons.match_downvote")</i>&nbsp;</button>
+			{{--dd($userVotes)--}}
+			@if(array_search($playerdata['user_id'], $userVotes))
+							
+			@include("matches.match.team_player_vote_info", array("votestats" => $voteStats[$playerdata['user_id']]))
+			
+			
+			@else
+			
+			@include("matches.match.team_player_vote_buttons", array("user_id" => $playerdata['user_id']))
+			
+			@endif
+			
 		@endif
+		
 	</div>
 </div>

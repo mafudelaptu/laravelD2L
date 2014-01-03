@@ -72,7 +72,8 @@ Route::group(array('before' => 'auth'), function()
 
 	//match
 	Route::get("match/getSubmitModal", array("before" => "csrf", "uses" => "FetchViewController@matchSubmitModal"));
-	
+	Route::post("match/submitResult", array("before" => "csrf", "uses" => "MatchesController@submitResult"));
+	Route::post("match/votePlayer", array("before" => "csrf", "uses" => "MatchesController@votePlayer"));
 
 	/* 
 	// Admin
@@ -82,6 +83,7 @@ Route::group(array('before' => 'auth'), function()
 
 		Route::post("admin/queue/insertInQueue", "GameQueuesController@insertRandomUserIntoQueue");
 		Route::post("admin/queue/setAllReady", "Matched_usersController@setAllReady");
+		Route::post("admin/queue/insertFakeMatchSubmits", "MatchdetailsController@insertFakeMatchSubmits");
 
 	});
 
@@ -163,3 +165,9 @@ Route::resource('matchhosts', 'MatchhostsController');
 Route::resource('uservotecounts', 'UservotecountsController');
 
 Route::resource('teams', 'TeamsController');
+
+Route::resource('usernotifications', 'UsernotificationsController');
+
+Route::resource('uservotes', 'UservotesController');
+
+Route::resource('votetypes', 'VotetypesController');

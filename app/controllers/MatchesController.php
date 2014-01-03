@@ -19,7 +19,7 @@ class MatchesController extends BaseController {
 			->get();
 
 		$matchPlayersData = Match::getPlayersData($matchdetailsData, $matchData->matchtype_id);
-		
+
 		$contentData = array(
 			"heading" => $this->title,
 			"match_id" => $match_id,
@@ -31,12 +31,61 @@ class MatchesController extends BaseController {
 			"voteCounts" => Uservotecount::getVoteCounts($user_id)->first(),
 			"team" => Team::getTeamsAsArray(),
 			"teamStats" => Match::getAveragePointsOfTeams($matchdetailsData, $matchData->matchtype_id),
+			"userVotes" => Uservote::getVotesOfUser($user_id, $match_id)->lists("user_id"),
+			"voteStats" => Uservote::getVoteStatsForMatch($match_id, $matchdetailsData),
 			);
 
-		// dd($contentData);
+		//dd($contentData);
 		$this->layout->nest("content", 'matches.match.index', $contentData);
 	}
 
+	function submitResult(){
+		$ret = array();
+		if(Auth::check()){
+			if (Request::ajax()){
+				$result = Input::get("result");
+				$match_id = Input::get("match_id");
+				$user_id =  Auth::user()->id;
+				if(Match::isUserInMatch($user_id, $match_id)){
+					Matchdetail::submitResult($user_id, $match_id, $result);
+					$ret['status'] = true;
+				}
+				else{
+					$ret['status'] = false;
+				}
+				return $ret;
+			}
+		}
+	}
+
+	function votePlayer(){
+		$ret = array();
+		if(Auth::check()){
+			if (Request::ajax()){
+				$vote_user_id = Input::get("user_id");
+				$match_id = Input::get("match_id");
+				$votetype = Input::get("type");
+				$user_id =  Auth::user()->id;
+
+				if(Match::isUserInMatch($user_id, $match_id) && Match::isUserInMatch($vote_user_id, $match_id)){
+					$retVote = Uservote::insertVote($user_id, $vote_user_id, $votetype, $match_id);
+
+					if($retVote !== false){
+
+					$ret['status'] = true;
+					}
+					else{
+					$ret['status'] = "insertVoteFail";
+						
+					}
+				}
+				else{
+					$ret['status'] = "notInMatch";
+				}
+				return $ret;
+			}
+		}
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
