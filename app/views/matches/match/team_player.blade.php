@@ -4,7 +4,6 @@
 	if(Auth::user()->id == $playerdata['user_id']){
 		$userHighligh = "highlight";
 	}
-
 }}
 <div class="row">
 	<div class="col-sm-5">

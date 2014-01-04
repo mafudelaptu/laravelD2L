@@ -82,9 +82,11 @@ class Matchdetail extends Eloquent {
 				case "lost":
 				$submissionFor = -1;
 				break;
+				case "cancel":
+				$submissionFor = 2;
+				break;
 				default:
 				return false;
-
 				break;
 			}
 			$updateArray = array(
@@ -105,19 +107,23 @@ class Matchdetail extends Eloquent {
 
 	public static function getSubmittedMatchdetails($match_id){
 		return Matchdetail::getMatchdetailData($match_id, false, true)
-				->where("matchdetails.submitted", 1)
-				->where("matchdetails.submissionFor","!=", "0");
+		->where("matchdetails.submitted", 1)
+		->where("matchdetails.submissionFor","!=", "0");
 	}
 
 	public static function getTeamWon($matchdetails){
+		$ret = array();
 		if(!empty($matchdetails)){
-			$count = array();
+			
+			$count = array("1"=>0, "2"=>0);
 			foreach ($matchdetails as $key => $md) {
-				$count[$md->team_id]++;
+				if($md->submissionFor == "1"){
+					$count[$md->team_id]++;
+				}
 			}
 
 			if($count[1] == $count[2]){
-				$teamWonID = -1;
+				$teamWonID = 0;
 			}
 			else{
 				arsort($count);
@@ -131,5 +137,6 @@ class Matchdetail extends Eloquent {
 			$ret['teamWonID'] = -1;
 			$ret['status'] = "matchdetails empty";
 		}
+		return $ret;
 	}
 }

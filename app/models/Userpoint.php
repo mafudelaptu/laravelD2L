@@ -77,45 +77,77 @@ class Userpoint extends Eloquent {
 		return $ret;
 	}
 
-	public static function insertPointChanges($match_id, $team_won_id, $matchdetails, $playerData, $matchmode_id){
+	public static function insertPointChanges($match_id, $team_won_id, $matchdetails, $playerData, $matchmode_id, $matchtype_id){
+		$ret = array();
+
 		// Matchmode bonus
 		$matchmodeData = Matchmode::getMatchmodeData($matchmode_id)->first();
+
 		$matchmodeBonus = $matchmodeData->bonus;
 
 		// Handicap and Leavercounts
-		$leaverData = Match::getLeaverTeamCounts($match_id, $matchdetails);
+		$leaverData = Match::getLeaverTeamCounts($match_id, $matchdetails, $matchtype_id);
 
 		if(!empty($playerData)){
 			for($i=1; $i<=2; $i++){
 				foreach ($playerData[$i] as $key => $md) {
-					$user_id = $md->user_id;
-					$team_id = $md->team_id;
-					$losePoints = $md->losePoints;
-					$winPoints = $md->winPoints;
+					$user_id = $md['user_id'];
+					$team_id = $md['team_id'];
+					$losePoints = $md['losePoints'];
+					$winPoints = $md['winPoints'];
 					
 					$winPoints = $winPoints + $matchmodeBonus;
+					$pointChange = 0;
 					if($leaverData['handicapped'] == $team_won_id){
-						
-						if($team_won_id == $team_id){
-							
+						if(in_array($user_id, $leaverData['leaver'])){
+							$punishment = Globalsetting::getMatchLeaverPunishment();
+							$pointChange = $punishment;
+							$pointsType = 5;
 						}
-						else{
-
+						else{ 
+							if($team_won_id == $team_id){
+								$pointChange = $winPoints;
+								$pointsType = 1;
+							}
+							else{
+								$pointChange = -0;
+								$pointsType = 2;
+							}	
 						}
 					}
 					else{
-						// WIN
-						if($i == $team_won_id){
-
+						if($team_won_id == $team_id){
+							$pointChange = $winPoints;
+							$pointsType = 1;
 						}
-						//LOSE
 						else{
-
-						}	
+							$pointChange = $losePoints*(-1);
+							$pointsType = 2;
+						}
 					}
-					
-				}	
-			}
-		}		
+
+					if($pointsType > 0){
+						$insertArray = array(
+							"user_id" => $user_id,
+							"matchmode_id" => $matchmode_id,
+							"matchtype_id" => $matchtype_id,
+							"match_id" => $match_id,
+							"pointstype_id" => $pointsType,
+							"pointschange" => $pointChange,
+							"created_at" => new DateTime,
+							);
+
+						Userpoint::insert($insertArray);
+
+						$ret['status'] = true;
+					}
+					else{
+						$ret['status'] = "pointstype_id = 0";
+					}
+				}
+			}		
+		}
+
+		return $ret;
 	}
 }

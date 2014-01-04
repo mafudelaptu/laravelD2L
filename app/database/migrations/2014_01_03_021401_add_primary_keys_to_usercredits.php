@@ -13,7 +13,7 @@ class AddPrimaryKeysToUsercredits extends Migration {
 	{
 		Schema::table('usercredits', function($table)
 		{
-			//$table->dropPrimary("user_id");
+			$table->dropPrimary("user_id");
 			$table->primary(array("user_id", 'match_id', "voted_by_user_id"));
 		});
 	}
@@ -29,7 +29,7 @@ class AddPrimaryKeysToUsercredits extends Migration {
 		{
 			$table->dropPrimary("voted_by_user_id");
 			$table->dropPrimary("match_id");
-			//$table->primary("user_id");
+			$table->primary("user_id");
 		});
 	}
 

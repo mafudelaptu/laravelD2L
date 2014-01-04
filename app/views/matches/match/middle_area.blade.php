@@ -2,9 +2,9 @@
 	<div class="col-sm-4" align="right">
 		<dl class="dl-horizontal">
 		  <dt>Matchmode:</dt>
-		  <dd class="t" title="{{$matchmode}}"><div class="badge badge-info">{{$mm_shortcut}}</div></dd>
+		  <dd><div class="badge badge-info" class="t" title="{{$matchmode}}">{{$mm_shortcut}}</div></dd>
 		  <dt>Region:</dt>
-		  <dd class="t" title="{{$region}}"><div class="badge badge-danger">{{$r_shortcut}}</div></dd>
+		  <dd><div class="badge badge-danger" class="t" title="{{$region}}">{{$r_shortcut}}</div></dd>
 		  <dt>MatchID:</dt>
 		  <dd><div class="badge">{{$match_id}}</div></dd>
 		</dl>
@@ -28,7 +28,7 @@
 			@include("matches.match.middle_area_result_submitted")
 		@elseif($matchState == "closed")
 			{{-- Matchresult ist fest --}}
-			@include("matches.match.middle_area_result_closed")
+			@include("matches.match.middle_area_result_closed", array("team"=>$team, "team_won_id"=> $matchData->team_won_id))
 		@else
 			{{-- Besucher: spieler in Match --}}
 			@include("matches.match.middle_area_result_visitor")

@@ -49,7 +49,7 @@ function initMatchButtons(){
 				$("#generalModal").modal("show");
 
 				$("#submitCancelButton").click(function(){
-					submitMatchCancel(match_id);
+					submitCancelMatch(match_id);
 				});
 				
 			}
@@ -228,21 +228,20 @@ function matchVotePlayer(that){
 
 function submitCancelMatch(){
 	var match_id = getLastPartOfUrl();
-	var type = $(that).attr("data-label");
 
 // reset Fehlerstatus
 $("#leaverCancelMatchPannel input[type='checkbox']").css("color", "black");
 $("#checkErrorDiv").html("");
 
 	// reason auslesen
-	reason = $("#checkGroup button.active").val();
+	reason = $("#checkGroup label.active > input").val();
 	l(reason);
 
 
 	// LeaverVotes auslesen
 	checkedInputs = $("#leaverCancelMatchPannel input[type='checkbox']:checked");
 	// array zum uebergeben zusammenbauen
-	leaverArray = new Array();
+	var leaverArray = new Array();
 	$.each(checkedInputs, function(index,value){
 		leaverArray.push($(value).val());
 	});
@@ -250,7 +249,7 @@ $("#checkErrorDiv").html("");
 	
 	if(leaverArray.length == 0 && reason=="1"){
 		$("#leaverCancelMatchPannel input[type='checkbox']").css("color", "red");
-		error = '<br><div class="alert alert-block alert-error"><p>select at least one Player who didn\'t join the Match!</p></div>';
+		error = '<br><div class="alert alert-block alert-danger"><p>select at least one Player who didn\'t join the Match!</p></div>';
 		$("#checkErrorDiv").html(error);
 	}
 	else{
@@ -258,8 +257,14 @@ $("#checkErrorDiv").html("");
 			url: 'cancelVote',
 			type: "POST",
 			dataType: 'json',
-			data: {match_id:match_id, leaverArray:leaverArray, votetype:reason},
+			data: {
+				match_id:match_id, 
+				leaverArray:leaverArray, 
+				votetype:reason
+			},
 			success: function(result) {
+				l(result);
+				$("#generalModal").modal("hide");
 				showSuccessCancelVote();
 			}
 		});

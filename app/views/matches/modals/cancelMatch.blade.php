@@ -5,7 +5,7 @@
 </div>
 
 <div class="modal-body">
-	<div class="alert alert-warn">
+	<div class="alert alert-warning">
 		<h4>Warning:</h4>
 		you can't change your submission afterwards, please be sure you
 		submit the right reason!
@@ -14,13 +14,14 @@
 	<div class="control-group">
 		<label class="control-label" for="checkWinLose">Reason:</label>
 		<div class="controls" id="checkWinLoseCheckboxDiv">
-			<div class="btn-group" data-toggle="buttons-radio"
+			<div class="btn-group" data-toggle="buttons"
 			id="checkGroup">
-			<button type="button" class="btn active"
-			onclick="$('#leaverCancelMatchPannelArea').toggle();" value="2">couldn't play Match/Match is broken!</button>
-			<button type="button" class="btn"
-			onclick="setWinLoseValue(this);$('#leaverCancelMatchPannelArea').toggle();" value="1">Player didn't join the match</button>
-
+			<label class="btn btn-default active" onclick="$('#leaverCancelMatchPannelArea').toggle();">
+				<input type="radio" name="cancelRadio" value="2" >couldn't play Match/Match is broken!
+			</label>
+			<label class="btn btn-default" onclick="$('#leaverCancelMatchPannelArea').toggle();">
+				<input type="radio" name="cancelRadio" value="1"> Player didn't join the match
+			</label>
 		</div>
 		<div id="checkErrorDiv"></div>
 	</div>
@@ -29,10 +30,10 @@
 
 	<h4>Select Player, who didn't join the Match</h4>
 	<div id="leaverCancelMatchPannel">
-		@for($i=0; $i<2; $i++)
+		@for($i=1; $i<=2; $i++)
 		<div class="pull-left" style="width:50%">
 			@foreach($players[$i] as $player)
-			@if(Auth::user()->id == $player->user_id)
+			@if(Auth::user()->id == $player['user_id'])
 			<?php 
 			$disabled = "disabled";
 			?>
@@ -55,6 +56,7 @@
 		@endfor
 	</div>
 </div>
+<div class="clearer"></div>
 </div>
 <div class="modal-footer">
 	<button id="myModalCancelButton" class="btn" data-dismiss="modal"

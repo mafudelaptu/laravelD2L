@@ -65,8 +65,9 @@ class FetchViewController extends BaseController {
 				
 				$match_id = Input::get("match_id");
 
-				$matchdetails = Matchdetail::getMatchdetailData($match_id)->orderBy("matchdetails.points")->get();
-				$players = Match::getPlayersData($matchdetailsData);
+				$matchdetails = Matchdetail::getMatchdetailData($match_id, true, false)->orderBy("matchdetails.points")->get();
+				$players = Match::getPlayersData($matchdetails);
+				//dd($players);
 				$content = View::make('matches/modals/cancelMatch')
 					->with("players", $players)->render();
 

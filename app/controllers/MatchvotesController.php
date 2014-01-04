@@ -17,9 +17,13 @@ class MatchvotesController extends BaseController {
 				$match_id = Input::get("match_id");
 				$user_id =  Auth::user()->id;
 				$votesArray = Input::get("leaverArray");
+				
 				if(Match::isUserInMatch($user_id, $match_id)){
+					
 					Matchvote::insertCancelVote($match_id, $user_id);
-					if($votetype == "2"){
+					Matchdetail::submitResult($user_id, $match_id, "cancel");
+
+					if($votetype == "1"){
 						if(is_array($votesArray) && count($votesArray) > 0){
 							foreach ($votesArray as $key => $leaver) {
 								if(Match::isUserInMatch($leaver, $match_id)){
@@ -36,8 +40,6 @@ class MatchvotesController extends BaseController {
 				else{
 					$ret['status'] = "notInMatch";
 				}
-
-				
 			}
 		}
 		return $ret;

@@ -3,17 +3,20 @@
 	{{$points}}
 </div>
 @if($matchState == "closed")
-	@if(strpos($pointsChange, '-'))
+	
+	@if(strpos($pointsChange, '-') === 0)
 		<?php 
 			$textClass = "danger";
+			$textAddition = "";
 		?>
 	@else
 		<?php 
 			$textClass = "success";
+			$textAddition = "+";
 		?>
 	@endif
 	<span class="text-{{$textClass}}">
-		{{$pointChange}}
+		{{$textAddition}}{{$pointsChange}}
 	</span>
 @else
 	<span class="text-success">

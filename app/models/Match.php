@@ -26,8 +26,8 @@ class Match extends Eloquent {
 	public static function getAllOpenMatches(){
 		return Match::where("canceled", 0)
 		->where("check", 0)
-		->where("team_won_id",-1)
-		->where("closed",0);
+		->where("team_won_id",0)
+		->where("closed","0000-00-00 00:00:00");
 	}
 
 	public static function isUserInMatch($user_id, $match_id=0){
@@ -72,7 +72,7 @@ class Match extends Eloquent {
 		$insertArray['region_id'] = $region_id;
 		$insertArray['check'] = 0;
 		$insertArray['canceled'] = 0;
-		$insertArray['closed'] = null;
+		$insertArray['closed'] = 0;
 		$insertArray['created_at'] = new DateTime;
 		$insertArray['updated_at'] = new DateTime;
 
@@ -193,33 +193,51 @@ class Match extends Eloquent {
 		Match::where("id", $match_id)->update($updateArray);
 	}
 
-	public static function getLeaverTeamCounts($match_id, $matchdetails){
+	public static function getLeaverTeamCounts($match_id, $matchdetails, $matchtype_id){
 		if(!empty($matchdetails)){
 			$leaverArray = array(1=>0, 2=>0);
+			$leaverUserArray = array();
 			foreach ($matchdetails as $key => $md) {
 				$team_id = $md->team_id;
 				$user_id = $md->user_id;
+				
 				// check enough leaver votes
-				$count = Matchvote::getAllLeaverVotesForUser($match_id, $user_id)->groupBy("vote_for_user")->count();
-				$leaverArray[$team_id] += $count;
+				$leaveData = Matchvote::getAllLeaverVotesForUser($match_id, $user_id)->groupBy("vote_for_user")
+				->select("matchvotes.*", DB::raw("Count(vote_for_user) as leaveCount"))->first();
+
+				if(!empty($leaveData)){
+					switch ($matchtype_id) {
+					case 2: // 1vs1
+					break;
+					default: // 5vs5
+					if($leaveData->leaveCount >= 6){
+						$leaverArray[$team_id]++;
+						$leaverUserArray[] = $leaveData->vote_for_user;
+					}
+					break;
+				}
 			}
-			if($leaverArray[1] > 0 || $leaverArray[2] > 0){
-				$maxs = array_keys($array, max($array));
-				$leaverArray['handicapped'] = $maxs;
-			}
-			else{
-				$leaverArray['handicapped'] = false;
-			}
-			return $leaverArray;
 		}
+
+		$leaverArray['leaver'] = $leaverUserArray;
+
+		if($leaverArray[1] > 0 || $leaverArray[2] > 0){
+			$maxs = array_keys($array, max($array));
+			$leaverArray['handicapped'] = $maxs;
+		}
+		else{
+			$leaverArray['handicapped'] = false;
+		}
+		return $leaverArray;
 	}
+}
 
-	public static function playerLeftTheMatch($user_id, $match_id){
-		$ret = array();
+public static function playerLeftTheMatch($user_id, $match_id){
+	$ret = array();
 
-		$ret['debug'] .= "Start playerLeftTheMatch <br>\n";
-		if($user_id > 0 && $match_id > 0){
-			
+	$ret['debug'] .= "Start playerLeftTheMatch <br>\n";
+	if($user_id > 0 && $match_id > 0){
+
 			// $sql = "SELECT Count(VoteForPlayer) as Count, VoteForPlayer
 			// 		FROM `MatchDetailsLeaverVotes`
 			// 		WHERE MatchID = ".(int) $matchID." AND VoteForPlayer = ".secureNumber($steamID)."
@@ -245,15 +263,15 @@ class Match extends Eloquent {
 			// }
 
 			// $ret['status'] = true;
-		}
-		else{
-			$ret['status'] = "steamID = 0 or matchid = 0";
-		}
-
-		$ret['debug'] .= "End playerLeftTheMatch <br>\n";
-
-		return $ret;
 	}
+	else{
+		$ret['status'] = "steamID = 0 or matchid = 0";
+	}
+
+	$ret['debug'] .= "End playerLeftTheMatch <br>\n";
+
+	return $ret;
+}
 
 
 }
