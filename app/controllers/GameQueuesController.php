@@ -78,6 +78,7 @@ class GameQueuesController extends BaseController {
 					if(is_array($modes)){
 						$insertArray = array();
 						foreach ($modes as $k => $mode) {
+
 							$mode_id = (int) $mode['id'];
 							$tmp = array();
 							$tmp['user_id'] = $user_id;

@@ -9,6 +9,33 @@ class MatchmodesController extends BaseController {
 		
 		return $modes->get();
 	}
+
+	public function getMatchmodeData(){
+		$ret = array();
+		if(Auth::check()){
+			if (Request::ajax()){
+				$matchtype_id = Input::get("matchtype_id");
+				$selectedArray = Input::get("selectedArray");
+				if(!empty($selectedArray)){
+					$data = DB::table("matchmodes");
+					foreach ($selectedArray as $key => $matchmode_id) {
+						if($key === 0){
+							$data = $data->where("id", $matchmode_id);
+						}
+						else{
+							$data = $data->orWhere("id", $matchmode_id);
+						}
+					}
+					$ret = $data->get();
+				}
+				else{
+					$ret = null;
+				}
+			}
+		}
+		//dd($retData[0]);
+		return $ret;
+	}
 	/**
 	 * Display a listing of the resource.
 	 *

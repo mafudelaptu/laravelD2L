@@ -40,15 +40,11 @@ class FindMatchController extends BaseController {
 			"matchtypes" => Matchtype::getAllActiveMatchtypes()->get(),
 			"queueStats5vs5Single" => $queueStats5vs5Single,
 			"queueStats1vs1" => $queueStats1vs1,
+			"matchmodes" => Matchmode::getAllActiveModes()->get(),
+			"inMatch" => Match::isUserInMatch(Auth::user()->id),
 			);
-		$this->layout->nest("content", 'findMatch.index', $contentData);
 
-		$queueStats = array(
-			"singleQueueCount" => "",
-			"openMatches" => "",
-			"maxMatchmode" => "",
-			"maxRegion" => "",
-		);
+		$this->layout->nest("content", 'findMatch.index', $contentData);
 
 	}
 

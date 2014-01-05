@@ -2,7 +2,7 @@
         <div class="col-sm-3">
                 <div class="row">
                         <div class="col-sm-3" align="center">
-                                @include("icons/skillbracket", array("sb_id"=>1, "sb_name"=>"Prison"))
+                                @include("icons/skillbracket", array("skillbracket_id"=>1, "skillbracket"=>"Prison"))
                         </div>
                         <div class="col-sm-9">
                                 <div class="statsNumber" id="prisonQueueCount">0</div>
@@ -14,7 +14,7 @@
         <div class="col-sm-3">
                 <div class="row">
                         <div class="col-sm-3" align="center">
-                                @include("icons/skillbracket", array("sb_id"=>2, "sb_name"=>"Trainee"))
+                                @include("icons/skillbracket", array("skillbracket_id"=>2, "skillbracket"=>"Trainee"))
                         </div>
                         <div class="col-sm-9">
                                 <div class="statsNumber" id="traineeQueueCount">0
@@ -28,7 +28,7 @@
                 <div class="row">
                         <div class="col-sm-3" align="center">
                                 <div class="pull-left" style="line-height: 30px;font-size: 18px;font-weight: bold;">>=</div>
-                                @include("icons/skillbracket", array("sb_id"=>3, "sb_name"=>"Amateur"))
+                                @include("icons/skillbracket", array("skillbracket_id"=>3, "skillbracket"=>"Amateur"))
                         </div>
                         <div class="col-sm-9">
                                 <div class="statsNumber" id="amateurOrHigherQueueCount">0</div>

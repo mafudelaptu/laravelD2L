@@ -18,33 +18,16 @@ Route::get("start", function(){
 	->with("title", $title);
 });
 
+//Help
+Route::get('help/faq', 'HelpController@showFAQ');
+Route::get('help/rules', 'HelpController@showRules');
+
 
 Route::group(array('before' => 'auth'), function()
 {
 	Route::get('/', 'HomeController@home');
 	Route::get('find_match', 'FindMatchController@index');
 	
-
-	Route::get('ladder', function()
-	{
-		$title = "Ladder";
-		return View::make('ladder.index')
-		->with("title", $title);
-	});
-
-	Route::get('faq', function()
-	{
-		$title = "FAQ";
-		return View::make('help.faq')
-		->with("title", $title);
-	});
-
-	Route::get('rules', function()
-	{
-		$title = "Rules";
-		return View::make('help.rules')
-		->with("title", $title);
-	});
 
 	Route::pattern('match_id', '[0-9]+');
 	Route::pattern('user_id', '[0-9]+');
@@ -57,6 +40,11 @@ Route::group(array('before' => 'auth'), function()
 	});
 	Route::get('profile/{user_id}', 'ProfileController@showProfile');
 	
+	// ladder
+	Route::get("ladder", function(){
+		 return Redirect::to('ladder/'.Auth::user()->id);
+	});
+	Route::get('ladder/{user_id}', 'LadderController@showLadder');
 
 	// ajax
 	// findMatch
@@ -77,6 +65,7 @@ Route::group(array('before' => 'auth'), function()
 
 	//matchmode
 	Route::get("matchmodes/getQuickJoinModes", array('before' => 'csrf', 'uses' => 'MatchmodesController@getQuickJoinModes'));
+	Route::get("matchmodes/getMatchmodeData", array('before' => 'csrf', 'uses' => 'MatchmodesController@getMatchmodeData'));
 
 	//match
 	Route::get("match/getSubmitModal", array("before" => "csrf", "uses" => "FetchViewController@matchSubmitModal"));
@@ -89,6 +78,10 @@ Route::group(array('before' => 'auth'), function()
 	Route::get("profile/getPointsHistoryData", array("before" => "csrf", "uses" => "UserpointsController@getPointsHistoryData"));
 	Route::get("profile/getPointRoseData", array("before" => "csrf", "uses" => "UserpointsController@getPointRoseData"));
 	
+	//ladder
+	Route::get("ladder/getLadderData", array("before" => "csrf", "uses" => "LadderController@getLadderData"));
+	
+
 	/* 
 	// Admin
 	*/

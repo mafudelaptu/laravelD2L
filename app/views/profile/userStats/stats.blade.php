@@ -28,9 +28,11 @@
 		<h4>Points</h4>
 		<div style="font-size:50px; line-height: 50px;"><strong>{{$points}}</strong></div>
 		<h4 style="margin-top:20px;">Ranking</h4>
-		@if( $ranking == 0)
-			<?php $ranking = "-";?>
+		@if(  $data['Ranking'] == 0)
+			<?php $data['Ranking'] = "unranked";?>
+		@else
+			<?php $data['Ranking'] .= ".";?>
 		@endif
-		<div style="font-size:40px;"><strong>{{$ranking}}.</strong></div>
+		<div style="font-size:40px;"><strong>{{$data['Ranking']}}</strong></div>
 	</div>
 </div>

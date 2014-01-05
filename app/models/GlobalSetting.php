@@ -32,6 +32,16 @@ class GlobalSetting extends Eloquent {
 		}
 	}
 
+	public static function getDuoJoin(){
+		$ret = GlobalSetting::where("id", 3)->remember(60)->first();
+		if($ret->active == 1){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
 	public static function getJustCM(){
 		$ret = GlobalSetting::where("id", 4)->remember(60)->first();
 		if(!empty($ret)){
@@ -106,6 +116,16 @@ class GlobalSetting extends Eloquent {
 
 	public static function getMatchLeaverPunishment(){
 		$ret = GlobalSetting::where("id", 10)->remember(60)->first();
+		if($ret->active == 1){
+			return (int) $ret->value;
+		}
+		else{
+			return 0;
+		}
+	}
+
+	public static function getQuickJoinMatchmode(){
+		$ret = GlobalSetting::where("id", 11)->remember(60)->first();
 		if($ret->active == 1){
 			return (int) $ret->value;
 		}

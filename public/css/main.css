@@ -129,3 +129,29 @@ color: silver;
 .text-gold{
 color: gold;
 }
+
+.medalIcon{
+	width:32px;
+	height:32px;
+}
+.medalIconBgClass{
+	background-repeat: no-repeat;
+}
+.medalIconInnerText{
+	font-weight:bold;
+	color:whitesmoke;
+	padding: 2px 0 0 11px;
+}
+
+.notificationIconText {
+	font-size: 10px;
+	height: 12px;
+	padding: 0px 4px;
+	position: absolute;
+	right: 20px;
+	top: 14px;
+}
+
+.pointer{
+	cursor: pointer;
+}

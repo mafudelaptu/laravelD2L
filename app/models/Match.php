@@ -30,6 +30,29 @@ class Match extends Eloquent {
 		->where("closed","0000-00-00 00:00:00");
 	}
 
+	public static function getAllOpenMatchesOfUser($user_id){
+		$ret = array();
+
+		$data = Match::getAllOpenMatches()->join("matchdetails", "matchdetails.match_id", "=", "matches.id")
+						->leftJoin("matchvotes", function($join) use ($user_id){
+							$join->on("matchvotes.match_id", "=", "matches.id")
+									->on("matchvotes.user_id", "=", DB::raw($user_id))
+									->on("matchvotes.matchvotetype_id", "=", DB::raw(1));
+						})
+						->where("matchdetails.user_id", $user_id)
+						->select(
+							"matches.*",
+							"matchdetails.submitted",
+							DB::raw("IF(COUNT(matchvotes.user_id) > 0, COUNT(matchvotes.user_id), null) as cancelSubmits")
+							)
+						//->having("cancelSubmits", ">", 0)
+						->get();
+		// $queries = DB::getQueryLog();
+		// dd($queries);
+		
+		return $data;
+	}
+
 	public static function isUserInMatch($user_id, $match_id=0){
 		if($match_id > 0){
 			$user = Matchdetail::where("match_id", $match_id)->where("user_id", $user_id)->first();
@@ -45,11 +68,10 @@ class Match extends Eloquent {
 			->where("matchdetails.user_id", $user_id)
 			->where("matchdetails.submitted", "0")
 			->where("matchdetails.submissionFor", "0")
-			->where("matchdetails.sub_date", "0")
 			->where("matches.team_won_id", "0")
 			->where("matches.canceled", "0")
-			->where("matches.check", "0")
-			->where("matches.closed", "0")->get();
+			->where("matches.check", "0")->get();
+
 			if(!empty($user)){
 				return true;
 			}

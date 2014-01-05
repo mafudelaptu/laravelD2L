@@ -111,3 +111,11 @@ View::composer("navigation.usernavi", function($view){
 			->with("userName", Auth::user()->name);
 	}
 });
+
+View::composer("navigation.notification", function($view){
+	if(Auth::check()){
+		$notificationData = Usernotification::getNotifications(Auth::user()->id);
+		$view->with("data", $notificationData['data'])
+		->with("count", $notificationData['count']);
+	}
+});

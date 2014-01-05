@@ -1,0 +1,7 @@
+#selectedMatchmodesCheckboxes > label{
+	display: inline-block;
+}
+
+#selectedMatchmodesCheckboxes > label:first-child{
+	margin-left: 10px;
+}

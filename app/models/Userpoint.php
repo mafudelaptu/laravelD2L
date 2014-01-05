@@ -42,19 +42,19 @@ class Userpoint extends Eloquent {
 			// Wins
 			$data = Userpoint::where("user_id",$user_id)
 			->where("pointtype_id", 1)
-			->where("matchtype_id", $matchtype_id)->remember(10);
+			->where("matchtype_id", $matchtype_id);
 			$wins = (int) $data->count();
 
 			// Losses
 			$data = Userpoint::where("user_id",$user_id)
 			->where("pointtype_id", 2)
-			->where("matchtype_id", $matchtype_id)->remember(10);
+			->where("matchtype_id", $matchtype_id);
 			$losses = (int) $data->count();
 
 			// Leaves
 			$data = Userpoint::where("user_id",$user_id)
 			->where("pointtype_id", 5)
-			->where("matchtype_id", $matchtype_id)->remember(10);
+			->where("matchtype_id", $matchtype_id);
 			$leaves = (int) $data->count();
 
 			$totalGames = (int) $wins+$losses;
@@ -64,12 +64,17 @@ class Userpoint extends Eloquent {
 			else{
 				$winRate = 0;
 			}
+
+			//Ranking
+			$ranking = Ladder::getRanking($user_id, $matchtype_id);
+
 			$tmp = array();
 			$tmp['Wins'] = $wins;
 			$tmp['Losses'] = $losses;
 			$tmp['TotalGames'] = $totalGames;
 			$tmp['WinRate'] = $winRate;
 			$tmp['Leaves'] = $leaves;
+			$tmp['Ranking'] = (int) $ranking;
 
 			$ret['data']  =$tmp;
 			$ret['status'] = true;

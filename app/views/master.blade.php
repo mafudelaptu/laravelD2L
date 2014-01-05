@@ -10,6 +10,8 @@
 	{{ HTML::style("css/bootstrap-theme.min.css")}}
 	{{ HTML::style("css/font-awesome.min.css")}}
 	{{ HTML::style("css/main.css")}}
+	{{ HTML::style("css/bootstrap_datatable.css")}}
+	{{ HTML::style("css/findMatch/findMatch.css")}}
 	{{ HTML::style("css/findMatch/queueStats.css")}}
 	{{ HTML::style("css/findMatch/modal.css")}}
 	{{ HTML::style("css/match/match.css")}}
@@ -44,11 +46,14 @@
 	{{ HTML::script('js/80.highcharts.js') }}
 	{{ HTML::script('js/90.buzz.js') }}
 	{{ HTML::script("js/main.js")}}
+	{{ HTML::script("js/bootstrap_datatable.js")}}
+	{{ HTML::script("js/findMatch/findMatch.js")}}
 	{{ HTML::script("js/findMatch/queue.js")}}
 	{{ HTML::script("js/findMatch/queueModal.js")}}
 	{{ HTML::script("js/audio/audio.js")}}
 	{{ HTML::script("js/match/match.js")}}
 	{{ HTML::script("js/profile/profile.js")}}
 	{{ HTML::script("js/profile/graphs.js")}}
+	{{ HTML::script("js/ladder/ladder.js")}}
 </body>
 </html>

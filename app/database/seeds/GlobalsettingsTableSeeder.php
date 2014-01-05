@@ -19,6 +19,7 @@ class GlobalsettingsTableSeeder extends Seeder {
 			array("name" => "CreditSilverBorder","value" => "125","active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
 			array("name" => "CreditGoldBorder","value" => "250","active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
 			array("name" => "MatchLeaverPunishment","value" => "-50","active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
+			array("name" => "QuickJoinMatchmode","value" => 9,"active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
 		);
 
 		// Uncomment the below to run the seeder

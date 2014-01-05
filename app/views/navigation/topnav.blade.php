@@ -23,14 +23,15 @@
     <li class="dropdown">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Help <b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li>{{ HTML::link('faq', 'FAQ') }}</li>
-        <li>{{ HTML::link('rules', 'Rules') }}</li>
+        <li>{{ HTML::link('help/faq', 'FAQ') }}</li>
+        <li>{{ HTML::link('help/rules', 'Rules') }}</li>
       </ul>
     </li>
   </ul>
   <ul class="nav navbar-nav navbar-right">
+    @include("navigation.notification")
     @include("navigation.region")
-  @include("navigation.usernavi")
+    @include("navigation.usernavi")
 
   </ul>
  </li>

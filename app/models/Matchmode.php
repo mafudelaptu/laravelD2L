@@ -14,7 +14,13 @@ class Matchmode extends Eloquent {
 			case 1: // single5vs5
 			default:
 				# code...
-				$mm = Matchmode::where("id", 9);
+				$matchmode_id = GlobalSetting::getQuickJoinMatchmode();
+				if($matchmode_id > 0){
+					$mm = Matchmode::where("id", GlobalSetting::getQuickJoinMatchmode());
+				}
+				else{
+					$mm = null;
+				}
 				break;
 		}
 		return $mm;

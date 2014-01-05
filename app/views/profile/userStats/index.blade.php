@@ -19,7 +19,7 @@
   <div class="tab-pane {{$active}}" id="{{$type->id}}">
 	@include("profile.userInfo.lvlUpinfo", array("data"=>$nextSkillbracket[$type->id]))
 	
-	@include("profile.userStats.stats", array("points"=>$points[$type->id], "ranking"=>0, "data"=>$stats[$type->id], "skillbracket"=>$skillbracket[$type->id], "activeWarns"=>$activeBansCount, "warns"=>$allBansCount))
+	@include("profile.userStats.stats", array("points"=>$points[$type->id], "data"=>$stats[$type->id], "skillbracket"=>$skillbracket[$type->id], "activeWarns"=>$activeBansCount, "warns"=>$allBansCount))
 
 	@include("profile/graphs/winRateTrend")
   </div>
