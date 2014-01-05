@@ -139,4 +139,6 @@ class Matchdetail extends Eloquent {
 		}
 		return $ret;
 	}
+
+	
 }

@@ -1,0 +1,25 @@
+.reqNeededStatsDesc {
+	font-size: 10px;
+	color: #999;
+	text-align: center;
+	line-height: 15px;
+}
+
+.reqNeededHeading {
+	margin: -9px -8px 0 -9px;
+	background-color: #292929;
+	line-height: 20px;
+	font-size: 9px;
+ 	font-family: Michroma;
+	text-align: center;
+	color:#ffffff;
+}
+
+.reqNeededHeading green{
+	color:#9CDB04;
+	font-weight: bold;
+}
+
+.selectpicker{
+		width: 100px;
+	}

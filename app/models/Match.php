@@ -234,44 +234,62 @@ class Match extends Eloquent {
 
 public static function playerLeftTheMatch($user_id, $match_id){
 	$ret = array();
-
-	$ret['debug'] .= "Start playerLeftTheMatch <br>\n";
 	if($user_id > 0 && $match_id > 0){
+			$leavercount = Matchvote::getAllLeaverVotesForUser($match_id, $user_id)->count();
 
-			// $sql = "SELECT Count(VoteForPlayer) as Count, VoteForPlayer
-			// 		FROM `MatchDetailsLeaverVotes`
-			// 		WHERE MatchID = ".(int) $matchID." AND VoteForPlayer = ".secureNumber($steamID)."
-			// 				GROUP BY VoteForPlayer;
-			// 				";
-			// $data = $DB->select($sql);
+			if($leavercount >= 6){
+				$ret['leaver'] = true;
+			}
+			else{
+				$ret['leaver'] = false;
+			}
 
-			// $sql = "SELECT Count(VoteForPlayer) as Count, VoteForPlayer
-			// 		FROM `MatchDetailsCancelMatchVotes`
-			// 		WHERE MatchID = ".(int) $matchID." AND VoteForPlayer = ".secureNumber($steamID)."
-			// 				GROUP BY VoteForPlayer;
-			// 				";
-			// $data2 = $DB->select($sql);
-
-			// if($data['Count'] >= $this->leaverGrenze || $data2['Count'] >= $this->leaverGrenze){
-			// 	$MatchDetails = new MatchDetails();
-			// 	$data2 = $MatchDetails->getMatchDetailsDataOfPlayer($matchID, $steamID);
-			// 	$ret['data'] = $data2['data'];
-			// 	$ret['left'] = true;
-			// }
-			// else{
-			// 	$ret['left'] = false;
-			// }
-
-			// $ret['status'] = true;
+			$ret['status'] = true;
 	}
 	else{
 		$ret['status'] = "steamID = 0 or matchid = 0";
 	}
 
-	$ret['debug'] .= "End playerLeftTheMatch <br>\n";
-
 	return $ret;
 }
 
+
+public static function getLastMatches($user_id, $count){
+	$ret = array();
+	$data = Match::join("matchdetails", "matches.id", "=", "matchdetails.match_id")
+					->join("userpoints", function($join){
+						$join->on("matches.id", "=", "userpoints.match_id");
+					})
+					->join("matchmodes", "matchmodes.id", "=", "matches.matchmode_id")
+					->join("matchtypes", "matchtypes.id", "=", "matches.matchtype_id")
+					->where("userpoints.user_id", $user_id)
+					->where("matchdetails.user_id", $user_id)
+					->where("matches.team_won_id", "!=", 0)
+					->where("matches.canceled", 0)
+					->where("matches.check", 0)
+					->select("matches.*", 
+						"matchdetails.team_id", 
+						"matchmodes.name as matchmode", 
+						"matchtypes.name as matchtype", 
+						"matchmodes.shortcut as mm_shortcut", 
+						"userpoints.pointschange")->take($count)->get();
+	if(!empty($data)){
+		$leaverArray = array();
+		foreach ($data as $key => $match) {
+			$match_id = $match->id;
+			$retLeaver = Match::playerLeftTheMatch($user_id, $match_id);
+			$leaver = $retLeaver['leaver'];
+
+			$leaverArray[$match->id] = $leaver;
+		}
+		$ret["data"] = $data;
+		$ret['leaverArray'] = $leaverArray;
+		$ret['status'] = true;
+	}
+	else{
+		dd(DB::getQueryLog());
+	}
+	return $ret;
+}
 
 }

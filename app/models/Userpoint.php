@@ -8,22 +8,26 @@ class Userpoint extends Eloquent {
 
 	public static function getPoints($user_id, $matchtype_id=0){
 		$ret = 0;
-
-		$points = DB::table("userpoints")->where("user_id", $user_id);
-		$basePoints = Auth::user()->basePoints;
-		switch($matchtype_id){
-			case 0:
-			case 1:
-			$points = $points->where(function($query){
-				$query->where("matchtype_id", 0)->orWhere("matchtype_id", 1);
-			})->remember(10);
-			break;
-			default:
-			$points = $points->where("matchtype_id", $matchtype_id)->remember(10);
-		}
+		$userData = User::getUserData($user_id)->first();
+		$basePoints = $userData->basePoints;
+		$points = Userpoint::getPointsData($user_id, $matchtype_id);
 		$points = $points->sum("pointschange");
 		$ret = $basePoints+$points;
 		return $ret;
+	}
+
+	public static function getPointsData($user_id, $matchtype_id=0){
+		$points = DB::table("userpoints")->where("userpoints.user_id", $user_id);
+		switch($matchtype_id){
+			case 0:
+			break;
+			case 1:
+			$points = $points->where("userpoints.matchtype_id", 1);
+			break;
+			default:
+			$points = $points->where("userpoints.matchtype_id", $matchtype_id);
+		}
+		return $points;
 	}
 
 	public static function getGameStats($user_id, $matchtype_id){
@@ -37,19 +41,19 @@ class Userpoint extends Eloquent {
 
 			// Wins
 			$data = Userpoint::where("user_id",$user_id)
-			->where("pointstype_id", 1)
+			->where("pointtype_id", 1)
 			->where("matchtype_id", $matchtype_id)->remember(10);
 			$wins = (int) $data->count();
 
 			// Losses
 			$data = Userpoint::where("user_id",$user_id)
-			->where("pointstype_id", 2)
+			->where("pointtype_id", 2)
 			->where("matchtype_id", $matchtype_id)->remember(10);
 			$losses = (int) $data->count();
 
 			// Leaves
 			$data = Userpoint::where("user_id",$user_id)
-			->where("pointstype_id", 5)
+			->where("pointtype_id", 5)
 			->where("matchtype_id", $matchtype_id)->remember(10);
 			$leaves = (int) $data->count();
 
@@ -132,7 +136,7 @@ class Userpoint extends Eloquent {
 							"matchmode_id" => $matchmode_id,
 							"matchtype_id" => $matchtype_id,
 							"match_id" => $match_id,
-							"pointstype_id" => $pointsType,
+							"pointtype_id" => $pointsType,
 							"pointschange" => $pointChange,
 							"created_at" => new DateTime,
 							);
@@ -142,12 +146,146 @@ class Userpoint extends Eloquent {
 						$ret['status'] = true;
 					}
 					else{
-						$ret['status'] = "pointstype_id = 0";
+						$ret['status'] = "pointtype_id = 0";
 					}
 				}
 			}		
 		}
 
+		return $ret;
+	}
+
+
+	public static function getPointsHistoryData($matchmode_id, $matchtype_id, $user_id, $count="*"){
+		$userData = User::getUserData($user_id)->first();
+		$basepoints = $userData->basePoints;
+
+		$data = Userpoint::getPointsData($user_id, $matchtype_id);
+
+		$data->join("matches", "matches.id", "=", "userpoints.match_id")
+		->join("matchmodes", "matchmodes.id", "=", "userpoints.matchmode_id")
+		->join("matchtypes", "matchtypes.id", "=", "userpoints.matchtype_id")
+		->join("pointtypes", "pointtypes.id", "=", "userpoints.pointtype_id")
+		->where("userpoints.user_id", $user_id)
+		->where("userpoints.matchtype_id", $matchtype_id);
+
+		if($matchmode_id != "*"){
+			$data->where("userpoints.match_id", ">", 0);
+			$data->where("userpoints.matchmode_id",$matchmode_id);
+		}
+
+		$data->select(
+			"userpoints.pointschange",
+			"userpoints.match_id",
+			"userpoints.event_id",
+			"matchtypes.name as matchtype",
+			"matchmodes.name as matchmode",
+			"matchtypes.name as matchtype",
+			"matchtypes.name as matchtype",
+			"pointtypes.name as pointtype"
+			);
+		$data = $data->orderBy("userpoints.created_at", "asc")->get();
+		// $query = DB::getQueryLog();
+		// die($query[2]['query']);
+		// für Highchart aufbereiten
+		if(!empty($data)){
+			
+			if($matchmode_id == "*"){
+				$elo = (int)$basepoints;
+			}
+			else{
+				$elo = 0;
+			}
+
+		// Startwert hinzufï¿½gen
+			$retData[0] = $elo;
+			$retKeys[0] = 0;
+			$retPointsType[0] = "";
+			$retMatchMode[0] = "";
+			$retMatchType[0] = "";
+			$retPointsChange[0] = 0;
+			$retIDText[0] = "Initialization";
+
+			foreach ($data as $k => $v) {
+				$pointsChange  = $v->pointschange;
+				$elo += (int)$pointsChange;
+				$retData[] = $elo;
+				$retKeys[] = $v->match_id;
+				$retPointsType[] = $v->pointtype;
+				$retMatchMode[] = $v->matchmode;
+				$retMatchType[] = $v->matchtype;
+				$retPointsChange[] =  $v->pointschange;
+
+				if($v->match_id == "0"){
+					$retIDText[] = "Event #".$v->event_id;
+				}
+				else{
+					$retIDText[] = "Match #".$v->match_id;
+				}
+
+				$matchMode = $v->matchmode;
+				$matchType = $v->matchtype;
+			}
+
+			if($count != "*"){
+				(count($retData) > (int)$count ? $anfang=(count($retData)-(int)$count): $anfang=0);
+				$retData = array_slice($retData,$anfang,(int)$count);
+				$retKeys = array_slice($retKeys,$anfang,(int)$count);
+				$retPointsType = array_slice($retPointsType,$anfang,(int)$count);
+				$retMatchMode = array_slice($retMatchMode,$anfang,(int)$count);
+				$retMatchType = array_slice($retMatchType,$anfang,(int)$count);
+				$retPointsChange = array_slice($retPointsChange,$anfang,(int)$count);
+				$retIDText = array_slice($retIDText,$anfang,(int)$count);
+			}
+
+			$ret['data'] = $retData;
+
+			$ret['xAxis'] = $retKeys;
+			$ret['matchModeArr'] = $retMatchMode;
+			$ret['MatchTypeArr'] = $retMatchType;
+			$ret['pointsType'] = $retPointsType;
+			$ret['pointsChange'] = $retPointsChange;
+			$ret["idText"] = $retIDText;
+			$ret['matchType'] = $matchType;
+			$ret['matchMode'] = $matchMode;
+			$ret['status'] = true;
+		}
+		else{
+			$ret['status'] = "data = null";
+		}
+
+		
+		return $ret;
+	}
+
+	public static function getPointRoseData($user_id, $matchtype_id=1){
+		$ret = array();
+
+		$data = Userpoint::getPointsData($user_id)
+		->join("matchmodes", "matchmodes.id", "=", "userpoints.matchmode_id")
+		->where("user_id", $user_id)
+		->where("matchtype_id", $matchtype_id)
+		->select(DB::raw("IF(SUM(pointschange) > 0, SUM(pointschange), 0) as PointsEarned"),
+			"matchmodes.name as matchmode",
+			"userpoints.matchmode_id")
+		->groupBy("matchmode_id")->get();
+
+		if(!empty($data)){
+			$retKeys = array();
+			$retData = array();
+			foreach($data as $k => $v){
+				$retKeys[] = $v->matchmode;
+				$retData[] = (int) $v->PointsEarned;
+			}
+		}
+		else{
+			$ret['status'] = "data = null";
+		}
+
+		$ret['data'] = $retData;
+		$ret['keys'] = $retKeys;
+
+		$ret['status'] = true;
 		return $ret;
 	}
 }

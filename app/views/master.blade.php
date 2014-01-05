@@ -13,6 +13,7 @@
 	{{ HTML::style("css/findMatch/queueStats.css")}}
 	{{ HTML::style("css/findMatch/modal.css")}}
 	{{ HTML::style("css/match/match.css")}}
+	{{ HTML::style("css/profile/profile.css")}}
 </head>
 <body>
 	<div class="main-container">
@@ -47,5 +48,7 @@
 	{{ HTML::script("js/findMatch/queueModal.js")}}
 	{{ HTML::script("js/audio/audio.js")}}
 	{{ HTML::script("js/match/match.js")}}
+	{{ HTML::script("js/profile/profile.js")}}
+	{{ HTML::script("js/profile/graphs.js")}}
 </body>
 </html>

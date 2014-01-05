@@ -87,6 +87,10 @@ text-shadow: 1px 1px 2px #666;
 	clear:both;
 }
 
+.label-inverse{
+	background-color: #000;
+}
+
 .badge-danger{
 	background-color: #d9534f;
 }
@@ -102,4 +106,26 @@ text-shadow: 1px 1px 2px #666;
 }
 .badge-success{
 	background-color: #5cb85c;
+}
+
+.customH2{
+	text-transform: uppercase;
+	font-size: 20px;
+	background-color: #292929;
+	padding:10px 15px;
+	font-family: Michroma;
+	color:#FFF;
+}
+.customH2 span, .blackH4 span{
+	color:#9CDB04;
+}
+
+.text-bronze{
+color: peru;
+}
+.text-silver{
+color: silver;
+}
+.text-gold{
+color: gold;
 }

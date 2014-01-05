@@ -55,6 +55,8 @@ class MatchdetailsController extends BaseController {
 		}
 		return $ret;
 	}
+
+
 	/**
 	 * Display a listing of the resource.
 	 *

@@ -40,6 +40,57 @@ class Userskillbracket extends Eloquent {
 		return $data;
 	}
 
+	public static function getSkillbracketsAsArray($user_id, $fullMatchtypes=false){
+		$sbArray = array();
+		if($fullMatchtypes){
+			$matchtypes = MatchType::getAllActiveMatchtypes()->get();
+			if(!empty($matchtypes)){
+				foreach ($matchtypes as $k => $matchtype) {
+					$matchtype_id = $matchtype->id;
+					$data = DB::table("userskillbrackets")
+							->join('skillbrackettypes', 'userskillbrackets.skillbrackettype_id', '=', 'skillbrackettypes.id')
+							->where("user_id",$user_id)
+							->where("matchtype_id", $matchtype_id)
+							->first();	
+					if(!empty($data)){
+							$tmp = array(
+								"skillbrackettype_id" => $data->skillbrackettype_id,
+								"skillbracket" => $data->name,
+								);
+							$sbArray[$matchtype_id] = $tmp;
+					}
+					else{
+						$tmp = array(
+								"skillbrackettype_id" => 0,
+								"skillbracket" => "",
+								);
+						$sbArray[$matchtype_id] = $tmp; 
+					}
+				}
+			}
+		}
+		else{
+			$data = DB::table("userskillbrackets")
+							->join('skillbrackettypes', 'userskillbrackets.skillbrackettype_id', '=', 'skillbrackettypes.id')
+							->where("user_id",$user_id)->get();			
+			if(!empty($data)){
+				
+				foreach ($data as $key => $sb) {
+					$matchtype_id = $sb->id;
+
+					$tmp = array(
+								"skillbrackettype_id" => $sb->skillbrackettype_id,
+								"skillbracket" => $sb->name,
+								);
+					$sbArray[$matchtype_id] = $tmp;
+				}
+			}
+		}
+		
+		
+		return $sbArray;
+	}
+
 	public static function setSkillbrackets($user_id){
 		$ret = array();
 		$ret['debug'] = "";

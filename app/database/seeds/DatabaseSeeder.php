@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('UsernotificationsTableSeeder');
 		$this->call('UservotesTableSeeder');
 		$this->call('MatchvotesTableSeeder');
+		$this->call('PointtypesTableSeeder');
 	}
 
 }

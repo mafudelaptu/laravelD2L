@@ -23,6 +23,7 @@ Route::group(array('before' => 'auth'), function()
 {
 	Route::get('/', 'HomeController@home');
 	Route::get('find_match', 'FindMatchController@index');
+	
 
 	Route::get('ladder', function()
 	{
@@ -46,9 +47,16 @@ Route::group(array('before' => 'auth'), function()
 	});
 
 	Route::pattern('match_id', '[0-9]+');
+	Route::pattern('user_id', '[0-9]+');
 	//match
 	Route::get("match/{match_id}", "MatchesController@showMatch");
 
+	// profile
+	Route::get("profile", function(){
+		 return Redirect::to('profile/'.Auth::user()->id);
+	});
+	Route::get('profile/{user_id}', 'ProfileController@showProfile');
+	
 
 	// ajax
 	// findMatch
@@ -77,6 +85,10 @@ Route::group(array('before' => 'auth'), function()
 	Route::post("match/votePlayer", array("before" => "csrf", "uses" => "MatchesController@votePlayer"));
 	Route::post("match/cancelVote", array("before" => "csrf", "uses" => "MatchvotesController@cancelVote"));
 
+	//profile
+	Route::get("profile/getPointsHistoryData", array("before" => "csrf", "uses" => "UserpointsController@getPointsHistoryData"));
+	Route::get("profile/getPointRoseData", array("before" => "csrf", "uses" => "UserpointsController@getPointRoseData"));
+	
 	/* 
 	// Admin
 	*/
@@ -175,3 +187,5 @@ Route::resource('uservotes', 'UservotesController');
 Route::resource('votetypes', 'VotetypesController');
 
 Route::resource('matchvotes', 'MatchvotesController');
+
+Route::resource('pointtypes', 'PointtypesController');
