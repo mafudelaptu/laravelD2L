@@ -31,13 +31,13 @@
 </div>
 <div class="row">
 	<div class="col-sm-4">
-		@include("home.wallOfFame.bestPlayers.index", array("data"=>null))
+		@include("home.wallOfFame.bestPlayers.index", array("data"=>$bestPlayers))
 	</div>
 	<div class="col-sm-4">
-		@include("home.wallOfFame.lastMatches.index", array("data"=>null))
+		@include("home.wallOfFame.lastMatches.index", array("data"=>$lastMatches))
 	</div>
 	<div class="col-sm-4">
-		@include("home.wallOfFame.highestCredits.index", array("data"=>null))
+		@include("home.wallOfFame.highestCredits.index", array("data"=>$highestCredits))
 	</div>
 </div>
 @stop

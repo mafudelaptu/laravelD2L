@@ -307,9 +307,23 @@ public static function getLastMatches($user_id, $count){
 		$ret['status'] = true;
 	}
 	else{
-		dd(DB::getQueryLog());
+		// dd(DB::getQueryLog());
 	}
 	return $ret;
 }
 
+
+public static function getGlobalLastMatches($count){
+	$ret = array();
+	$data = Match::join("matchmodes", "matchmodes.id", "=", "matches.matchmode_id")
+					->join("matchtypes", "matchtypes.id", "=", "matches.matchtype_id")
+					->where("matches.team_won_id", "!=", 0)
+					->where("matches.canceled", 0)
+					->where("matches.check", 0)
+					->select("matches.*",  
+						"matchmodes.name as matchmode", 
+						"matchtypes.name as matchtype", 
+						"matchmodes.shortcut as mm_shortcut")->take($count);
+	return $data;
+}
 }

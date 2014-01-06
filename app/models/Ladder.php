@@ -31,4 +31,34 @@ class Ladder extends Eloquent {
 
 		return count($data);
 	}
+
+	public static function getBestPlayers($matchtype_id, $count="5"){
+		$data = Userpoint::join("users","users.id", "=", "userpoints.user_id")
+					->where("userpoints.matchtype_id", $matchtype_id)
+					->groupBy("userpoints.user_id")
+					->select(
+						"users.*",
+						"userpoints.*",
+						DB::raw("(SUM(userpoints.pointschange)+users.basePoints) as points")
+						)
+					->orderBy("points", "desc")
+					->take($count)
+					->get();
+		 // $queries = DB::getQueryLog();
+		 // die($queries[3]['query']);
+		if(!empty($data)){
+			foreach ($data as $key => $user) {
+				
+				$user_id = $user->user_id;
+				$gameStatsData = Userpoint::getGameStats($user_id, $matchtype_id);
+				
+				$credits = Usercredit::getCreditCount($user_id);
+				
+				$data[$key] = array_add($data[$key], "stats", $gameStatsData['data']);
+				$data[$key] = array_add($data[$key], 'credits', $credits);
+			}
+
+			return $data;
+		}
+	}
 }

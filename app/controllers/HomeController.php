@@ -19,11 +19,15 @@ class HomeController extends BaseController {
 	
 	public function home(){
 		$this->layout->title = $this->title;
-		
+		$lastMatchesData =  Match::getGlobalLastMatches(5);
 		$contentData = array(
 			"heading" => $this->title,
 			"newsData" => News::getAllActiveNews()->get(),
 			"streamerData" => Streamer::getAllPlayingStreamers(5),
+			"bestPlayers" => Ladder::getBestPlayers(1,5),
+			"lastMatches" => $lastMatchesData->get(),
+			"matchmodes" => Matchmode::getAllActiveModes()->get(),
+			"highestCredits" => Usercredit::getHighestUserCredits(5)->get(),
 			);
 		$this->layout->nest("content", 'home.index', $contentData);
 	}

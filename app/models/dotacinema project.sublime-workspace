@@ -1,0 +1,1111 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"sta",
+				"status"
+			],
+			[
+				"Match",
+				"Matchdetail"
+			],
+			[
+				"user_",
+				"user_id"
+			],
+			[
+				"match",
+				"match_id"
+			],
+			[
+				"mat",
+				"matchData"
+			],
+			[
+				"id",
+				"id"
+			],
+			[
+				"Matched",
+				"Matched_user"
+			],
+			[
+				"matchtypes",
+				"matchtypes"
+			],
+			[
+				"matchmode",
+				"matchmode_id"
+			],
+			[
+				"ma",
+				"matchmode_id"
+			],
+			[
+				"ret",
+				"retCount"
+			],
+			[
+				"ar",
+				"array	$… = array (…)"
+			],
+			[
+				"matched",
+				"matchedUsersArray"
+			],
+			[
+				"check",
+				"checkAlreadyExists"
+			],
+			[
+				"DB",
+				"DB-table	DB-table"
+			],
+			[
+				"cou",
+				"countTeam"
+			],
+			[
+				"team",
+				"team_id"
+			],
+			[
+				"reg",
+				"region_id"
+			],
+			[
+				"insert",
+				"insertArray"
+			],
+			[
+				"return",
+				"returnAjax"
+			],
+			[
+				"noch",
+				"nochWelcheInQueue"
+			],
+			[
+				"for",
+				"foreach"
+			],
+			[
+				"dir",
+				"dirTest"
+			],
+			[
+				"user",
+				"user_id"
+			],
+			[
+				"dele",
+				"deleteUserOutOfQueue"
+			],
+			[
+				"users",
+				"users"
+			],
+			[
+				"ch",
+				"checkTime"
+			],
+			[
+				"ins",
+				"insArray"
+			],
+			[
+				"stat",
+				"static"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"match_id",
+				"match_id"
+			],
+			[
+				"Input",
+				"Input-get	Input-get"
+			],
+			[
+				"marg",
+				"margin-top"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"con",
+				"contentData"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"pos",
+				"posi"
+			],
+			[
+				"force",
+				"force"
+			],
+			[
+				"matchmo",
+				"matchmode_id"
+			],
+			[
+				"matchtype",
+				"matchtype_id"
+			],
+			[
+				"queu",
+				"queues"
+			],
+			[
+				"sk",
+				"skillbracketData"
+			],
+			[
+				"ski",
+				"skillbracketData"
+			],
+			[
+				"mo",
+				"modes"
+			],
+			[
+				"User",
+				"Userskillbracket"
+			],
+			[
+				"queue",
+				"queueus"
+			],
+			[
+				"userski",
+				"userskillbrackets"
+			],
+			[
+				"fo",
+				"forceSearch"
+			],
+			[
+				"In",
+				"Input-get	Input-get"
+			],
+			[
+				"IN",
+				"Input-get	Input-get"
+			],
+			[
+				"Auth",
+				"Auth-user	Auth-user"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"inser",
+				"insertArray"
+			],
+			[
+				"matches",
+				"matches"
+			],
+			[
+				"region",
+				"region_id"
+			],
+			[
+				"sele",
+				"selected_region_shortcut"
+			],
+			[
+				"var",
+				"var_dump"
+			],
+			[
+				"Redi",
+				"Redirect-to	Redirect-to"
+			],
+			[
+				"regio",
+				"region_id"
+			],
+			[
+				"ba",
+				"basepoints"
+			],
+			[
+				"eve",
+				"event_id"
+			],
+			[
+				"poin",
+				"pointstype_id"
+			],
+			[
+				"is_a",
+				"is_array"
+			],
+			[
+				"matchdeta",
+				"matchdetails"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/match/match.php",
+			"settings":
+			{
+				"buffer_size": 56939,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "/*\n * Copyright 2013 Artur Leinweber\n * Date: 2013-01-01\n */\nfunction submitResult(){\n	var matchID = getParameterByName(\"matchID\");\n	validUpload = checkScreenshotUploaded();\n	l(\"submitResult submit clicked\");\n	l(\"upload:\"+validUpload);\n	\n\n	\n	if ($('#submitResultForm').valid() && checkScreenshotUploaded()) {\n		\n		// Submit auf disabled setzen\n		$(\"#matchSubmitresultButton\").html(\"Result submitted\").addClass(\n				\"disabled\").removeClass(\"btn-primary\").removeAttr(\"onclick\");\n		// Cancel button removen\n		$(\"#cancelMatchButton\").remove();\n		\n		var selection = $(\n				\"#myModalSubmitResult div[data-toggle='buttons-radio']>button[class*='active']\")\n				.val();\n		\n		l(selection);\n		\n		if(fileUploaded != null){\n			uservotefileName = fileUploaded.name;\n		}\n		else{\n			fileName = \"\";\n		}\n		\n		// LeaverVotes auslesen\n		checkedInputs = $(\"#leaverPannel input[type='checkbox']:checked\");\n		// array zum uebergeben zusammenbauen\n		leaverArray = new Array();\n		$.each(checkedInputs, function(index,value){\n			leaverArray.push($(value).val());\n		});\n		\n		\n		$.ajax({\n			url : 'ajax.php',\n			type : \"POST\",\n			dataType : 'json',\n			data : {\n				type : \"match\",\n				mode : \"submitResult\",\n				value : selection,\n				ID: matchID,\n				screenshot : fileName,\n				leaver : leaverArray\n			},\n			success : function(result) {\n				l(result);\n				$.cookie(\"matchFoundResultSubmitted\", matchID, {\n					expires : 1\n				});\n				\n						\n				// match found cookie loeschen\n				$.cookie(\"matchFound\", null);\n				\n				l(\"SubmitResult success\");\n				$('#myModalSubmitResult').modal('hide');\n				l(\"SubmitResult End\");\n				\n				// MatchTeams leeren von Spieler\n				cleanMatchTeamsOfPlayer();\n				\n				// Weiterleitung aufs Profil\n				setTimeout(function() {\n					//checken ob eventMatch jenachdem unterschiedlich umleiten\n					statusEvent = checkIfEventMatch();\n					l(statusEvent);\n					if(statusEvent){\n						// auf Profil umleiten\n						window.location = \"event.php?eventID=\"+statusEvent[0]+\"&cEID=\"+statusEvent[1];\n					}\n					else{\n						// auf Profil umleiten\n						//window.location = \"profile.php\";\n					}\n				}, 1000);\n				\n			}\n		});\n	}\n\n}\n/*\n * Copyright 2013 Artur Leinweber\n * Date: 2013-01-01\n */\nvar fileUploaded = null;\nfunction checkForStrangeSubmissions(){\n	l(\"Start checkForStrangeSubmissions\");\n	var matchID = getParameterByName(\"matchID\");\n	\n	$('#submitResultForm').validate({\n	    rules: {\n//	    	inputDota2MatchID: {\n//		        minlength: 7,\n//		        maxlength:8,\n//		        required: true,\n//		        digits: true\n//		    },\n		    checkWinLoseCheckboxHidden: {\n		        minlength: 3,\n		        maxlength:4,\n		        required: true\n		    }\n	    },\n	    highlight: function(label) {\n	    	$(label).closest('.control-group').addClass('error');\n	    },\n	    success: function(label) {\n	    	label\n	    		.text('OK!').addClass('valid')\n	    		.closest('.control-group').addClass('success');\n	    }\n	  });\n\n	$('#myModalSubmitResult').modal('show');\n	\n	$.ajax({\n		url: 'ajax.php',\n		type: \"POST\",\n		dataType: 'json',\n		data: {\n			type:\"matchDetails\", \n			mode: \"checkForStrangeSubmissions\", \n			ID:matchID\n		},\n		success: function(result) {\n			fileUploaded = null;\n			l(result);\n			\n			if(result.oneVsOne){	\n					$(\"#screenshotUploadForm\").show();\n					\n					$('#screenshotUpload').fileupload({\n				        dataType: 'json',\n				        done: function (e, data) {\n				        	$(\"#progress\").hide();\n				        	l(data);\n				        	\n				            $.each(data.result.files, function (index, file) {\n				            	l(file);\n				            	$(\"#fileUploaded\").html(\"<img src='\"+file.thumbnail_url+\"' height=50>\"+file.name);\n				            	\n				            	\n				            });\n				            fileUploaded = data.result.files[0];\n				            $.ajax({\n				        		url: 'ajax.php',\n				        		type: \"POST\",\n				        		dataType: 'json',\n				        		data: {type:\"uploads\", mode: \"moveScreenshotFile\", ID:matchID, fileName: fileUploaded.name},\n				        		success: function(result2) {\n				        			\n				        			l(result2);\n				        		}\n				        	\n				            });\n				        },\n						progressall: function (e, data) {\n							$(\"#progress\").show();\n					        var progress = parseInt(data.loaded / data.total * 100, 10);\n					        $('#progress .bar').css(\n					            'width',\n					            progress + '%'\n					        );\n					    }\n				    });\n				\n			}\n			else{\n				// leaverCounts hinzuf�gen\n				setLeaverCounts(result.leaverData.countArray); // matchModal.js\n				\n				// screenshot handling\n				if(result.screenshot == \"screenshot\"){\n					\n					$(\"#screenshotUploadForm\").show();\n					\n					$('#screenshotUpload').fileupload({\n				        dataType: 'json',\n				        done: function (e, data) {\n				        	$(\"#progress\").hide();\n				        	l(data);\n				        	\n				            $.each(data.result.files, function (index, file) {\n				            	l(file);\n				            	$(\"#fileUploaded\").html(\"<img src='\"+file.thumbnail_url+\"' height=50>\"+file.name);\n				            	\n				            	\n				            });\n				            fileUploaded = data.result.files[0];\n				            $.ajax({\n				        		url: 'ajax.php',\n				        		type: \"POST\",\n				        		dataType: 'json',\n				        		data: {type:\"uploads\", mode: \"moveScreenshotFile\", ID:matchID, fileName: fileUploaded.name},\n				        		success: function(result2) {\n				        			\n				        			l(result2);\n				        		}\n				        	\n				            });\n				        },\n						progressall: function (e, data) {\n							$(\"#progress\").show();\n					        var progress = parseInt(data.loaded / data.total * 100, 10);\n					        $('#progress .bar').css(\n					            'width',\n					            progress + '%'\n					        );\n					    }\n				    });\n				}\n			}\n			\n\n			// leaver handling\n			if(result.leaver == \"leaver\"){\n				// hervorhebung hinzuf�gen\n				$(\"#leaverPannelToggler\").addClass(\"alert alert-warning\");\n				\n				// sofort ausklappen\n				$(\"#leaverPannel\").addClass(\"in\");\n			}\n		}\n	});\n	\n	l(\"END checkForStrangeSubmissions\");\n}\n\n/*\n * Copyright 2013 Artur Leinweber\n * Date: 2013-01-01\n */\nfunction setWinLoseValue(button){\n	l(button, debug);\n	var value = $(button).val();\n	l(value, debug);\n	$(\"#checkWinLoseCheckboxHidden\").val(value);\n}\n/*\n * Copyright 2013 Artur Leinweber\n * Date: 2013-01-01\n */\nfunction checkScreenshotUploaded(){\n	l(\"Start checkScreenshotUploaded\");\n	screenshotStatus = $(\"#screenshotUploadForm\").css(\"display\");\n	l(screenshotStatus);\n	if(screenshotStatus == \"block\"){\n		if(fileUploaded != null){\n			l(\"uploaded\");\n			$(\"#screenshotUploadFormError\").remove();\n			return true;\n		}\n		else{\n			l(\"error: \");\n			l(fileUploaded);\n			error = '<label for=\"screenshotUploadForm\" id=\"screenshotUploadFormError\" generated=\"true\" class=\"error\" style=\"\">This field is required.</label>';\n			$(\"#screenshotUploadForm > .controls\").append(error);\n			\n			return false;\n		}\n	}\n	else{\n		l(\"screenshot wird nciht verlangt\");\n		return true;\n	}\n	\n	l(\"End checkScreenshotUploaded\");\n}\n/*\n * Copyright 2013 Artur Leinweber\n * Date: 2013-01-01\n */\nfunction submitCancelMatch(){\n	\n	var matchID = getParameterByName(\"matchID\");\n	\n	// reset Fehlerstatus\n	$(\"#leaverCancelMatchPannel input[type='checkbox']\").css(\"color\", \"black\");\n	$(\"#checkErrorDiv\").html(\"\");\n	\n	// reason auslesen\n	reason = $(\"#checkGroup button.active\").val();\n	l(reason);\n	\n	\n	// LeaverVotes auslesen\n	checkedInputs = $(\"#leaverCancelMatchPannel input[type='checkbox']:checked\");\n	// array zum uebergeben zusammenbauen\n	leaverArray = new Array();\n	$.each(checkedInputs, function(index,value){\n		leaverArray.push($(value).val());\n	});\n	\n	switch(reason){\n		case \"1\":\n			if(leaverArray.length > 0){\n				l(\"test\");\n				l(reason);\n				$.ajax({\n					url: 'ajax.php',\n					type: \"POST\",\n					dataType: 'json',\n					data: {type:\"match\", mode: \"cancelMatch\", ID:matchID, array:leaverArray, reason:reason},\n					success: function(result) {\n						l(result);\n						\n						if(result.status == true){\n							// MatchTeams leeren von Spieler\n							cleanMatchTeamsOfPlayer();\n							\n							// aktuelles Modal schließen\n							$(\"#myModalCancelMatch\").modal(\"hide\");\n							\n							// neues Modal oeffnen\n							$(\"#myModalCancelMatchSuccess\").modal(\"show\");\n							\n							$(\"#myModalCancelSuccessBackButton\").click(function(){\n								// Modal schließen\n								$(\"#myModalCancelMatchSuccess\").modal(\"hide\");\n								\n								// andere Button disabled\n								html = '<div class=\"alert-info\">you voted for canceling the Match!</div>';\n								$(\"#middleAreaButtonArea\").html(html);\n								\n							});\n							\n							$(\"#myModalCancelMatchSuccessLeaveButton\").click(function(){\n								// Modal schließen\n								$(\"#myModalCancelMatchSuccess\").modal(\"hide\");\n								\n								// auf Profil umleiten\n								window.location = \"profile.php\";\n								\n							});\n						}\n					}\n				});\n			}\n			// Fehlermeldung anzeigen\n			else{\n				$(\"#leaverCancelMatchPannel input[type='checkbox']\").css(\"color\", \"red\");\n				\n				error = '<br><div class=\"alert alert-block alert-error\"><p>select at least one Player who didn\\'t join the Match!</p></div>';\n				\n				$(\"#checkErrorDiv\").html(error);\n			}\n			break;\n		case \"2\":\n			$.ajax({\n				url: 'ajax.php',\n				type: \"POST\",\n				dataType: 'json',\n				data: {type:\"match\", mode: \"cancelMatchHard\", ID:matchID},\n				success: function(result) {\n					l(result);\n					\n					if(result.status == true){\n						// MatchTeams leeren von Spieler\n						cleanMatchTeamsOfPlayer();\n						\n						// aktuelles Modal schließen\n						$(\"#myModalCancelMatch\").modal(\"hide\");\n						\n						// neues Modal oeffnen\n						$(\"#myModalCancelHardMatchSuccess\").modal(\"show\");\n						\n						$(\"#myModalCancelHardSuccessBackButton\").click(function(){\n							// Modal schließen\n							$(\"#myModalCancelMatchSuccess\").modal(\"hide\");\n							\n							// andere Button disabled\n							html = '<div class=\"alert-info\">you voted for canceling the Match!</div>';\n							$(\"#middleAreaButtonArea\").html(html);\n							\n						});\n						\n						$(\"#myModalCancelHardMatchSuccessLeaveButton\").click(function(){\n							// Modal schließen\n							$(\"#myModalCancelMatchSuccess\").modal(\"hide\");\n							\n							//checken ob eventMatch jenachdem unterschiedlich umleiten\n							statusEvent = checkIfEventMatch();\n							if(statusEvent){\n								// auf Profil umleiten\n								window.location = \"event.php?eventID=\"+statusEvent[0]+\"&cEID=\"+statusEvent[1];\n							}\n							else{\n								// auf Profil umleiten\n								window.location = \"profile.php\";\n							}\n							\n						});\n					}\n				}\n			});\n			break;\n	}\n\n}\n/*\n * Copyright 2013 Artur Leinweber\n * Date: 2013-01-01\n */\nfunction checkIfEventMatch(){\n	ret = new Array();\n	\n	id = \"#eventMatchIndicator\";\n	eventMatch = $(id).val();\n	if(eventMatch == \"true\"){\n		createdEventID = $(id).attr(\"data-CEID\");\n		eventID = $(id).attr(\"data-EID\");\n		l(createdEventID+\" \"+eventID);\n		\n		ret.push(eventID);\n		ret.push(createdEventID);\n		\n	}\n	else{\n		ret = false;\n	}\n	\n	return ret;\n}\n",
+			"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/js/match/match.js",
+			"file_size": 11433,
+			"file_write_time": 130316784240704475,
+			"settings":
+			{
+				"buffer_size": 10997,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/notifications/userNotification.php",
+			"settings":
+			{
+				"buffer_size": 3898,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/user/userVotes.php",
+			"settings":
+			{
+				"buffer_size": 6584,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/admin/fakeMatches.php",
+			"settings":
+			{
+				"buffer_size": 13359,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/matchdetails/matchdetails.php",
+			"settings":
+			{
+				"buffer_size": 23607,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<?php \n/*\n * Copyright 2013 Artur Leinweber\n* Date: 2013-01-01\n*/\np(\"START MatchResultHandling\");\n$DB = new DB();\n$con = $DB->conDB();\n\n// alle offenen Matches auslesen\n$sql = \"SELECT MatchID, MatchModeID, MatchTypeID , (SELECT Count(*) FROM `MatchDetails` md WHERE MatchID = m.MatchID AND Submitted = 1) as Count\n		FROM `Match` m\n		WHERE TeamWonID = -1 AND TimestampClosed = 0 AND ManuallyCheck = 0 AND Canceled = 0\n			AND EXISTS (SELECT md.MatchID FROM MatchDetails md WHERE md.MatchID = m.MatchID )\n		ORDER BY MatchID\n		LIMIT 100\n		\";\n$openMatches = $DB->multiSelect($sql);\np($sql);\n// f�r jedes Match auslesen ob alle submitted haben, dann ergebnis eintragen\nif(is_array($openMatches) && count($openMatches) > 0){\n	foreach($openMatches as $k =>$v){\n		$matchID = $v[\"MatchID\"];\n		$matchModeID = $v[\"MatchModeID\"];\n		$matchTypeID = $v[\"MatchTypeID\"];\n\n		$sql = \"SELECT *\n				FROM `MatchDetails`\n				WHERE MatchID = \".(int) $matchID.\" AND Submitted = 1 AND SubmissionFor != 0 AND SubmissionTimeStamp != 0\n						\";\n		$countSubmitted = $DB->countRows($sql);\n		$matchDetails = $DB->multiSelect($sql);\n		//p($sql);\n		$ret[\"debug\"] .= p($matchDetails,1);\n		switch ($matchTypeID){\n			case \"8\":\n				// wenn mind 8 submitted haben\n				if($countSubmitted == 2){\n				$MatchDetails = new MatchDetails();\n					$strangeSubmission = $MatchDetails->checkForStrangeSubmissions1vs1($matchDetails);\n					//p($strangeSubmission);\n					// Wenn gegenstimmen kleiner als 3, dann automatisch behandeln\n					if($strangeSubmission['status'] == true){\n\n						$teamWonID = $MatchDetails->getTeamWon1vs1($matchDetails);\n						//p($teamWonID);\n						$teamWonID = $teamWonID['teamWonID'];\n\n						$sql = \"UPDATE `Match`\n								SET TeamWonID = \".(int) $teamWonID.\", TimestampClosed = \".time().\"\n										WHERE MatchID = \".(int) $matchID.\"\n												\";\n						$DB->update($sql);\n						//p($sql);\n\n						// EloChanges eintragen\n						$UserPoints = new UserPoints();\n						$retUP = $UserPoints->insertPointChanges($matchID, $teamWonID);\n						\n						$ret['debug'] .= p($retUP,1);\n						$ret['debug'] .= \"MatchID: \".$matchID.\" -> teamWonID: \".$teamWonID;\n\n						p(\"Matches erfolgreich aktualisert!<br>\\n\".$ret['debug']);\n					}\n					// manuell kontrollieren anhand von Screenshots\n					else{\n						$sql = \"UPDATE `Match`\n								SET ManuallyCheck = 1\n								WHERE MatchID = \".(int) $matchID.\"\n										\";\n						//p($sql);\n						$DB->update($sql);\n						p(\"Manueller Check!\");\n					}\n				}\n				else{\n					echo \"keine 2 MatchID:\".$matchID;\n				}\n				break;\n			case \"9\":\n				// wenn mind 5 submitted haben\n				if($countSubmitted >= 5){\n				$MatchDetails = new MatchDetails();\n					$strangeSubmission = $MatchDetails->checkForStrangeWinLoseSubmission($matchID, $matchDetails);\n					p($strangeSubmission);\n					// Wenn gegenstimmen kleiner als 3, dann automatisch behandeln\n					if($strangeSubmission['result'] <= MatchDetails::screenshotGrenze){\n\n						$teamWonID = $MatchDetails->getTeamWon($matchID);\n						//p($teamWonID);\n						$teamWonID = $teamWonID['teamWonID'];\n\n						$sql = \"UPDATE `Match`\n								SET TeamWonID = \".(int) $teamWonID.\", TimestampClosed = \".time().\"\n										WHERE MatchID = \".(int) $matchID.\"\n												\";\n						$DB->update($sql);\n						//p($sql);\n\n						// EloChanges eintragen\n						$UserPoints = new UserPoints();\n						$retUP = $UserPoints->insertPointChanges($matchID, $teamWonID);\n						\n						$ret['debug'] .= p($retUP,1);\n						$ret['debug'] .= \"MatchID: \".$matchID.\" -> teamWonID: \".$teamWonID;\n\n						p(\"Matches erfolgreich aktualisert!<br>\\n\".$ret['debug']);\n					}\n					// manuell kontrollieren anhand von Screenshots\n					else{\n						$sql = \"UPDATE `Match`\n								SET ManuallyCheck = 1\n								WHERE MatchID = \".(int) $matchID.\"\n										\";\n						//p($sql);\n						$DB->update($sql);\n						p(\"Manueller Check!\");\n					}\n				}\n				else{\n					p(\"keine 6 MatchID:\".$matchID);\n				}\n				break;\n			default:\n				// wenn mind 8 submitted haben\n				if($countSubmitted >= (10-MatchDetails::screenshotGrenze)){\n					$MatchDetails = new MatchDetails();\n					$strangeSubmission = $MatchDetails->checkForStrangeWinLoseSubmission($matchID, $matchDetails);\n					//p($strangeSubmission);\n					// Wenn gegenstimmen kleiner als 3, dann automatisch behandeln\n					if($strangeSubmission['result'] <= MatchDetails::screenshotGrenze){\n\n						$teamWonID = $MatchDetails->getTeamWon($matchID);\n						//p($teamWonID);\n						$teamWonID = $teamWonID['teamWonID'];\n\n						$sql = \"UPDATE `Match`\n								SET TeamWonID = \".(int) $teamWonID.\", TimestampClosed = \".time().\"\n										WHERE MatchID = \".(int) $matchID.\"\n												\";\n						$DB->update($sql);\n						//p($sql);\n\n						// EloChanges eintragen\n						$UserPoints = new UserPoints();\n						$retUP = $UserPoints->insertPointChanges($matchID, $teamWonID);\n						\n						//$ret['debug'] .= p($retUP,1);\n						p(\"MatchID: \".$matchID.\" -> teamWonID: \".$teamWonID);\n\n						p(\"Matches erfolgreich aktualisert!<br>\\n\".$ret['debug']);\n					}\n					// manuell kontrollieren anhand von Screenshots\n					else{\n						$sql = \"UPDATE `Match`\n								SET ManuallyCheck = 1\n								WHERE MatchID = \".(int) $matchID.\"\n										\";\n						//p($sql);\n						$DB->update($sql);\n						p(\"Manueller Check!\");\n					}\n				}\n				else{\n					p(\"keine 10 MatchID:\".$matchID);\n				}\n		}\n\n	}\n}\nelse {\n	p(\"keine offenen Matches\");\n}\n\np(\"END MatchResultHandling\");\n?>",
+			"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/cronjobs/1.match/4.matchResultHandling.php",
+			"file_size": 5545,
+			"file_write_time": 130316784208372626,
+			"settings":
+			{
+				"buffer_size": 5368,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/user/userPoints.php",
+			"settings":
+			{
+				"buffer_size": 34762,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/matchmode/matchModePointBonus.php",
+			"settings":
+			{
+				"buffer_size": 816,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 173.0,
+		"selected_items":
+		[
+			[
+				"db",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"migra",
+				"Laravel Artisan: Migrate"
+			],
+			[
+				"genera",
+				"Laravel Generate: Migration"
+			],
+			[
+				"db:",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"db:Se",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"gene",
+				"Laravel Generate: Controller"
+			],
+			[
+				"db:se",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"db:S",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"packa",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"mi",
+				"Laravel Artisan: Migrate"
+			],
+			[
+				"genere",
+				"Laravel Generate: Controller"
+			],
+			[
+				"db:sed",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"scaff",
+				"Laravel Generate: Scaffold"
+			],
+			[
+				"db:s",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"roll",
+				"Laravel Artisan: Migrate: Rollback"
+			],
+			[
+				"db:see",
+				"Laravel Artisan: DB:Seed"
+			],
+			[
+				"mig",
+				"Laravel Artisan: Migrate"
+			],
+			[
+				"scaffol",
+				"Laravel Generate: Scaffold"
+			],
+			[
+				"scaffo",
+				"Laravel Generate: Scaffold"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/match/match.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Match.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/AdminController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/js/admin/queue.js",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/routes.php",
+		"/D/Eigene Dokumente/Webprojekte/dotacinema/arena/templates/match/index.tpl",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/matches/showMatch.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/FindMatchController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/matches/match/info.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/MatchesController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Matchdetail.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Matched_user.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/Matched_usersController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/GameQueuesController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/js/findMatch/queue.js",
+		"/D/Eigene Dokumente/Webprojekte/dotacinema/arena/templates/match/info_message.tpl",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/matches/index.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/matches/match/info",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/findMatch/index.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/admin/queue/fakeSubmits.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/fonts/fontawesome-webfont.svg",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/CONTRIBUTING.md",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/CronjobMatchmakingController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/GameQueue.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Region.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/seeds/MatchtypesTableSeeder.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Matchmode.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Matchtype.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/commands/MatchmakingCronjob.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/migrations/2013_12_11_121512_change_matchdetails.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/General.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/migrations/2013_12_11_104944_add_matchtype_playercount.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/node_modules/grunt-contrib-less/node_modules/less/test/css/mixins-guards.css",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/seeds/GlobalsettingsTableSeeder.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/start/artisan.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/findMatch/modals/matchReady.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/findMatch/modals/matchmaking/matchmaking.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/FetchViewController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/QueueLocksController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/QueueLock.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/migrations/2013_12_04_103051_create_queuelocks_table.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/js/audio/audio.js",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/master.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/js/33.jquery.titleAlert.min.js",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/filters.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/admin/index.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/admin/queue/insertInQueue.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/footer.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/css/main.css",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/admin/master.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/User.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Userskillbracket.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/admin/navigation/topnavi.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/HomeController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/admin.master.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/css/findMatch/modal.css",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/findMatch/modals/mmInfo.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/js/findMatch/queueModal.js",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/findMatch/modals/matchmaking.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/seeds/Matched_usersTableSeeder.php",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/sublime-jslint/sublime-jslint.sublime-settings",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/JSLint/JSLint.sublime-settings",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/JSLint/JSLint.sublime-build",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/SyntaxChecker/SyntaxChecker.sublime-settings",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/CodeFormatter/CodeFormatter.sublime-settings",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/User/CodeFormatter.sublime-settings",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/Mafu/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/SteamController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/MatchmodesController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/generalModal.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/public/js/main.js",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/navigation/usernavi.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/Userpoint.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/prototypes/skillbracketIcon.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/navigation/topnav.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/RegionsController.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/navigation/region.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/migrations/2013_11_11_191647_create_users_table.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/migrations/2013_11_20_091000_create_regions_table.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/seeds/RegionsTableSeeder.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/config/app.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/composer.json",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/models/GlobalSetting.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/database/migrations/2013_11_19_125535_create_userpoints_table.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/views/findMatch/queuestats.blade.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/vendor/autoload.php",
+		"/D/Eigene Dokumente/Webprojekte/laravelD2L/app/controllers/UsersController.php"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"MatchDetails::loseValue",
+			"MatchDetails::winValue",
+			"dirTest",
+			"dirtest",
+			"getSkillbracketQueueCounts",
+			"close"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 7,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/match/match.php",
+					"settings":
+					{
+						"buffer_size": 56939,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								29857,
+								29857
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML5/Syntaxes/HTML 5.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 36296.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/js/match/match.js",
+					"settings":
+					{
+						"buffer_size": 10997,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10589,
+								10589
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 7844.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/notifications/userNotification.php",
+					"settings":
+					{
+						"buffer_size": 3898,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2978,
+								2978
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML5/Syntaxes/HTML 5.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 241.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/user/userVotes.php",
+					"settings":
+					{
+						"buffer_size": 6584,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1527,
+								1527
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML5/Syntaxes/HTML 5.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 801.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/admin/fakeMatches.php",
+					"settings":
+					{
+						"buffer_size": 13359,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								696,
+								696
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML5/Syntaxes/HTML 5.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 445.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/matchdetails/matchdetails.php",
+					"settings":
+					{
+						"buffer_size": 23607,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8871,
+								8927
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML5/Syntaxes/HTML 5.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 7029.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/cronjobs/1.match/4.matchResultHandling.php",
+					"settings":
+					{
+						"buffer_size": 5368,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4792,
+								4792
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML5/Syntaxes/HTML 5.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3993.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/user/userPoints.php",
+					"settings":
+					{
+						"buffer_size": 34762,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8403,
+								8403
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML5/Syntaxes/HTML 5.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 7260.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/D/Eigene Dokumente/Webprojekte/dotacinema/arena/classes/matchmode/matchModePointBonus.php",
+					"settings":
+					{
+						"buffer_size": 816,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7,
+								7
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML5/Syntaxes/HTML 5.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 87.0
+	},
+	"output.jslint_result_view":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"matchpo",
+				"arena/classes/matchmode/matchModePointBonus.php"
+			],
+			[
+				"userpoin",
+				"arena/classes/user/userPoints.php"
+			],
+			[
+				"matchdeta",
+				"arena/classes/matchdetails/matchdetails.php"
+			],
+			[
+				"fake",
+				"arena/classes/admin/fakeMatches.php"
+			],
+			[
+				"uservote",
+				"arena/classes/user/userVotes.php"
+			],
+			[
+				"usernot",
+				"arena/classes/notifications/userNotification.php"
+			],
+			[
+				"match.js",
+				"arena/js/match/match.js"
+			],
+			[
+				"match",
+				"arena/classes/match/match.php"
+			],
+			[
+				"matches",
+				"app/controllers/MatchesController.php"
+			],
+			[
+				"findma",
+				"app/controllers/FindMatchController.php"
+			],
+			[
+				"f",
+				"public/fonts/fontawesome-webfont.svg"
+			],
+			[
+				"con",
+				"CONTRIBUTING.md"
+			],
+			[
+				"game",
+				"app/controllers/GameQueuesController.php"
+			],
+			[
+				"admin",
+				"app/controllers/AdminController.php"
+			],
+			[
+				"matched",
+				"app/controllers/Matched_usersController.php"
+			],
+			[
+				"route",
+				"app/routes.php"
+			],
+			[
+				"gameque",
+				"app/models/GameQueue.php"
+			],
+			[
+				"region",
+				"app/models/Region.php"
+			],
+			[
+				"matchty",
+				"app/models/Matchtype.php"
+			],
+			[
+				"matchmo",
+				"app/models/Matchmode.php"
+			],
+			[
+				"matchde",
+				"app/models/Matchdetail.php"
+			],
+			[
+				"gene",
+				"app/models/General.php"
+			],
+			[
+				"glo",
+				"app/database/seeds/GlobalsettingsTableSeeder.php"
+			],
+			[
+				"mat",
+				"app/models/Matchdetail.php"
+			],
+			[
+				"gamequeue",
+				"app/models/GameQueue.php"
+			],
+			[
+				"gamequ",
+				"app/controllers/GameQueuesController.php"
+			],
+			[
+				"queue",
+				"public/js/findMatch/queue.js"
+			],
+			[
+				"queuelock",
+				"app/controllers/QueueLocksController.php"
+			],
+			[
+				"fet",
+				"app/controllers/FetchViewController.php"
+			],
+			[
+				"fetchview",
+				"app/controllers/FetchViewController.php"
+			],
+			[
+				"master",
+				"app/views/master.blade.php"
+			],
+			[
+				"skill",
+				"app/models/Userskillbracket.php"
+			],
+			[
+				"userskil",
+				"app/models/Userskillbracket.php"
+			],
+			[
+				"user",
+				"app/models/User.php"
+			],
+			[
+				"topnavi",
+				"app/views/admin/navigation/topnavi.blade.php"
+			],
+			[
+				"modetyp",
+				"app/models/Matchtype.php"
+			],
+			[
+				"userskill",
+				"app/models/Userskillbracket.php"
+			],
+			[
+				"mmin",
+				"app/views/findMatch/modals/mmInfo.blade.php"
+			],
+			[
+				"userski",
+				"app/models/Userskillbracket.php"
+			],
+			[
+				"gamecon",
+				"app/controllers/GameQueuesController.php"
+			],
+			[
+				"gamequeu",
+				"app/models/GameQueue.php"
+			],
+			[
+				"steam",
+				"app/controllers/SteamController.php"
+			],
+			[
+				"matchmode",
+				"app/controllers/MatchmodesController.php"
+			],
+			[
+				"userpo",
+				"app/models/Userpoint.php"
+			],
+			[
+				"global",
+				"app/models/GlobalSetting.php"
+			],
+			[
+				"queuelo",
+				"app/models/QueueLock.php"
+			],
+			[
+				"css",
+				"public/css/main.css"
+			],
+			[
+				"users",
+				"app/controllers/UsersController.php"
+			],
+			[
+				"queuesta",
+				"app/views/findMatch/queuestats.blade.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 228.0,
+	"status_bar_visible": true
+}

@@ -14,14 +14,13 @@
 			</thead>
 			<tbody>
 				@foreach($data as $k => $v)
-				<tr
-					class="{include file='prototypes/positionTrClass.tpl' position=$smarty.foreach.bestPlayers_array.iteration}">
-					<td><strong>{$smarty.foreach.bestPlayers_array.iteration}.</strong></td>
-					<td>{$v.Rank}</td>
-					<td><img src="{$v.Avatar}">
-						@include("prototypes.username", array("username"=>$v->name, "credits"=>$creditsArray[$v->id], "user_id"=>$v->id))
-						</td>
-					<td><span class="text-warning">{$v.WinRate}%</span></td>
+				<tr>
+					<td><strong>{{($k+1)}}</strong></td>
+					<td>{{$v->points}}</td>
+					<td>
+						@include("prototypes.username", array("username"=>$v->name, "avatar"=>$v->avatar, "credits"=>$v->credits, "user_id"=>$v->id, "truncateValue"=>20))
+					</td>
+					<td><span class="text-warning">{{$v['stats']['WinRate']}}%</span></td>
 				</tr>
 				@endforeach
 			</tbody>
@@ -32,5 +31,5 @@
 				class="icon-double-angle-right"></i></a>
 		</p>
 @else
-		<div class="alert fade in">No Rankings found!</div>
+		<div class="alert alert-warning">No Rankings found!</div>
 @endif

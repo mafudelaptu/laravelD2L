@@ -38,4 +38,23 @@ class Usercredit extends Eloquent {
 			);
 		Usercredit::insert($insertArray);
 	}
+
+	public static function getHighestUserCredits($count=5){
+		$ret = array();
+		
+		if($count > 0){
+			$data = Usercredit::join("users", "users.id", "=", "usercredits.user_id")
+						->groupBy("usercredits.user_id")
+						->orderBy("credits")
+						->select(
+							"users.*",
+							DB::raw("SUM(vote) as credits")
+							)
+						->take($count);
+			return $data;
+		}
+		else{
+			return null;
+		}
+	}
 }
