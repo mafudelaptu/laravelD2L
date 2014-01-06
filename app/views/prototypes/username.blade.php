@@ -1,10 +1,11 @@
-{{
+<?php 
 	$textClass = "";
 	$iconClass = "";
 	$titleText = "";
 	$titleName = "";
 	$border = GlobalSetting::getCreditBorders();
- }}
+ ?>
+	
 @if ($credits >= $border['bronze'] && $credits < $border['silver'])
 	{{-- */ $textClass = "text-bronze"; /*--}}
 @elseif ($credits >= $border['silver'] && $credits < $border['gold'])
