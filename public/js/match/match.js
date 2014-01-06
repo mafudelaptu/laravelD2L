@@ -1,8 +1,10 @@
 $(function() {
   // Handler for .ready() called.
   if (document.URL.indexOf("/match/") >= 0) {
+  		var match_id = getLastPartOfUrl();
 		// init Buttons
 		initMatchButtons();
+		initChat("MatchChat"+match_id);
 	}
 });
 

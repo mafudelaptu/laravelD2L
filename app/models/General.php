@@ -60,4 +60,23 @@ class General {
 		}
 		return $ret;
 	}
+
+// Sortiert ein 2 Dimensionales Array nach einem bestimmten Schl�ssel
+// Bsp -> $processlist = orderArrayBy($processlist,'process_definition_responsible_name',SORT_DESC);
+	public static function orderArrayBy()	{
+		$args = func_get_args();
+		$data = array_shift($args);
+		foreach ($args as $n => $field) {
+			if (is_string($field)) {
+				$tmp = array();
+				foreach ($data as $key => $row) {
+					$tmp[$key] = $row[$field];
+				}
+				$args[$n] = $tmp;
+			}
+		}
+		$args[] = &$data;
+		call_user_func_array('array_multisort', $args);
+		return array_pop($args);
+	}
 }

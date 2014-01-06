@@ -16,6 +16,7 @@
 	{{ HTML::style("css/findMatch/modal.css")}}
 	{{ HTML::style("css/match/match.css")}}
 	{{ HTML::style("css/profile/profile.css")}}
+	{{ HTML::style("css/news/news.css")}}
 </head>
 <body>
 	<div class="main-container">

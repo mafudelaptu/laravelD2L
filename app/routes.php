@@ -185,3 +185,7 @@ Route::resource('votetypes', 'VotetypesController');
 Route::resource('matchvotes', 'MatchvotesController');
 
 Route::resource('pointtypes', 'PointtypesController');
+
+Route::resource('news', 'NewsController');
+
+Route::resource('streamers', 'StreamersController');
