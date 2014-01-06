@@ -34,6 +34,9 @@ Route::group(array('before' => 'auth'), function()
 	//match
 	Route::get("match/{match_id}", "MatchesController@showMatch");
 
+	//open matches
+	Route::get("openMatches", "MatchesController@showOpenMatches");
+
 	// profile
 	Route::get("profile", function(){
 		 return Redirect::to('profile/'.Auth::user()->id);

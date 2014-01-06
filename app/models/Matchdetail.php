@@ -140,5 +140,12 @@ class Matchdetail extends Eloquent {
 		return $ret;
 	}
 
+public static function getSubmitCountOfMatch($match_id){
+	return Matchdetail::getMatchdetailData($match_id)
+				->where("submitted", 1)
+				->groupBy("match_id")
+				->count();
+
+}
 	
 }

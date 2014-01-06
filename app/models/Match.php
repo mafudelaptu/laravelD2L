@@ -44,11 +44,9 @@ class Match extends Eloquent {
 							"matches.*",
 							"matchdetails.submitted",
 							DB::raw("IF(COUNT(matchvotes.user_id) > 0, COUNT(matchvotes.user_id), null) as cancelSubmits")
-							)
+							);
 						//->having("cancelSubmits", ">", 0)
-						->get();
-		// $queries = DB::getQueryLog();
-		// dd($queries);
+		
 		
 		return $data;
 	}

@@ -24,7 +24,7 @@
 				</span>
 			</div>
 			<div class="col-sm-5">
-				<div class="panel panel-default">
+				<div class="panel panel-default" id="selectMatchmodesPanel">
 					<div class="panel-heading">
 						<h3 class="panel-title">selected matchmodes</h3>
 					</div>
@@ -60,10 +60,10 @@
 					@if(GlobalSetting::getDuoJoin())
 					<div class="btn-group">
 						@if(!$inMatch)
-						<button type="button" class="btn btn-lg btn-block" id="join5vs5SingleButton">
+						<button type="button" class="btn btn-lg btn-block btn-default" id="join5vs5SingleButton">
 							<i class="fa fa-user"></i>&nbsp;Single-Join
 						</button>
-						<button class="btn btn-large t " id="duoJoin5vs5SingleButton" data-original-title=""> 
+						<button class="btn btn-large t  btn-default" id="duoJoin5vs5SingleButton" data-original-title=""> 
 								<i class="fa fa-user"></i><i class="fa fa-user"></i>&nbsp;Duo-Join
 								[Beta]
 							</button>
@@ -75,7 +75,7 @@
 					</div>
 					@else
 						@if(!$inMatch)
-						<button type="button" class="btn btn-lg btn-block" id="join5vs5SingleButton">
+						<button type="button" class="btn btn-lg btn-block btn-default" id="join5vs5SingleButton">
 							<i class="fa fa-user"></i>&nbsp;Single-Join
 						</button>
 						@else

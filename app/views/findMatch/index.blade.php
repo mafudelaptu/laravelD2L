@@ -38,4 +38,6 @@
 	<?php $i++; ?>
 	@endforeach
 </div>
+
+@include("prototypes/chat/chat", array("chatname"=>"findMatchChat"))
 @stop

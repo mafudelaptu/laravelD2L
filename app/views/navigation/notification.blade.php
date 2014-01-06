@@ -1,4 +1,4 @@
-
+@if(!empty($count))
 	@if( $count > 0)
 		<?php 
 			$dataToggle = "data-toggle='dropdown'";
@@ -39,3 +39,4 @@
 			@endif 
 		</ul>
 	</li>
+@endif

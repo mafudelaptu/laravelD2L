@@ -13,7 +13,7 @@
                 <div class="row">
                         <div class="col-sm-3" align="center">
                                 <p>
-                                        <img src="img/searching.gif" width="100" alt="loading" />
+                                        {{ HTML::image("img/matchmaking/searching.gif", "searching for players", array("width"=>100));}}
                                 </p>
                                 <h4>
                                         <span id="matchMakingClock"></span>
@@ -22,12 +22,10 @@
                                         <label class="checkbox" class="t"
                                                 title="enlarge your elo-search-range"> <input
                                                 type="checkbox" name="forceSearching" id="forceSearching">
-                                                force Searching <a href="help.php#forceSearching" target="_blanc"><i
+                                                force Searching <a href="help/faq#forceSearching" target="_blanc"><i
                                                         class="icon-question-sign"></i></a>
                                         </label>
                                 </p>
-
-                                <div class="alert alert-error">Can't hear sound notification? <p>Test it <a href="soundPlugin.php" target="_blank">here</a></p></div>
                         </div>
                         <div class="col-sm-4">
                                 <div id="MatchmakingTimeNotification">
@@ -48,7 +46,7 @@
                         <div class="col-sm-5">
                                 <div class="queueChat">
                                 <!-- Chat includen -->
-                                        chat
+                                @include("prototypes.chat.chat", array("chatname"=>"MatchmakingChat"))
                         </div>
                         </div>
                 </div>

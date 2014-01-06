@@ -39,6 +39,43 @@ class MatchesController extends BaseController {
 		$this->layout->nest("content", 'matches.match.index', $contentData);
 	}
 
+	public function showOpenMatches(){
+		$title = "Open Matches";
+		$this->layout->title = $title;
+
+		$user_id = Auth::user()->id;
+
+		$openMatches = Match::getAllOpenMatches($user_id)
+							->join("matchdetails", "matchdetails.match_id", "=", "matches.id")
+							->join("matchmodes", "matchmodes.id", "=", "matches.matchmode_id")
+							->join("matchtypes", "matchtypes.id", "=", "matches.matchtype_id")
+							->where("matchdetails.user_id", $user_id)
+							->select(
+								"matches.*",
+								"matchdetails.submitted",
+								"matchmodes.name as matchmode",
+								"matchmodes.shortcut as mm_shortcut",
+								"matchtypes.name as matchtype"
+								)
+							->get();
+
+		if(!empty($openMatches)){
+			$submitCountsArray = array();
+			foreach ($openMatches as $key => $match) {
+				$submitCountsArray[$match->id] = (int) Matchdetail::getSubmitCountOfMatch($match->id);
+			}
+		}
+		$contentData = array(
+			"heading" => $title,
+			"data" => $openMatches,
+			"submitCountsArray" => $submitCountsArray,
+			);
+
+		//dd($contentData);
+		$this->layout->nest("content", 'matches.openMatches.index', $contentData);
+	}
+
+
 	function submitResult(){
 		$ret = array();
 		if(Auth::check()){

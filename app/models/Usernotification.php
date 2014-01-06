@@ -11,7 +11,9 @@ class Usernotification extends Eloquent {
 		$globalCount = 0;
 
 		// Open Matches
-		$data = Match::getAllOpenMatchesOfUser($user_id);
+		$data = Match::getAllOpenMatchesOfUser($user_id)->get();
+		// $queries = DB::getQueryLog();
+		// dd($queries);
 		// dd($data);
 		if(!empty($data)){
 			if($data[0]->id != null){
@@ -20,8 +22,8 @@ class Usernotification extends Eloquent {
 				$subMissing = 0;
 				foreach($data as $match){
 					$submitted = $match->submitted;
-					$cancelSubmits = $match->cancelSubmits;
-					if($submitted === 0 && $cancelSubmits === 0){
+					$cancelSubmits = (int) $match->cancelSubmits;
+					if($submitted === 0 && $cancelSubmits === 0 ){
 						$subMissing++;
 					}
 				}

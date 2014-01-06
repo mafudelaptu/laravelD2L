@@ -60,6 +60,10 @@ function initPopovers(){
   $("*[data-toggle=popover]").popover();
 }
 
+function initTimeago(){
+  $(".timeago").timeago();
+}
+
 function getLastPartOfUrl(){
   var url = $(location).attr('pathname');
     parts = url.split('/');

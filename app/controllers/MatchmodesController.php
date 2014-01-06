@@ -29,7 +29,7 @@ class MatchmodesController extends BaseController {
 					$ret = $data->get();
 				}
 				else{
-					$ret = null;
+					$ret = array();
 				}
 			}
 		}

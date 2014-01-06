@@ -170,7 +170,9 @@ function joinQueue(quickJoin, justCM, matchtype_id){
 								// Uhr starten
 								$('#matchMakingClock').stopwatch().stopwatch('start');
 
-								
+								// Chat init
+								initChat("MatchmakingChat");
+
 								// init leave Button
 								initLeaveButton();
 
@@ -180,7 +182,10 @@ function joinQueue(quickJoin, justCM, matchtype_id){
 					}
 				});
 }	
-
+else{
+	// error
+	$("#selectMatchmodesPanel").removeClass("panel-default").addClass("panel-danger");
+}
 });
 }
 
