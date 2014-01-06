@@ -59,7 +59,7 @@
 <div class="clearer"></div>
 </div>
 <div class="modal-footer">
-	<button id="myModalCancelButton" class="btn" data-dismiss="modal"
+	<button id="myModalCancelButton" class="btn btn-default" data-dismiss="modal"
 	aria-hidden="true">Back</button>
 	<button type="button" id="submitCancelButton"
 	class="btn btn-success">Cancel Match!</button>

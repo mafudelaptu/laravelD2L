@@ -44,12 +44,20 @@ function initSelectMatchmodesOnclick(){
 	});
 }
 
-function getSelectedMatchmodes(){
-	var labels = $("#selectedMatchmodesCheckboxes label>input:checked");
+function getSelectedMatchmodes(matchtype_id){
 	ret = new Array();
-	$.each(labels, function(key, value){
-		matchmode_id = $(value).val();
-		ret.push(matchmode_id);
-	});
+	switch(matchtype_id){
+		case 2:
+			ret.push(5);
+			break;
+		default:
+			var labels = $("#selectedMatchmodesCheckboxes label>input:checked");
+			$.each(labels, function(key, value){
+				matchmode_id = $(value).val();
+				ret.push(matchmode_id);
+			});
+			break;
+	}
+	
 	return ret;
 }

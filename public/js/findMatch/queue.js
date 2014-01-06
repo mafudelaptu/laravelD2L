@@ -24,6 +24,12 @@ function initJoinQueueButtons(){
 		var quickJoin = false;
 		joinQueueFkt(justCM, matchtype_id, quickJoin);
 	});
+
+	$("#join1vs1Button").click(function(){	
+		var matchtype_id = 2;
+		var quickJoin = false;
+		joinQueueFkt(justCM, matchtype_id, quickJoin);
+	});
 }
 
 function joinQueueFkt(justCM, matchtype_id, quickJoin){
@@ -401,7 +407,6 @@ function doMatchmaking(modes, matchtype_id, quickJoin){
             }
         }
 
-
         function getMatchModes(matchtype_id, quickJoin){
         	var ret = null;
         	if(quickJoin == true){
@@ -409,13 +414,10 @@ function doMatchmaking(modes, matchtype_id, quickJoin){
         			url : "matchmodes/getQuickJoinModes",
         			type : "GET",
         			dataType : 'json',
-        			data : {
-        				matchtype_id : matchtype_id
-        			}
-        		});	
+        		});
         	}
         	else{
-        		selected = getSelectedMatchmodes();
+        		selected = getSelectedMatchmodes(matchtype_id);
         		ret = $.ajax({
         			url : "matchmodes/getMatchmodeData",
         			type : "GET",
@@ -546,9 +548,6 @@ function checkAllReadyForMatch(match_id, runnedTime, quickJoin, matchtype_id) {
 								// timeout clearen
 								clearTimeout(runnedTimeout);
 								runnedTimeout = null;
-
-								// Host von Lobby festlegen
-								setLobbyHostForMatch(match_id);
 
 								// SeitenWarnung daktivieren
 								setConfirmUnload(false);

@@ -37,7 +37,7 @@
 			</blockquote>
 		</div>
 	 @endif
-
+</div>
 	 @if($matchData->matchtype_id == 2)
 	     <button type="button" class="btn btn-danger" data-toggle="collapse"
 		data-target="#demo">Rules</button>
@@ -56,5 +56,5 @@
 			</ul>
 		</div>
 	 @endif
-</div>
+
 

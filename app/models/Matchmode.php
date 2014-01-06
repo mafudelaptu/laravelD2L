@@ -9,20 +9,16 @@ class Matchmode extends Eloquent {
 		return $this->hasMany("Gamequeue", "matchmode_id");
 	}
 
-	public static function getQuickJoinModes($matchtype_id){
-		switch ($matchtype_id) {
-			case 1: // single5vs5
-			default:
-				# code...
-				$matchmode_id = GlobalSetting::getQuickJoinMatchmode();
-				if($matchmode_id > 0){
-					$mm = Matchmode::where("id", GlobalSetting::getQuickJoinMatchmode());
-				}
-				else{
-					$mm = null;
-				}
-				break;
+	public static function getQuickJoinModes(){
+		$matchmode_id = GlobalSetting::getQuickJoinMatchmode();
+		if($matchmode_id > 0){
+			$mm = Matchmode::where("id", $matchmode_id);
 		}
+		else{
+			$mm = null;
+		}
+		break;
+		
 		return $mm;
 	}
 
