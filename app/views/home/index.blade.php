@@ -20,6 +20,24 @@
 		@include("home.liveStreams.index", array("data"=>$streamerData['data']))
 	</div>
 </div>
-
-
+<div class="alert alert-info">
+	space for Banners/Ads
+</div>
+<div>
+	event data
+</div>
+<div class="customH2">
+	Wall<span>OF</span>Fame
+</div>
+<div class="row">
+	<div class="col-sm-4">
+		@include("home.wallOfFame.bestPlayers.index", array("data"=>null))
+	</div>
+	<div class="col-sm-4">
+		@include("home.wallOfFame.lastMatches.index", array("data"=>null))
+	</div>
+	<div class="col-sm-4">
+		@include("home.wallOfFame.highestCredits.index", array("data"=>null))
+	</div>
+</div>
 @stop
