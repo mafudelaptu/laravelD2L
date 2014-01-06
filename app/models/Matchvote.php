@@ -38,4 +38,12 @@ class Matchvote extends Eloquent {
 					->where("match_id", $match_id)
 					->where("vote_for_user", $user_id);
 	}
+
+	public static function getAllLeaverVotesCountsForMatch($match_id){
+		return Matchvote::where("matchvotetype_id", 2)
+					->where("match_id", $match_id)
+					->groupBy("vote_for_user")
+					->select("vote_for_user",
+						DB::raw("COUNT(vote_for_user) as leaverVotes"));
+	}
 }

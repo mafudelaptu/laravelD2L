@@ -4,7 +4,6 @@ class MatchmodesController extends BaseController {
 
 	public function getQuickJoinModes(){
 		$matchtype_id = Input::get("matchtype_id");
-
 		$modes = Matchmode::getQuickJoinModes($matchtype_id);
 		
 		return $modes->get();

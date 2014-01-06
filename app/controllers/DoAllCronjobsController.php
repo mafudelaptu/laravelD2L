@@ -16,7 +16,7 @@ class CronjobDoAllController extends BaseController {
 	}
 
 	public function matchResultHandling(){
-		$ret = "";
+		$ret = "=== Matches Result Handling === \n\r";
 
 		$openMatches = Match::getAllOpenMatches()->get();
 		if(!empty($openMatches)){
@@ -103,6 +103,85 @@ class CronjobDoAllController extends BaseController {
 	}
 
 	public function cancelMatchHandling(){
-		
+		$ret = "=== Cancel Matches === \n\r";
+		$matchtypes = Matchtype::getAllActiveMatchtypes()->get();
+		if(!empty($matchtypes)){
+			foreach ($matchtypes as $key => $mt) {
+				$matchtype_id = $mt->id;
+				$cancelBorder = GlobalSetting::getCancelBorderForMatchtype($matchtype_id);
+
+				$openMatches = Match::getAllOpenMatches()->join("matchvotes", "matchvotes.match_id", "=", "matches.id")
+				->where("matchvotes.matchvotetype_id", 1)
+				->where("matchvotes.updated_at", "0000-00-00 00:00:00")
+				->groupBy("matchvotes.match_id")
+				->select(
+					"matches.*",
+					DB::raw("COUNT(matchvotes.user_id) as cancelCount")
+					)
+				->having("cancelCount", ">=", $cancelBorder);
+
+				$openMatchesData = $openMatches->get();
+				//dd($openMatchesData);
+				if(!empty($openMatchesData)){
+					foreach ($openMatchesData as $key => $m) {
+					// schauen ob auch mit leaver
+						$leaverVotes = Matchvote::getAllLeaverVotesCountsForMatch($m->id)->get();
+						$leaverArray = array();
+
+						if(!empty($leaverVotes)){
+							$leaverRet = "";
+							foreach ($leaverVotes as $key => $l) {
+								//dd($l);
+								if($l->leaverVotes >= 6){
+									$leaverArray[] = $l->vote_for_user;
+								}
+								else{
+									$leaverRet .= "   just ".$l->leaverVotes." vote for ".$l->vote_for_user." \n\r";
+								}
+							}
+						}
+
+				// match canceln
+						$updateArray = array(
+							"canceled" => 1,
+							"closed" => new DateTime,
+							);
+						Match::where("id", $m->id)->update($updateArray);
+
+						$ret .= "Match: ".$m->id." canceled \n\r";
+						$ret .= $leaverRet;
+				// wenn leaver drin  dann auch noch bestrafen
+						if(is_array($leaverArray) && count($leaverArray) > 0){
+							foreach($leaverArray as $k =>$v){
+								$insertArray = array(
+									"user_id" => $v,
+									"matchmode_id" => $m->matchmode_id,
+									"matchtype_id" => $m->matchtype_id,
+									"match_id" => $m->id,
+									"pointtype_id" => 5,
+									"matchmode_id" => $m->matchmode_id,
+									"pointschange" => GlobalSetting::getMatchLeaverPunishment(),
+									"created_at" => new DateTime,
+									);
+								Userpoint::insert($insertArray);
+								$ret .= "       Leaver punished: ".$v."\n\r";
+							}
+						}
+
+						$updateArray = array(
+							"updated_at" => new DateTime
+							);
+						Matchvote::where("match_id", $m->id)->update($updateArray);
+					}
+				}
+				else{
+					$ret .= "no open Matches... \n\r";
+				}
+			}
+		}
+		else{
+			$ret .= "no active matchtypes";
+		}
+		return $ret."\n\r";
 	}
 }

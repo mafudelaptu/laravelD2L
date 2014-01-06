@@ -643,7 +643,7 @@ function checkAllReadyForMatch(match_id, runnedTime, quickJoin, matchtype_id) {
 	// zu lange gewartet, Match abbrechen, Player aus QUeue hauen und
 	// MatchTeam/Match lï¿½schen
 	else {
-		//kickFromQueue(match_id, "autoKickAfterAccept", quickJoin, false, matchtype_id);
+		kickFromQueue(match_id, "autoKickAfterAccept", quickJoin, false, matchtype_id);
 	}
 	l("End checkAllReadyForMatch2");
 }

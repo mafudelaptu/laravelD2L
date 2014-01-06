@@ -103,7 +103,7 @@ class GlobalSetting extends Eloquent {
 				elseif ($credit->id == 9) {
 					$borderArray["silver"] = $credit->value;	
 				}
-				else{
+				elseif($credit->id == 10){
 					$borderArray["gold"] = $credit->value;
 				}
 			}
@@ -115,7 +115,7 @@ class GlobalSetting extends Eloquent {
 	}
 
 	public static function getMatchLeaverPunishment(){
-		$ret = GlobalSetting::where("id", 10)->remember(60)->first();
+		$ret = GlobalSetting::where("id", 11)->remember(60)->first();
 		if($ret->active == 1){
 			return (int) $ret->value;
 		}
@@ -125,12 +125,24 @@ class GlobalSetting extends Eloquent {
 	}
 
 	public static function getQuickJoinMatchmode(){
-		$ret = GlobalSetting::where("id", 11)->remember(60)->first();
+		$ret = GlobalSetting::where("id", 12)->remember(60)->first();
 		if($ret->active == 1){
 			return (int) $ret->value;
 		}
 		else{
 			return 0;
+		}
+	}
+
+	public static function getCancelBorderForMatchtype($matchtype_id){
+		switch ($matchtype_id) {
+			case 2:
+				return 2;
+				break;
+			
+			default:
+				return 6;
+				break;
 		}
 	}
 }

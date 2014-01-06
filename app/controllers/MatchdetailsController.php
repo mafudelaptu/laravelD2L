@@ -37,6 +37,7 @@ class MatchdetailsController extends BaseController {
 								"submissionFor" => $sfor,
 								"sub_date" => new DateTime()
 								);
+							
 							Matchdetail::where("user_id", $user_id)
 							->where("match_id", $match_id)
 							->update($updateArray);
