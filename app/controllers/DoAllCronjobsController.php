@@ -4,6 +4,11 @@ class CronjobDoAllController extends BaseController {
 
 	public function doAllCronjobs(){
 		$ret = "";
+
+		// cancel Matches
+		$ret .= $this->cancelMatchHandling();
+		
+
 		// Match result handling
 		$ret .= $this->matchResultHandling();
 
@@ -95,5 +100,9 @@ class CronjobDoAllController extends BaseController {
 		}
 
 		return $ret;
+	}
+
+	public function cancelMatchHandling(){
+		
 	}
 }
