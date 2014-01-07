@@ -17,7 +17,6 @@ class Matchmode extends Eloquent {
 		else{
 			$mm = null;
 		}
-		break;
 		
 		return $mm;
 	}

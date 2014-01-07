@@ -56,4 +56,82 @@ class Banlist extends Eloquent {
 			return  "user_id == 0";
 		}
 	}
+
+	/*
+	 * Copyright 2013 Artur Leinweber
+	* Date: 2013-01-01
+	*/
+	public static function calculateBannedTill($user_id){
+		$ret = array();
+
+		if($user_id > 0){
+			// bereits vorhandene BanCount auslesen
+			$count = Banlist::getAllActiveBans($user_id)->count();
+
+			switch($count){
+				// Verwarnung
+				case "0":
+					$bannedTill = time();
+					break;
+				// Queue Ban
+				case "1":
+					// 24h ban
+					$bannedTill = time() + (24 * 60 * 60);
+					break;
+				// Queue Ban
+				case "2":
+					// 3 Tage ban
+					$bannedTill = time() + (24 * 60 * 60*3);
+					break;
+				// Queue Ban
+				case "3":
+					// 7 Tage ban
+					$bannedTill = time() + (24 * 60 * 60*7);
+					break;	
+				case "4":
+				// 21 Tage Ban
+					$bannedTill = time() + (24 * 60 * 60*21);
+					break;
+				// Queue Ban
+				case "5":
+					// Perma ban
+					$bannedTill = 99999999999;
+					break;
+			}
+			$ret['data'] = $bannedTill;
+			$ret['status'] = true;
+		}
+		else{
+			$ret['status'] = "SteamID = 0";
+		}
+			
+		return $ret;
+	}
+
+	public static function insertBan($user_id, $banlistreason_id, $reasonText=""){
+		switch ($banlistreason_id) {
+			case 1: // cronjob
+				// banned till
+				$retTill = Banlist::calculateBannedTill($user_id);
+				$bannedTill = $retTill['data'];
+				$date = new DateTime;
+				$date->setTimestamp($bannedTill);
+				
+				$insertArray = array(
+					"user_id"=>$user_id,
+					"banned_until"=>$date,
+					"banlistreason_id"=>$banlistreason_id,
+					"display"=>1,
+					"bannedBy"=>0,
+					"reason"=>$reasonText,
+					"created_at"=>new DateTime,
+					);
+				Banlist::insert($insertArray);
+				break;
+			
+			default:
+				# code...
+				break;
+		}
+	}
 }

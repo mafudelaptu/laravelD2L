@@ -3,7 +3,7 @@
 	@if( $count > 0)
 		<?php 
 			$dataToggle = "data-toggle='dropdown'";
-			$label = "label-danger";
+			$label = "danger";
 		 ?>
 	@else
 		<?php 
@@ -15,9 +15,9 @@
 	<li id="notification-menu" class="dropdown">
 		<a id="dropNotification"
 		role="button" class="dropdown-toggle pointer" {{$dataToggle}}> 
-			<i class="fa fa-envelope fa-2x"></i>
+			<i class="fa fa-envelope fa-2x text-{{$label}}"></i>
 			@if($count > 0)
-				<span class="label {{$label}} notificationIconText"> 
+				<span class="label label-default notificationIconText"> 
 					{{$count}} 
 				</span>
 				<b class="caret"></b>

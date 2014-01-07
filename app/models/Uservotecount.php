@@ -61,4 +61,27 @@ class Uservotecount extends Eloquent {
 				break;
 		}
 	}
+
+	public static function resetAllCounts(){
+		
+		$timestamp = strtotime(date("m.d.y"));
+		$date = new DateTime;
+		$date->setTimestamp($timestamp);
+
+		$updateArray = array(
+			"upvotes" => GlobalSetting::getWeeklyUpvoteCount(),
+			"downvotes" => GlobalSetting::getWeeklyDownvoteCount(),
+			"updated_at" => $date,
+			);
+		DB::table("uservotecounts")->update($updateArray);
+	}
+
+	public static function getLastUpdate(){
+		$date = null;
+		$data = DB::table("uservotecounts")->first();
+		if(!empty($data)){
+			$date = $data->updated_at;
+		}
+		return $date;
+	}
 }

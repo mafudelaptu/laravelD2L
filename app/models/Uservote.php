@@ -80,4 +80,9 @@ class Uservote extends Eloquent {
 			}
 		}
 	}
+
+	public static function getVotesOfAllMatches(){
+		return Uservote::where("uservotes.updated_at", "0000-00-00 00:00:00");
+	}
+
 }

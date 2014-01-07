@@ -57,4 +57,15 @@ class Usercredit extends Eloquent {
 			return null;
 		}
 	}
+
+	public static function selectAllUserWithBanableCreditCount(){
+		return Usercredit::select("user_id",
+			DB::raw("SUM(vote) as sum"))
+				->groupBy("user_id")
+				->having("sum", "<=", GlobalSetting::getBanCreditBorder());
+	}
+
+	public static function resetUsercredits($user_id){
+		Usercredit::where("user_id", $user_id)->delete();
+	}
 }

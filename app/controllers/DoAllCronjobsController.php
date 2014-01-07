@@ -4,15 +4,26 @@ class CronjobDoAllController extends BaseController {
 
 	public function doAllCronjobs(){
 		$ret = "";
-
+		/**
+		  * Match
+		*/
 		// cancel Matches
 		$ret .= $this->cancelMatchHandling();
 		
 		// uservotes handling
 		$ret .= $this->uservotesHandling();
+		
+		// (usercredits)ban handling
+		$ret .= $this->bansHandling();
 
 		// Match result handling
 		$ret .= $this->matchResultHandling();
+		
+
+		/**
+		*	General
+		*/
+		$ret .= $this->updateVoteCounts();
 
 		return $ret;
 	}
@@ -99,7 +110,7 @@ class CronjobDoAllController extends BaseController {
 				}
 			}
 		}
-		return $ret;
+		return $ret."\n\r";
 	}
 
 	public function checkSubmissions($matchdetails, $matchtype_id){
@@ -108,42 +119,42 @@ class CronjobDoAllController extends BaseController {
 		if(!empty($matchdetails)){
 			switch($matchtype_id){
 				case 2: // 1vs1
-					$countWins = 0;
-					foreach ($matchdetails as $k => $v) {
-						if($v->submissionFor == 1){
-							$countWins++;
-						}
+				$countWins = 0;
+				foreach ($matchdetails as $k => $v) {
+					if($v->submissionFor == 1){
+						$countWins++;
 					}
+				}
 
-					if($countWins > 1){
-						$ret['status'] = false;
-					}
-					else{
-						$ret['status'] = true;
-					}
+				if($countWins > 1){
+					$ret['status'] = false;
+				}
+				else{
+					$ret['status'] = true;
+				}
 
 				break;
 				default: // 5vs5 single etc
-					$countWin = array("1"=>0, "2"=>0);
-					foreach ($matchdetails as $k => $v){
-						$teamID = $v->team_id;
+				$countWin = array("1"=>0, "2"=>0);
+				foreach ($matchdetails as $k => $v){
+					$teamID = $v->team_id;
 						// WIN
-						if($v->submissionFor == 1){
-							$countWin[$teamID]++;
-						}
+					if($v->submissionFor == 1){
+						$countWin[$teamID]++;
 					}
+				}
 
 					// wenn von beiden seiten auf win getippt wurde -> haben n problem
-					$falscherWert = 0;
-					if($countWin[1] > 0  && $countWin[2] > 0){
+				$falscherWert = 0;
+				if($countWin[1] > 0  && $countWin[2] > 0){
 
-						$min = min($countWin[1],$countWin[2] );
+					$min = min($countWin[1],$countWin[2] );
 
 						// �ber 2 haben dagegen gestimmt -> nun haben wir wirklich n problem
-						$falscherWert = $min;
-					}
-					$ret['wrongSubmissions'] = $falscherWert;
-					$ret['status'] = true;
+					$falscherWert = $min;
+				}
+				$ret['wrongSubmissions'] = $falscherWert;
+				$ret['status'] = true;
 				break;
 			}
 		}
@@ -238,6 +249,96 @@ class CronjobDoAllController extends BaseController {
 	}
 
 	public function uservotesHandling(){
-		
+		$ret = "=== Uservotes Handling === \n\r";
+
+		$uservotesData = Uservote::getVotesOfAllMatches()
+		->join("votetypes", "votetypes.id", "=", "uservotes.votetype_id")
+		->get();
+		if(!empty($uservotesData)){
+			// rewrite Array for later
+			$matchArray = array();
+			foreach ($uservotesData as $key => $uv) {
+				$matchArray[$uv->match_id][] = $uv;
+			}
+			if(is_array($matchArray) && count($matchArray) > 0){
+				foreach($matchArray as $k =>$v){
+					$match_id = $k;
+					foreach ($v as $key => $vote) {
+						
+						Usercredit::insertCredit($vote->user_id, $vote->vote_of_user, $vote->weight, $match_id);
+						$ret .= " inserted '".$vote->weight."' Credits for ".$vote->user_id." of ".$vote->vote_of_user." (match_id:".$match_id.") \n\r";
+						// set on edited
+						$updateArray = array(
+							"updated_at"=>new DateTime,
+							);
+						Uservote::where("user_id", $vote->user_id)
+						->where("vote_of_user", $vote->vote_of_user)
+						->where("match_id", $match_id)
+						->update($updateArray);
+					}
+					
+				}
+			}
+			else{
+				$ret .= "matchArray is empty \n\r";
+			}
+		}
+		else{
+
+		}
+
+		return $ret."\n\r";
+	}
+
+	public function bansHandling(){
+		$ret = "=== Bans Handling === \n\r";
+
+		$userData = Usercredit::selectAllUserWithBanableCreditCount()->get();
+
+		if(!empty($userData)){
+			foreach($userData as $k =>$v){
+				$user_id = $v->user_id;
+				Banlist::insertBan($user_id, 1, "reached the credits bottom border (".GlobalSetting::getBanCreditBorder().")");
+				Usercredit::resetUsercredits($user_id);
+				$ret .= "banned user: ".$user_id." \n\r";
+
+			}
+		}
+		else{
+			$ret .= "usercreditsArray is empty \n\r";
+		}
+
+		return $ret."\n\r";
+	}
+
+	public function updateVoteCounts(){
+		$ret = "=== Update VoteCounts === \n\r";
+
+		// aktuelles Datum auslesen und ob heute wieder der 1 Wochentag ist
+		$datum = date("N");
+		//dd($datum);
+		// Wenn es Monatg ist
+		if($datum == GlobalSetting::getWeeklyVoteCountUpdateDay()){
+			$lastUpdate = Uservotecount::getLastUpdate();
+			
+			$timestamp = strtotime(date("m.d.y"));
+			$date = new DateTime;
+			$date->setTimestamp($timestamp);
+			
+			if($lastUpdate != $date->format("Y-m-d H:i:s")){
+				// für alle DB updaten
+				Uservotecount::resetAllCounts();
+				$ret .= "All UservoteCounts resetted to ".GlobalSetting::getWeeklyUpvoteCount()."-".GlobalSetting::getWeeklyDownvoteCount()."\n\r";
+			}
+			else{
+				$ret .= "already updated";
+			}
+			
+		}
+		else{
+			$ret .= "not getWeeklyVoteCountUpdateDay (".GlobalSetting::getWeeklyVoteCountUpdateDay().")";
+		}
+
+		return $ret."\n\r";
 	}
 }

@@ -134,6 +134,27 @@ class GlobalSetting extends Eloquent {
 		}
 	}
 
+	public static function getBanCreditBorder(){
+		$ret = GlobalSetting::where("id", 13)->remember(60)->first();
+		if($ret->active == 1){
+			return (int) $ret->value;
+		}
+		else{
+			return -99999;
+		}
+	}
+
+	public static function getWeeklyVoteCountUpdateDay(){
+		$ret = GlobalSetting::where("id", 14)->first();
+		if($ret->active == 1){
+			return (int) $ret->value;
+		}
+		else{
+			return null;
+		}
+	}
+	
+
 	public static function getCancelBorderForMatchtype($matchtype_id){
 		switch ($matchtype_id) {
 			case 2:

@@ -5,7 +5,7 @@ class BanlistreasonsTableSeeder extends Seeder {
 	public function run()
 	{
 		// Uncomment the below to wipe the table clean before populating
-		// DB::table('banlistreasons')->truncate();
+		 DB::table('banlistreasons')->truncate();
 
 		$banlistreasons = array(
 				array("name" => "automatically by Credit-System", "created_at" => new DateTime, "updated_at" => new DateTime),
