@@ -274,10 +274,10 @@ class Userpoint extends Eloquent {
 			"matchmodes.name as matchmode",
 			"userpoints.matchmode_id")
 		->groupBy("matchmode_id")->get();
-
+		$retKeys = array();
+		$retData = array();
+		
 		if(!empty($data)){
-			$retKeys = array();
-			$retData = array();
 			foreach($data as $k => $v){
 				$retKeys[] = $v->matchmode;
 				$retData[] = (int) $v->PointsEarned;
