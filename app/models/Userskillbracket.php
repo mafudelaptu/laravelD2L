@@ -93,7 +93,7 @@ class Userskillbracket extends Eloquent {
 
 	public static function setSkillbrackets($user_id){
 		$ret = array();
-		$ret['debug'] = "";
+
 		if($user_id > 0){
 			$matchtypes = MatchType::getAllActiveMatchtypes()->get();
 
@@ -107,21 +107,19 @@ class Userskillbracket extends Eloquent {
 					->where("matchtype_id", $matchtype_id);
 					
 					if($checkSkillBracket->count() > 0){
-						$data = $checkSkillBracket->get()->first();
+						$data = $checkSkillBracket->first();
 						
 						$last_check = $data->last_check;
 						$last_check_time = strtotime($last_check);
-						// var_dump($last_check_time);
-						// var_dump(time()-$checkTimestamp);
+						
 						
 						if($last_check_time <= (time()-$checkTimestamp)){
 							$skillbracket_id = $data->skillbrackettype_id;
 							
 							$retSB = Userskillbracket::getSkillBracketByStats($user_id, $matchtype_id);
 							$skillBracketTypeIDByStats = $retSB['data'];
-							
+
 							if($skillbracket_id != $skillBracketTypeIDByStats){
-								$ret['debug'] .= "SkillBRacket-Änderung - (SB: ".$skillbracket_id." SBCalc:".$skillBracketTypeIDByStats.")!";
 								
 								$updateArray = array(
 									"skillbrackettype_id" => $skillBracketTypeIDByStats,
@@ -135,6 +133,9 @@ class Userskillbracket extends Eloquent {
 
 								$ret['status'] = "skillbracket erfolgreich geändert";
 							}
+							else{
+								$ret['status'] = "skillbracket gleich";
+							}
 						}
 						else{
 							$ret['status'] = "zu frueh";
@@ -142,7 +143,6 @@ class Userskillbracket extends Eloquent {
 					}
 					else{
 						// nicht angelegt
-						$ret['debug'] .= "MatchType noch nciht angelegt<br>";
 						$insertArray = array();
 						$insertArray['user_id'] = $user_id;
 						$insertArray['matchtype_id'] = (int)$matchtype_id;
@@ -153,7 +153,7 @@ class Userskillbracket extends Eloquent {
 						$insertArray['updated_at'] = new DateTime;
 
 						$retIns = DB::table("userskillbrackets")->insert($insertArray);
-						$ret['debug'] .= $retIns."<br>";
+						
 					}
 				}
 			}
@@ -162,8 +162,6 @@ class Userskillbracket extends Eloquent {
 		else{
 			$ret['status'] = "user_id == 0";
 		}
-		$ret['debug'] = "End checkAndSetSkillBracketOfUser <br>\n";
-
 		return $ret;
 	}
 	public static function getSkillBracketByStats($user_id, $matchtype_id){

@@ -23,8 +23,9 @@ Route::get('help/faq', 'HelpController@showFAQ');
 Route::get('help/rules', 'HelpController@showRules');
 
 
-Route::group(array('before' => 'auth'), function()
+Route::group(array('before' => 'auth|setSkillbracket'), function()
 {
+
 	Route::get('/', 'HomeController@home');
 	Route::get('find_match', 'FindMatchController@index');
 	

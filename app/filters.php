@@ -50,6 +50,12 @@ Route::filter("admin", function(){
 	}
 });
 
+Route::filter("setSkillbracket", function(){
+	if(Auth::check()){
+		$ret = Userskillbracket::setSkillbrackets(Auth::user()->id);
+	}
+});
+
 /*
 |--------------------------------------------------------------------------
 | Guest Filter
