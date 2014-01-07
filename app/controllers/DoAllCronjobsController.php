@@ -23,7 +23,15 @@ class CronjobDoAllController extends BaseController {
 		/**
 		*	General
 		*/
+		// weekly Votecounts reset
 		$ret .= $this->updateVoteCounts();
+
+		// permaban handling
+		$ret .= $this->permabanActiveBansHandling();
+
+		// active bans decay
+		$ret .= $this->activeBansDecayHandling();
+
 
 		return $ret;
 	}
@@ -331,14 +339,61 @@ class CronjobDoAllController extends BaseController {
 				$ret .= "All UservoteCounts resetted to ".GlobalSetting::getWeeklyUpvoteCount()."-".GlobalSetting::getWeeklyDownvoteCount()."\n\r";
 			}
 			else{
-				$ret .= "already updated";
+				$ret .= "already updated \n\r";
 			}
 			
 		}
 		else{
-			$ret .= "not getWeeklyVoteCountUpdateDay (".GlobalSetting::getWeeklyVoteCountUpdateDay().")";
+			$ret .= "not getWeeklyVoteCountUpdateDay (".GlobalSetting::getWeeklyVoteCountUpdateDay().")\n\r";
 		}
 
+		return $ret."\n\r";
+	}
+
+	public function permabanActiveBansHandling(){
+		$ret = "=== Permabans because of too many active bans handling === \n\r";
+		$banData = Banlist::getAllUsersWhoHaveToMuchActiveBans()->get();
+		// 	$queries = DB::getQueryLog();
+		 // dd($queries);
+		if(!empty($banData)){
+			// if found -> permaban
+			foreach ($banData as $key => $b) {
+				$user_id = $b->user_id;
+
+				$insertArray = array(
+					"user_id" => $user_id,
+					"banlistreason_id" => 3,
+					"banned_at" => new DateTime,
+					);
+				Permaban::insert($insertArray);
+				$ret .= "User: ".$user_id." got permabanned";
+			}
+		}
+		return $ret."\n\r";
+	}
+
+	public function activeBansDecayHandling(){
+		$ret = "=== Active Bans Decay handling === \n\r";
+		$timeDecay = 1728000; // 20 Days
+		$banData = Banlist::getAllUsersThatHaveOldActiveBans($timeDecay)->get();
+// $queries = DB::getQueryLog();
+// dd($queries);
+		if(!empty($banData)){
+			// if found -> permaban
+			foreach ($banData as $key => $b) {
+				
+				$id = $b->id;
+				$user_id = $b->user_id;	
+
+				$updateArray = array(
+					"id" => $id,
+					"display" => 0,
+					"updated_at" => new DateTime,
+					);
+				Banlist::where("id", $id)->update($updateArray);
+				$ret .= "Users ".$user_id." ban got deactivated";
+			}
+		}
 		return $ret."\n\r";
 	}
 }

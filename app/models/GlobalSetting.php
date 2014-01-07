@@ -154,6 +154,15 @@ class GlobalSetting extends Eloquent {
 		}
 	}
 	
+	public static function getPermaBanBorder(){
+		$ret = GlobalSetting::where("id", 15)->first();
+		if($ret->active == 1){
+			return (int) $ret->value;
+		}
+		else{
+			return 999999;
+		}
+	}
 
 	public static function getCancelBorderForMatchtype($matchtype_id){
 		switch ($matchtype_id) {

@@ -22,6 +22,7 @@ class GlobalsettingsTableSeeder extends Seeder {
 			array("name" => "QuickJoinMatchmode","value" => 9,"active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
 			array("name" => "BanCreditBorder","value" => -15,"active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
 			array("name" => "WeeklyVoteCountUpdateDay","value" => 1,"active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
+			array("name" => "PermaBanBorder","value" => 6,"active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
 		);
 
 		// Uncomment the below to run the seeder

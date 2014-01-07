@@ -134,4 +134,24 @@ class Banlist extends Eloquent {
 				break;
 		}
 	}
+
+	public static function getAllUsersWhoHaveToMuchActiveBans(){
+		return Banlist::where("banlists.display", 1)
+					->leftJoin("permabans", "permabans.user_id", "=", "banlists.user_id")
+					->where("permabans.banlistreason_id", null)
+					->groupBy("banlists.user_id")
+					->having("warnCount", ">=", 6)
+					->select("banlists.user_id",
+						DB::raw("COUNT(banlists.user_id) as warnCount"));
+	}
+
+	public static function getAllUsersThatHaveOldActiveBans($timeDecay){
+		$date = new DateTime;
+		$date->setTimestamp(time()-$timeDecay);
+		return Banlist::where("banlists.display", 1)
+					->where("created_at", "<=", $date)
+					->leftJoin("permabans", "permabans.user_id", "=", "banlists.user_id")
+					->where("permabans.banlistreason_id", null)
+					->select("banlists.*");
+	}
 }

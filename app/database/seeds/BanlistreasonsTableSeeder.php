@@ -9,8 +9,8 @@ class BanlistreasonsTableSeeder extends Seeder {
 
 		$banlistreasons = array(
 				array("name" => "automatically by Credit-System", "created_at" => new DateTime, "updated_at" => new DateTime),
-				array("by Admin", "created_at" => new DateTime, "updated_at" => new DateTime),
-				array("collected 6 active Warns", "created_at" => new DateTime, "updated_at" => new DateTime),
+				array("name" => "by Admin", "created_at" => new DateTime, "updated_at" => new DateTime),
+				array("name" => "collected 6 active Warns", "created_at" => new DateTime, "updated_at" => new DateTime),
 		);
 
 		// Uncomment the below to run the seeder
