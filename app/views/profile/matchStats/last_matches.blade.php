@@ -1,5 +1,6 @@
 <div class="customH2">Last<span>Matches</span></div>
-@if(!empty($lastMatches))
+
+@if(!empty($lastMatches) && count($lastMatches) > 0)
 	<table class="table table-striped">
 		<thead>
 			<tr align="center">
@@ -38,7 +39,6 @@
 		  	
 		  	@if($v['pointschange'] == "" && $v['team_id'] == $v['team_id'])
 		  		<?php $v['pointschange'] = "+0"; ?>
-		  		{assign var="v.PointsChange" value='+0')
 		  	@elseif( $v['pointschange'] == "" && $v['team_id'] != $v['team_id'])
 		  		<?php $v['pointschange'] = "-0"; ?>
 		  	@endif
@@ -66,7 +66,7 @@
 		</tbody>
 	</table>
 	<p>
-	<a href="lastMatches/{{$v['user_id']}}">View All Matches <i class="icon-double-angle-right"></i></a>
+	<a href="{{URL::to("lastMatches")}}">View All Matches <i class="icon-double-angle-right"></i></a>
 	</p>
 @else
 	<div class="alert alert-warning">No Matches found!</div>
