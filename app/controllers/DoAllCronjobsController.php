@@ -374,7 +374,7 @@ class CronjobDoAllController extends BaseController {
 
 	public function activeBansDecayHandling(){
 		$ret = "=== Active Bans Decay handling === \n\r";
-		$timeDecay = 1728000; // 20 Days
+		$timeDecay = GlobalSetting::getBanDecayTime(); // 20 Days
 		$banData = Banlist::getAllUsersThatHaveOldActiveBans($timeDecay)->get();
 // $queries = DB::getQueryLog();
 // dd($queries);

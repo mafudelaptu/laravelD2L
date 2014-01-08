@@ -22,7 +22,9 @@ class MatchvotesController extends BaseController {
 					
 					Matchvote::insertCancelVote($match_id, $user_id);
 					Matchdetail::submitResult($user_id, $match_id, "cancel");
-
+					// matched_user clearen
+					Matched_user::removeMatchedUserEntry($match_id, $user_id);
+					
 					if($votetype == "1"){
 						if(is_array($votesArray) && count($votesArray) > 0){
 							foreach ($votesArray as $key => $leaver) {

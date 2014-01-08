@@ -13,7 +13,17 @@
    <li class="divider"></li>
    <li><a tabindex="-1" href="https://dotabuff.com/players/{{Auth::user()->id}}" target="_blank">Dotabuff-Profile</a></li>
    <li><a tabindex="-1" href="http://steamcommunity.com/profiles/{{Auth::user()->id}}" target="_blank">Steam-Profile</a></li>
-   <li><a href="{{URL::to('logout')}}">Logout</a></li>
+   <?php 
+    switch (GlobalSetting::getLoginVia()) {
+      case "Forum_IPBoard":
+        $logoutURL = URL::to("logout");
+        break;
+      default:
+        $logoutURL = URL::to("steamLogout");
+        break;
+    }
+    ?>
+   <li><a href="{{$logoutURL}}">Logout</a></li>
  </ul>
   </li>
  @endif

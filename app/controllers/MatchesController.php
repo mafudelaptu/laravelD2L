@@ -85,6 +85,8 @@ class MatchesController extends BaseController {
 				$user_id =  Auth::user()->id;
 				if(Match::isUserInMatch($user_id, $match_id)){
 					Matchdetail::submitResult($user_id, $match_id, $result);
+					// matched_user clearen
+					Matched_user::removeMatchedUserEntry($match_id, $user_id);
 					$ret['status'] = true;
 				}
 				else{

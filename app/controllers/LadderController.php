@@ -161,7 +161,7 @@ $iTotal = (String) count($rResultWithoutLimit);
 					if($aRow->id == $user_id){
 						$row["DT_RowClass"] ="success";
 					}
-					$row [] = '<a href="profile/'.$aRow->id.'"><img src="'.$aRow->avatar.'" alt="'.$aRow->name.'\'s Avatar"> '.$aRow->name.'</a>';
+					$row [] = '<a href="'.URL::to('profile/'.$aRow->id).'"><img src="'.$aRow->avatar.'" alt="'.$aRow->name.'\'s Avatar"> '.$aRow->name.'</a>';
 				}
 				elseif ($aColumns [$i] == "Wins"){
 					$row [] = "<span class='text-success'>".$aRow->Wins."</span>";

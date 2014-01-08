@@ -1,6 +1,6 @@
 <?php
 
-class SteamController extends \BaseController{
+class SteamController extends BaseController{
 
 	public function __construct(Hybrid_Auth $hybridAuth)
 	{

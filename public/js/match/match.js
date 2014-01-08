@@ -1,7 +1,7 @@
 $(function() {
   // Handler for .ready() called.
   if (document.URL.indexOf("/match/") >= 0) {
-  		var match_id = getLastPartOfUrl();
+  	var match_id = getLastPartOfUrl();
 		// init Buttons
 		initMatchButtons();
 		initChat("MatchChat"+match_id);
@@ -39,7 +39,7 @@ function initMatchButtons(){
 	$("#matchCancelButton").click(function(){
 		var match_id = getLastPartOfUrl();
 		$.ajax(
-{			url : "getCancelModal",
+			{			url : "getCancelModal",
 			type : "GET",
 			dataType : 'json',
 			data : {
@@ -229,6 +229,9 @@ function matchVotePlayer(that){
 
 						// update html votecount on page
 						decreaseVoteCount(type);
+
+						// hide vote buttons if nesseccary
+						hideVoteButtons(type);
 					}
 				}
 			});
@@ -280,19 +283,21 @@ $("#checkErrorDiv").html("");
 
 }
 
-function hideVoteButtons(){
-	var upvotes = getVoteCount(1);
-	var downvotes = getVoteCount(2);
-
-	if(upvotes <= 0){
-		var buttons = $(".votebutton[data-type='1']");
-	}
-	if(downvotes <= 0){
-		var buttons = $(".votebutton[data-type='2']");
+function hideVoteButtons(type_id){
+	l(type_id);
+	var votes = getVoteCount(type_id);
+	l(votes);
+	if(votes <= 0){
+		var buttons = $(".votebutton[data-type='"+type_id+"']");
 	}
 
+	l(buttons);
+	if(buttons.length > 0){
+		$.each(buttons, function(keys, values){
+			$(values).hide();
+		});		
+	}
 	
-
 }
 
 function decreaseVoteCount(type){
@@ -307,11 +312,11 @@ function decreaseVoteCount(type){
 
 function getVoteCount(type){
 	switch(type){
-	case "1":
+		case "1":
 		elem = "#userUpvotesLeft";
 
-	break;
-	case "2":
+		break;
+		case "2":
 		elem = "#userDownvotesLeft";
 		break;
 	}

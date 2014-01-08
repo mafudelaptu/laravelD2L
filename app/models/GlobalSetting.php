@@ -7,18 +7,18 @@ class GlobalSetting extends Eloquent {
 
 	public static function getBasePoints(){
 		$basePoints = GlobalSetting::where("id", 1)->remember(60)->first();
-			if(!empty($basePoints)){
-				if($basePoints->active == 1){
-					$bPVal = $basePoints->value;
-				}
-				else{
-					$bPVal = 0;
-				}
-				
+		if(!empty($basePoints)){
+			if($basePoints->active == 1){
+				$bPVal = $basePoints->value;
 			}
 			else{
 				$bPVal = 0;
 			}
+
+		}
+		else{
+			$bPVal = 0;
+		}
 		return $bPVal;
 	}
 
@@ -90,10 +90,10 @@ class GlobalSetting extends Eloquent {
 
 	public static function getCreditBorders(){
 		$ret = GlobalSetting::where("id", 8)
-								->orWhere("id", 9)
-								->orWhere("id", 10)
-								->remember(60)
-								->get();
+		->orWhere("id", 9)
+		->orWhere("id", 10)
+		->remember(60)
+		->get();
 		if(!empty($ret)){
 			$borderArray = array();
 			foreach ($ret as $key => $credit) {
@@ -164,15 +164,45 @@ class GlobalSetting extends Eloquent {
 		}
 	}
 
+	public static function getBanDecayTime(){
+		$ret = GlobalSetting::where("id", 16)->first();
+		if($ret->active == 1){
+			return (int) $ret->value;
+		}
+		else{
+			return 0;
+		}
+	}
+
+	public static function getTeamsActive(){
+		$ret = GlobalSetting::where("id", 17)->first();
+		if($ret->active == 1){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public static function getLoginVia(){
+	$ret = GlobalSetting::where("id", 18)->first();
+		if($ret->active == 1){
+			return (int) $ret->value;
+		}
+		else{
+			return "Steam";
+		}	
+	}
+
 	public static function getCancelBorderForMatchtype($matchtype_id){
 		switch ($matchtype_id) {
 			case 2:
-				return 2;
-				break;
+			return 2;
+			break;
 			
 			default:
-				return 6;
-				break;
+			return 6;
+			break;
 		}
 	}
 }

@@ -14,8 +14,15 @@
 
 Route::get("start", function(){
 	$title = "Login Page";
-	return View::make("start.index")
-	->with("title", $title);
+	switch (GlobalSetting::getLoginVia()) {
+		case "Forum_IPBoard":
+			break;
+		case "Steam":
+		default:
+			$data = View::make("start.index");
+			break;
+	}
+	return $data->with("title", $title);
 });
 
 //Help
@@ -101,8 +108,8 @@ Route::group(array('before' => 'auth|setSkillbracket'), function()
 });
 
 // Login/logout stuff
-Route::get('login/{action?}','SteamController@login');
-Route::get('logout', 'SteamController@logout');
+Route::get('steamLogin/{action?}','SteamController@login');
+Route::get('steamLogout', 'SteamController@logout');
 if(Config::get('app.debug') == true){
 	Route::get('fakelogin', function(){
 

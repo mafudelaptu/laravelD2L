@@ -14,7 +14,7 @@ class ProfileController extends BaseController {
 		else{
 			$visitor = true;
 		}
-
+		
 		// get Userdata
 		$userData = User::getUserData($user_id)->first();
 		$statsOfUser = User::getStatsOfUser($user_id);
@@ -22,7 +22,20 @@ class ProfileController extends BaseController {
 
 		$nextSkillbracket = User::getRequirementsForNextSkillbracket($user_id, $statsOfUser['stats'], $credits);
 		$lastMatches = Match::getLastMatches($user_id, 5);
+
+		// all warns
+		$warns = Banlist::getAllBans($user_id)->join("banlistreasons", "banlistreasons.id", "=", "banlists.banlistreason_id")
+						->leftJoin("users", "users.id", "=", "banlists.bannedBy")
+						->select(
+							"banlists.*",
+							DB::raw("DATE_ADD(banlists.created_at, INTERVAL ".GlobalSetting::getBanDecayTime()." second) as expires"),
+							"users.avatar as bannedByAvatar",
+							"users.name as bannedByName",
+							"banlistreasons.name as banReasonText"
+							)->get();
+
 		$contentData = array(
+			"visitor" => $visitor,
 			"userData" => $userData,
 			"points" => $statsOfUser['points'],
 			"stats" => $statsOfUser['stats'],
@@ -35,6 +48,7 @@ class ProfileController extends BaseController {
 			"skillbracket" => Userskillbracket::getSkillbracketsAsArray($user_id, true),
 			"activeBansCount" => Banlist::getAllActiveBans($user_id)->count(),
 			"allBansCount" => Banlist::getAllBans($user_id)->count(),
+			"bansData" => $warns,
 			"bestRankings" => null,
 			);
 		//dd($contentData);

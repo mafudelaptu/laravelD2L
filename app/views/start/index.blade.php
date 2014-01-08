@@ -13,7 +13,7 @@
 		you need to login via Steam to access this page:
 	</p>
 	<p align="center">
-		<a href="login">
+		<a href="steamLogin">
 		{{HTML::image("img/steam/steam_big.png")}}
 		</a>
 	</p>
