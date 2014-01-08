@@ -10,13 +10,13 @@ class MatchesController extends BaseController {
 		$user_id = Auth::user()->id;
 		$matchStateData = Match::getStateOfMatch($match_id, $user_id);
 		$matchData = Match::getMatchData($match_id, true, true)
-						->select("matches.*", "matchmodes.name as matchmode", "matchmodes.shortcut as mm_shortcut",
-								"regions.name as region", "regions.shortcut as r_shortcut")
-						->first();
+		->select("matches.*", "matchmodes.name as matchmode", "matchmodes.shortcut as mm_shortcut",
+			"regions.name as region", "regions.shortcut as r_shortcut")
+		->first();
 		
 		$matchdetailsData = Matchdetail::getMatchdetailData($match_id, true, true)->orderBy("matchdetails.points")
-			->select("matchdetails.*", "users.*", "userpoints.pointschange")
-			->get();
+		->select("matchdetails.*", "users.*", "userpoints.pointschange")
+		->get();
 
 		$matchPlayersData = Match::getPlayersData($matchdetailsData, $matchData->matchtype_id);
 
@@ -35,7 +35,7 @@ class MatchesController extends BaseController {
 			"voteStats" => Uservote::getVoteStatsForMatch($match_id, $matchdetailsData),
 			);
 
-		//dd($contentData);
+		//dd($contentData['userVotes']);
 		$this->layout->nest("content", 'matches.match.index', $contentData);
 	}
 
@@ -46,18 +46,18 @@ class MatchesController extends BaseController {
 		$user_id = Auth::user()->id;
 
 		$openMatches = Match::getAllOpenMatches($user_id)
-							->join("matchdetails", "matchdetails.match_id", "=", "matches.id")
-							->join("matchmodes", "matchmodes.id", "=", "matches.matchmode_id")
-							->join("matchtypes", "matchtypes.id", "=", "matches.matchtype_id")
-							->where("matchdetails.user_id", $user_id)
-							->select(
-								"matches.*",
-								"matchdetails.submitted",
-								"matchmodes.name as matchmode",
-								"matchmodes.shortcut as mm_shortcut",
-								"matchtypes.name as matchtype"
-								)
-							->get();
+		->join("matchdetails", "matchdetails.match_id", "=", "matches.id")
+		->join("matchmodes", "matchmodes.id", "=", "matches.matchmode_id")
+		->join("matchtypes", "matchtypes.id", "=", "matches.matchtype_id")
+		->where("matchdetails.user_id", $user_id)
+		->select(
+			"matches.*",
+			"matchdetails.submitted",
+			"matchmodes.name as matchmode",
+			"matchmodes.shortcut as mm_shortcut",
+			"matchtypes.name as matchtype"
+			)
+		->get();
 
 		if(!empty($openMatches)){
 			$submitCountsArray = array();
@@ -99,29 +99,30 @@ class MatchesController extends BaseController {
 		$ret = array();
 		if(Auth::check()){
 			if (Request::ajax()){
+
 				$vote_user_id = Input::get("user_id");
 				$match_id = Input::get("match_id");
-				$votetype = Input::get("type");
+				$votetype_id = Input::get("type");
 				$user_id =  Auth::user()->id;
 
 				if(Match::isUserInMatch($user_id, $match_id) && Match::isUserInMatch($vote_user_id, $match_id)){
-					$retVote = Uservote::insertVote($user_id, $vote_user_id, $votetype, $match_id);
+					$retVote = Uservote::insertVote($user_id, $vote_user_id, $votetype_id, $match_id);
+					Uservotecount::updateCounts($user_id, $votetype_id);
 
 					if($retVote !== false){
-
-					$ret['status'] = true;
+						$ret['status'] = true;
 					}
 					else{
-					$ret['status'] = "insertVoteFail";
+						$ret['status'] = "insertVoteFail";
 						
 					}
 				}
 				else{
 					$ret['status'] = "notInMatch";
 				}
-				return $ret;
 			}
 		}
+		return $ret;
 	}
 	/**
 	 * Display a listing of the resource.
@@ -130,7 +131,7 @@ class MatchesController extends BaseController {
 	 */
 	public function index()
 	{
-        return View::make('matches.index');
+		return View::make('matches.index');
 	}
 
 	/**
@@ -140,7 +141,7 @@ class MatchesController extends BaseController {
 	 */
 	public function create()
 	{
-        return View::make('matches.create');
+		return View::make('matches.create');
 	}
 
 	/**
@@ -161,7 +162,7 @@ class MatchesController extends BaseController {
 	 */
 	public function show($id)
 	{
-        return View::make('matches.show');
+		return View::make('matches.show');
 	}
 
 	/**
@@ -172,7 +173,7 @@ class MatchesController extends BaseController {
 	 */
 	public function edit($id)
 	{
-        return View::make('matches.edit');
+		return View::make('matches.edit');
 	}
 
 	/**

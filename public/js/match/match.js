@@ -38,8 +38,8 @@ function initMatchButtons(){
 
 	$("#matchCancelButton").click(function(){
 		var match_id = getLastPartOfUrl();
-		$.ajax({
-			url : "getCancelModal",
+		$.ajax(
+{			url : "getCancelModal",
 			type : "GET",
 			dataType : 'json',
 			data : {
@@ -196,13 +196,15 @@ function sendPingNotification(that){
 function matchVotePlayer(that){
 	var user_id = $(that).val();
 	var match_id = getLastPartOfUrl();
-	var type = $(that).attr("data-label");
+	// Typ des Submits
+	
+	var type = $(that).attr("data-type");
 
 	switch(type){
-		case "Upvote":
+		case "1": // upvote
 		classType= "success";
 		break;
-		case "Downvote":
+		case "2": // downvote
 		classType = "danger";
 		break;
 		default:
@@ -219,10 +221,14 @@ function matchVotePlayer(that){
 			type: type
 		},
 		success : function(result) {
+			l(result);
 			if(result.status == true){
 						// switch Vote display
 						html = "<span class='text-center text-"+classType+"'>voted!<span>";
 						$(that).parent().html(html);
+
+						// update html votecount on page
+						decreaseVoteCount(type);
 					}
 				}
 			});
@@ -272,4 +278,44 @@ $("#checkErrorDiv").html("");
 		});
 	}
 
+}
+
+function hideVoteButtons(){
+	var upvotes = getVoteCount(1);
+	var downvotes = getVoteCount(2);
+
+	if(upvotes <= 0){
+		var buttons = $(".votebutton[data-type='1']");
+	}
+	if(downvotes <= 0){
+		var buttons = $(".votebutton[data-type='2']");
+	}
+
+	
+
+}
+
+function decreaseVoteCount(type){
+	// Typ des Submits
+	value = getVoteCount(type);
+
+	if(value > 0){
+		value = value - 1;
+		$(elem).html(value);
+	}
+}
+
+function getVoteCount(type){
+	switch(type){
+	case "1":
+		elem = "#userUpvotesLeft";
+
+	break;
+	case "2":
+		elem = "#userDownvotesLeft";
+		break;
+	}
+	value = parseInt($(elem).html());
+	
+	return value;
 }

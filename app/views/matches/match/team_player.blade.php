@@ -35,10 +35,12 @@
 		
 		@if($inMatch && Auth::user()->id != $playerdata['user_id'])
 			{{--dd($userVotes)--}}
-			@if(array_search($playerdata['user_id'], $userVotes))
-							
+			@if(array_search($playerdata['user_id'], $userVotes) !== false)
+			<?php 
+
+							//var_dump((array_search($playerdata['user_id'], $userVotes)));
+			 ?>
 			@include("matches.match.team_player_vote_info", array("votestats" => $voteStats[$playerdata['user_id']]))
-			
 			
 			@else
 			

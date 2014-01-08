@@ -8,21 +8,11 @@ class Uservote extends Eloquent {
 	protected $table = "uservotes";
 	protected $primaryKey = array("vote_of_user", "match_id", "user_id");
 
-	public static function insertVote($user_id, $vote_user_id, $votetype, $match_id){
-		if ($user_id > 0 && $vote_user_id > 0 && $votetype != "" && $match_id > 0) {
-			$check = Uservotecount::allowedToVote($votetype, $user_id);
+	public static function insertVote($user_id, $vote_user_id, $votetype_id, $match_id){
+		if ($user_id > 0 && $vote_user_id > 0 && $votetype_id > 0 && $match_id > 0) {
+			$check = Uservotecount::allowedToVote($votetype_id, $user_id);
 			if($check){
-				switch ($votetype) {
-					case 'Upvote':
-						$votetype_id = 1;
-						break;
-					case 'Downvote':
-						$votetype_id = 2;
-						break;
-					default:
-						return false;
-						break;
-				}
+				
 
 				$insertArray = array(
 					"user_id" => $vote_user_id,
