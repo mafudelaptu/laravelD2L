@@ -238,3 +238,5 @@ Route::resource('streamers', 'StreamersController');
 
 
 Route::resource('globalsettings', 'GlobalsettingsController');
+
+Route::resource('eventtypes', 'EventtypesController');
