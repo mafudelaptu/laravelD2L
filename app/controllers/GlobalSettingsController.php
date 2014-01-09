@@ -1,6 +1,18 @@
 <?php
 
-class GlobalSettingsController extends BaseController {
+class GlobalsettingsController extends BaseController {
+
+	/**
+	 * Globalsetting Repository
+	 *
+	 * @var Globalsetting
+	 */
+	protected $globalsetting;
+
+	public function __construct(Globalsetting $globalsetting)
+	{
+		$this->globalsetting = $globalsetting;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -9,7 +21,9 @@ class GlobalSettingsController extends BaseController {
 	 */
 	public function index()
 	{
-        return View::make('globalsettings.index');
+		$globalsettings = $this->globalsetting->all();
+
+		return View::make('globalsettings.index', compact('globalsettings'));
 	}
 
 	/**
@@ -19,7 +33,7 @@ class GlobalSettingsController extends BaseController {
 	 */
 	public function create()
 	{
-        return View::make('globalsettings.create');
+		return View::make('globalsettings.create');
 	}
 
 	/**
@@ -29,7 +43,20 @@ class GlobalSettingsController extends BaseController {
 	 */
 	public function store()
 	{
-		//
+		$input = Input::all();
+		$validation = Validator::make($input, Globalsetting::$rules);
+
+		if ($validation->passes())
+		{
+			$this->globalsetting->create($input);
+
+			return Redirect::route('globalsettings.index');
+		}
+
+		return Redirect::route('globalsettings.create')
+			->withInput()
+			->withErrors($validation)
+			->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -40,7 +67,9 @@ class GlobalSettingsController extends BaseController {
 	 */
 	public function show($id)
 	{
-        return View::make('globalsettings.show');
+		$globalsetting = $this->globalsetting->findOrFail($id);
+
+		return View::make('globalsettings.show', compact('globalsetting'));
 	}
 
 	/**
@@ -51,7 +80,14 @@ class GlobalSettingsController extends BaseController {
 	 */
 	public function edit($id)
 	{
-        return View::make('globalsettings.edit');
+		$globalsetting = $this->globalsetting->find($id);
+
+		if (is_null($globalsetting))
+		{
+			return Redirect::route('globalsettings.index');
+		}
+
+		return View::make('globalsettings.edit', compact('globalsetting'));
 	}
 
 	/**
@@ -62,7 +98,21 @@ class GlobalSettingsController extends BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$input = array_except(Input::all(), '_method');
+		$validation = Validator::make($input, Globalsetting::$rules);
+
+		if ($validation->passes())
+		{
+			$globalsetting = $this->globalsetting->find($id);
+			$globalsetting->update($input);
+
+			return Redirect::route('globalsettings.show', $id);
+		}
+
+		return Redirect::route('globalsettings.edit', $id)
+			->withInput()
+			->withErrors($validation)
+			->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -73,7 +123,9 @@ class GlobalSettingsController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$this->globalsetting->find($id)->delete();
+
+		return Redirect::route('globalsettings.index');
 	}
 
 }

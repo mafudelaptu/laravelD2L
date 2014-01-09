@@ -26,6 +26,8 @@ class GlobalsettingsTableSeeder extends Seeder {
 			array("name" => "BanDecayTime","value" => 1728000,"active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
 			array("name" => "TeamsActive","value" => "","active" => 0, "created_at" => new DateTime, "updated_at" => new DateTime),
 			array("name" => "LoginVia","value" => "Steam","active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
+			array("name" => "ForumLink","value" => "http://forum.link","active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
+			array("name" => "ForumHost","value" => "Dotacinema","active" => 1, "created_at" => new DateTime, "updated_at" => new DateTime),
 		);
 
 		// Uncomment the below to run the seeder

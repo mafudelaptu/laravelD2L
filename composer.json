@@ -8,8 +8,7 @@
 		"way/generators": "dev-master",
 		"fitztrev/laravel-html-minify": "dev-master",
 		"hybridauth/hybridauth": "*",
-		"koraktor/steam-condenser": "dev-master",
-		"cboden/Ratchet"    : "0.3.*"
+		"koraktor/steam-condenser": "dev-master"
 	},
 	"autoload": {
 		"classmap": [

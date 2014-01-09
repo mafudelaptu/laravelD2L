@@ -37,39 +37,7 @@ class SteamController extends BaseController{
 
 		//echo $steam_avatar." ".$steam_name." ".$steam_id;
 		//var_dump($steamIdObject);
-		$userData = User::find($steam_id);
-		//var_dump($userData);
-
-		if(!empty($userData)){
-			$user = User::find($steam_id);
-			//var_dump($user);
-			Auth::login($user);
-
-		}
-		else{
-			$date = new \DateTime;
-			$user = new User;
-			$user->id = $steam_id;
-			$user->name = $steam_name;
-			$user->avatar = $steam_avatar;
-			$user->avatarFull = $steam_avatarFull;
-			$user->basePoints = GlobalSetting::getBasePoints();
-			$user->basePointsUpdatedTimestamp = $date;
-			$user->region_id = GlobalSetting::getDefaultRegionID();
-			$user->save();
-
-			$user = User::find($steam_id);
-
-			Auth::login($user);
-
-			// set init uservotecounts
-			Uservotecount::initUserVoteCounts($user->id);
-		}
-
-		// set first Skillbrackets
-		Userskillbracket::setSkillbrackets($steam_id);
-		// set init uservotecounts
-		Uservotecount::initUserVoteCounts($user->id);
+		Login::insertNewUserAndLogin($steam_id);
 		
 		return Redirect::to("/");
 	}

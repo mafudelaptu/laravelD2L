@@ -14,15 +14,48 @@
 
 Route::get("start", function(){
 	$title = "Login Page";
+	//dd(GlobalSetting::getLoginVia());
 	switch (GlobalSetting::getLoginVia()) {
 		case "Forum_IPBoard":
+		//dd($_COOKIE['member_id']." ".$_COOKIE['pass_hash']);
+		if(!empty($_COOKIE['member_id']) && !empty($_COOKIE['pass_hash'])){
+			// check Login first
+			$user_id = $_COOKIE['member_id'];
+			$pass = $_COOKIE['pass_hash'];
+			$check = Login::checkForumLogin($user_id, $pass);
+			//dd($check);
+			if($check['status']){
+				switch(GlobalSetting::getForumHost()){
+					case "Dotacinema":
+
+						$checkSteamID = Login::checkDotacinemaSteamID($user_id);
+
+						if($checkSteamID['steam_id'] != "" && $checkSteamID['status'] == true){
+							Login::insertNewUserAndLogin($checkSteamID['steam_id']);
+							return Redirect::to("/");
+						}
+						else{
+							//dd("asd");
+							// redirect zu add-steam_id-seite
+							return Redirect::to('http://'.$_SERVER['SERVER_NAME'].'/arena');
+							
+						}
+					break;
+				}
+			}
+			else{
+
+			}
+		}
+		else{
+			return View::make("start.forum_ipboard")->with("title", $title);
+		}
 			break;
 		case "Steam":
 		default:
-			$data = View::make("start.index");
+			return View::make("start.index")->with("title", $title);
 			break;
 	}
-	return $data->with("title", $title);
 });
 
 //Help
@@ -110,6 +143,11 @@ Route::group(array('before' => 'auth|setSkillbracket'), function()
 // Login/logout stuff
 Route::get('steamLogin/{action?}','SteamController@login');
 Route::get('steamLogout', 'SteamController@logout');
+Route::get("logout", function(){
+	Auth::logout();
+	return Redirect::to("/");
+});
+
 if(Config::get('app.debug') == true){
 	Route::get('fakelogin', function(){
 
@@ -197,3 +235,6 @@ Route::resource('pointtypes', 'PointtypesController');
 Route::resource('news', 'NewsController');
 
 Route::resource('streamers', 'StreamersController');
+
+
+Route::resource('globalsettings', 'GlobalsettingsController');

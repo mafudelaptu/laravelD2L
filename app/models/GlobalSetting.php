@@ -187,10 +187,30 @@ class GlobalSetting extends Eloquent {
 	public static function getLoginVia(){
 	$ret = GlobalSetting::where("id", 18)->first();
 		if($ret->active == 1){
-			return (int) $ret->value;
+			return $ret->value;
 		}
 		else{
 			return "Steam";
+		}	
+	}
+
+	public static function getForumLink(){
+	$ret = GlobalSetting::where("id", 19)->first();
+		if($ret->active == 1){
+			return $ret->value;
+		}
+		else{
+			return "";
+		}	
+	}
+
+	public static function getForumHost(){
+	$ret = GlobalSetting::where("id", 20)->first();
+		if($ret->active == 1){
+			return $ret->value;
+		}
+		else{
+			return "";
 		}	
 	}
 

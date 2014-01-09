@@ -23,7 +23,9 @@
         break;
     }
     ?>
-   <li><a href="{{$logoutURL}}">Logout</a></li>
+   @if(GlobalSetting::getLoginVia() != "Forum_IPBoard")
+    <li><a href="{{$logoutURL}}">Logout</a></li>
+   @endif
  </ul>
   </li>
  @endif
